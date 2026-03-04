@@ -1519,7 +1519,7 @@ footer {
 <!-- ============================================
      JS
      ============================================ -->
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+<script>
   // Cursor personalizado
   const cursor = document.getElementById('cursor');
   const ring = document.getElementById('cursorRing');
@@ -1547,3 +1547,13 @@ footer {
   const observer = new IntersectionObserver((entries) => {
     entries.forEach(e => {
       if (e.isIntersecting) {
+        e.target.classList.add('visible');
+        observer.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.12 });
+  reveals.forEach(el => observer.observe(el));
+</script>
+
+</body>
+</html>
