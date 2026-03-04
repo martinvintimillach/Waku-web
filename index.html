@@ -1046,7 +1046,7 @@ footer {
     <li><a href="#historia">Historia</a></li>
     <li><a href="#equipo">Equipo</a></li>
   </ul>
-  <a href="#unete" class="nav-cta">Únete</a>
+  <a href="voluntariado.html" class="nav-cta">Únete</a>
 </nav>
 
 <!-- ============================================
@@ -1205,7 +1205,7 @@ footer {
         <em>cuentan historias.</em>
       </h2>
     </div>
-    <a href="#" class="btn-outline reveal">Ver todas las fotos</a>
+    <a href="galeria.html" class="btn-outline reveal">Ver todas las fotos</a>
   </div>
 
   <div class="galeria-grid">
@@ -1440,7 +1440,7 @@ footer {
     Hacer que el mundo cambie <em>contigo</em>. Únete como voluntario, aliado o donante y sé parte de la red solidaria más humana de Latinoamérica.
   </p>
   <div class="cta-buttons reveal reveal-delay-3">
-    <a href="#" class="btn-primary">
+    <a href="voluntariado.html" class="btn-primary">
       Quiero ser voluntario
       <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
     </a>
@@ -1492,7 +1492,7 @@ footer {
     <div>
       <p class="footer-col-title">Participar</p>
       <ul class="footer-links">
-        <li><a href="#">Ser voluntario</a></li>
+        <li><a href="voluntariado.html">Ser voluntario</a></li>
         <li><a href="#">Alianzas corporativas</a></li>
         <li><a href="#">Donaciones</a></li>
         <li><a href="#">Brigadas abiertas</a></li>
@@ -1501,7 +1501,7 @@ footer {
     <div>
       <p class="footer-col-title">Contacto</p>
       <ul class="footer-links">
-        <li><a href="#">hola@waku.org</a></li>
+        <li><a href="#"><span class="__cf_email__" data-cfemail="d9b1b6b5b899aeb8b2acf7b6abbe">[email&#160;protected]</span></a></li>
         <li><a href="#">Ecuador</a></li>
         <li><a href="#">Latinoamérica</a></li>
         <li><a href="#" style="margin-top:8px; display:block;">Prensa y medios</a></li>
@@ -1519,7 +1519,7 @@ footer {
 <!-- ============================================
      JS
      ============================================ -->
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
   // Cursor personalizado
   const cursor = document.getElementById('cursor');
   const ring = document.getElementById('cursorRing');
@@ -1547,13 +1547,3 @@ footer {
   const observer = new IntersectionObserver((entries) => {
     entries.forEach(e => {
       if (e.isIntersecting) {
-        e.target.classList.add('visible');
-        observer.unobserve(e.target);
-      }
-    });
-  }, { threshold: 0.12 });
-  reveals.forEach(el => observer.observe(el));
-</script>
-
-</body>
-</html>
