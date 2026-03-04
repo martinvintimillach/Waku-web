@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WÁKU — Únete al voluntariado</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Barlow+Condensed:wght@300;400;500;600;700;800&family=Barlow:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root { --v:#324001;--c:#e9e0d6;--n:#0d0d0d;--v2:#3f5201;--err:#8b2020;--ok:#2d6a2d; }
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{background:#f5f0e8;color:var(--v);font-family:'Barlow',sans-serif;font-weight:300;overflow-x:hidden;cursor:none;}
+
+.cursor{width:10px;height:10px;background:var(--v);border-radius:50%;position:fixed;top:0;left:0;pointer-events:none;z-index:9999;mix-blend-mode:multiply;}
+.cursor-ring{width:36px;height:36px;border:1.5px solid var(--v);border-radius:50%;position:fixed;top:0;left:0;pointer-events:none;z-index:9998;transition:transform 0.35s cubic-bezier(0.16,1,0.3,1);opacity:0.5;}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:500;padding:24px 60px;display:flex;justify-content:space-between;align-items:center;transition:background .4s,padding .4s;}
+nav.scrolled{background:rgba(233,224,214,.92);backdrop-filter:blur(12px);padding:16px 60px;border-bottom:1px solid rgba(50,64,1,.1);}
+.nav-logo img{height:32px;display:block;}
+.nav-links{display:flex;gap:40px;list-style:none;}
+.nav-links a{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:600;letter-spacing:.22em;text-transform:uppercase;color:var(--v);text-decoration:none;opacity:.7;transition:opacity .2s;}
+.nav-links a:hover{opacity:1;}
+.nav-cta{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:var(--c);background:var(--v);padding:10px 22px;text-decoration:none;transition:background .2s;border:none;cursor:pointer;}
+.nav-cta:hover,.nav-cta.active{background:var(--v2);}
+
+/* HERO SPLIT */
+.hero-vol{
+  display:grid;grid-template-columns:1fr 1fr;
+  min-height:100vh;
+}
+.hv-foto{
+  position:relative;overflow:hidden;
+  background:linear-gradient(160deg,#1a2000,#0d1300);
+}
+.hv-foto-overlay{position:absolute;inset:0;background:linear-gradient(to right,rgba(50,64,1,.4) 0%,transparent 70%);z-index:1;}
+.hv-foto-placeholder{
+  width:100%;height:100%;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;
+}
+.hv-foto-placeholder-icon{width:60px;height:60px;border:1.5px solid rgba(233,224,214,.2);border-radius:50%;display:flex;align-items:center;justify-content:center;}
+.hv-foto-placeholder-icon svg{width:26px;height:26px;}
+.hv-foto-placeholder p{font-family:'Barlow Condensed',sans-serif;font-size:9px;letter-spacing:.24em;text-transform:uppercase;color:rgba(233,224,214,.25);}
+.hv-foto-tag{position:absolute;bottom:32px;left:32px;z-index:3;background:rgba(233,224,214,.1);backdrop-filter:blur(8px);border:1px solid rgba(233,224,214,.15);padding:14px 20px;}
+.hv-foto-tag p{font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:var(--c);opacity:.7;line-height:2;}
+.hv-foto-tag strong{font-size:22px;font-family:'Cormorant Garamond',serif;font-weight:600;color:var(--c);display:block;opacity:1;}
+
+.hv-content{
+  background:var(--v);
+  padding:120px 64px 80px;
+  display:flex;flex-direction:column;justify-content:center;
+}
+.hv-eyebrow{font-family:'Barlow Condensed',sans-serif;font-size:10px;letter-spacing:.32em;text-transform:uppercase;color:var(--c);opacity:.45;margin-bottom:20px;display:flex;align-items:center;gap:14px;}
+.hv-eyebrow::before{content:'';display:block;width:28px;height:1px;background:var(--c);opacity:.4;}
+.hv-title{font-family:'Cormorant Garamond',serif;font-size:clamp(40px,4.5vw,62px);font-weight:300;line-height:.98;color:var(--c);margin-bottom:24px;}
+.hv-title em{font-style:italic;}
+.hv-sub{font-size:15px;line-height:1.85;color:var(--c);opacity:.6;margin-bottom:36px;max-width:400px;}
+
+/* PASOS RÁPIDOS */
+.pasos-rapidos{display:flex;flex-direction:column;gap:2px;margin-bottom:40px;}
+.paso-rapido{display:flex;align-items:center;gap:14px;padding:14px 16px;background:rgba(233,224,214,.06);border:1px solid rgba(233,224,214,.1);}
+.paso-num-small{width:24px;height:24px;background:rgba(233,224,214,.15);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;color:var(--c);flex-shrink:0;}
+.paso-texto{font-size:12px;color:var(--c);opacity:.65;line-height:1.5;}
+.paso-texto strong{font-weight:500;opacity:.9;}
+
+.scroll-cta{display:flex;align-items:center;gap:12px;color:var(--c);opacity:.4;font-family:'Barlow Condensed',sans-serif;font-size:9px;letter-spacing:.22em;text-transform:uppercase;transition:opacity .2s;cursor:pointer;background:none;border:none;}
+.scroll-cta:hover{opacity:.8;}
+.scroll-line{width:40px;height:1px;background:var(--c);opacity:.4;}
+
+/* FORMULARIO */
+.form-section{
+  padding:80px 60px;
+  display:grid;grid-template-columns:2fr 1fr;
+  gap:60px;
+  align-items:start;
+  max-width:1200px;margin:0 auto;width:100%;
+}
+
+/* FORM */
+.form-wrap{}
+.form-titulo{font-family:'Cormorant Garamond',serif;font-size:clamp(28px,3vw,40px);font-weight:300;line-height:1.15;color:var(--v);margin-bottom:8px;}
+.form-titulo em{font-style:italic;}
+.form-sub{font-size:14px;color:var(--v);opacity:.55;margin-bottom:40px;line-height:1.7;}
+
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:3px;}
+.form-group{display:flex;flex-direction:column;gap:0;background:white;border:1px solid rgba(50,64,1,.1);transition:border-color .25s;position:relative;}
+.form-group:focus-within{border-color:var(--v);}
+.form-group.full{grid-column:1/-1;}
+.form-label{font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:var(--v);opacity:.5;padding:14px 18px 0;transition:opacity .25s;}
+.form-group:focus-within .form-label{opacity:.9;}
+.form-input,.form-select,.form-textarea{border:none;outline:none;background:none;padding:6px 18px 14px;font-family:'Barlow',sans-serif;font-size:14px;font-weight:400;color:var(--v);width:100%;appearance:none;-webkit-appearance:none;resize:none;}
+.form-input::placeholder,.form-textarea::placeholder{color:rgba(50,64,1,.25);}
+.form-select{cursor:pointer;padding-right:36px;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%23324001' opacity='.4' d='M1 1l5 5 5-5'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 16px center;}
+.form-select option{color:var(--v);}
+.form-textarea{min-height:100px;line-height:1.7;}
+
+/* CHECKBOXES DISPONIBILIDAD */
+.check-grid{display:grid;grid-template-columns:1fr 1fr;gap:2px;padding:10px 18px 14px;}
+.check-opt{display:flex;align-items:center;gap:10px;cursor:pointer;padding:6px 0;}
+.check-opt input{width:16px;height:16px;accent-color:var(--v);cursor:pointer;flex-shrink:0;}
+.check-opt span{font-size:13px;color:var(--v);opacity:.75;}
+
+/* VALIDACION */
+.form-group.error{border-color:var(--err);}
+.form-group.error .form-label{opacity:1;color:var(--err);}
+.error-msg{font-size:10px;color:var(--err);padding:2px 18px 8px;display:none;}
+.form-group.error .error-msg{display:block;}
+
+/* BOTON SUBMIT */
+.form-submit-wrap{grid-column:1/-1;margin-top:8px;display:flex;align-items:center;gap:20px;flex-wrap:wrap;}
+.btn-submit{
+  font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;
+  color:var(--c);background:var(--v);border:none;
+  padding:16px 36px;cursor:pointer;
+  display:flex;align-items:center;gap:14px;
+  transition:background .25s,gap .25s;
+}
+.btn-submit:hover{background:var(--v2);gap:20px;}
+.btn-submit svg{width:14px;height:14px;transition:transform .25s;}
+.form-nota{font-size:11px;color:var(--v);opacity:.4;line-height:1.6;max-width:260px;}
+
+/* ESTADO ENVIADO */
+.form-success{
+  display:none;
+  flex-direction:column;align-items:flex-start;
+  gap:20px;padding:48px;
+  background:var(--v);
+  animation:fadeInUp .6s ease both;
+}
+.form-success.show{display:flex;}
+@keyframes fadeInUp{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);}}
+.success-icon{width:56px;height:56px;border:2px solid rgba(233,224,214,.3);border-radius:50%;display:flex;align-items:center;justify-content:center;}
+.success-icon svg{width:24px;height:24px;color:var(--c);}
+.success-titulo{font-family:'Cormorant Garamond',serif;font-size:32px;font-weight:400;color:var(--c);line-height:1.2;}
+.success-titulo em{font-style:italic;}
+.success-sub{font-size:14px;color:var(--c);opacity:.6;line-height:1.8;max-width:380px;}
+.success-back{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--c);opacity:.5;text-decoration:none;display:flex;align-items:center;gap:8px;margin-top:8px;transition:opacity .2s;}
+.success-back:hover{opacity:.9;}
+
+/* SIDEBAR INFO */
+.form-sidebar{position:sticky;top:100px;}
+.sidebar-card{background:var(--v);padding:32px;margin-bottom:3px;}
+.sidebar-titulo{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:.24em;text-transform:uppercase;color:var(--c);opacity:.45;margin-bottom:20px;}
+.sidebar-item{display:flex;gap:14px;align-items:flex-start;padding:14px 0;border-bottom:1px solid rgba(233,224,214,.1);}
+.sidebar-item:last-child{border:none;padding-bottom:0;}
+.sidebar-emoji{font-size:18px;flex-shrink:0;margin-top:1px;}
+.sidebar-item-titulo{font-size:13px;font-weight:500;color:var(--c);margin-bottom:3px;}
+.sidebar-item-desc{font-size:12px;color:var(--c);opacity:.5;line-height:1.6;}
+
+.sidebar-quote{background:white;padding:28px 32px;border-left:3px solid var(--v);}
+.sidebar-quote blockquote{font-family:'Cormorant Garamond',serif;font-size:17px;font-style:italic;font-weight:400;color:var(--v);line-height:1.5;margin-bottom:12px;}
+.sidebar-quote cite{font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--v);opacity:.4;font-style:normal;}
+
+.sidebar-logo{background:var(--c);padding:24px 32px;display:flex;align-items:center;justify-content:center;}
+.sidebar-logo img{height:36px;opacity:.85;}
+
+/* SECCIÓN BENEFICIOS */
+.beneficios{background:var(--v);padding:80px 60px;}
+.ben-titulo{font-family:'Cormorant Garamond',serif;font-size:clamp(32px,3.5vw,48px);font-weight:300;color:var(--c);margin-bottom:48px;text-align:center;}
+.ben-titulo em{font-style:italic;}
+.ben-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:2px;}
+.ben-card{background:rgba(233,224,214,.05);border:1px solid rgba(233,224,214,.1);padding:36px 28px;transition:background .3s;}
+.ben-card:hover{background:rgba(233,224,214,.1);}
+.ben-emoji{font-size:24px;margin-bottom:18px;display:block;}
+.ben-nombre{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:600;color:var(--c);margin-bottom:10px;}
+.ben-desc{font-size:12px;line-height:1.75;color:var(--c);opacity:.5;}
+
+/* REVEAL */
+.reveal{opacity:0;transform:translateY(24px);transition:opacity .8s cubic-bezier(.16,1,.3,1),transform .8s cubic-bezier(.16,1,.3,1);}
+.reveal.visible{opacity:1;transform:translateY(0);}
+.rd1{transition-delay:.1s;}.rd2{transition-delay:.2s;}.rd3{transition-delay:.3s;}.rd4{transition-delay:.4s;}
+
+/* FOOTER */
+footer{background:var(--n);padding:40px 60px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:20px;}
+.footer-logo img{height:28px;filter:brightness(0) invert(1);opacity:.4;}
+.footer-back{font-family:'Barlow Condensed',sans-serif;font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:var(--c);opacity:.35;text-decoration:none;display:flex;align-items:center;gap:10px;transition:opacity .2s;}
+.footer-back:hover{opacity:.7;}
+.footer-copy{font-family:'Barlow Condensed',sans-serif;font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--c);opacity:.25;}
+
+@media(max-width:1024px){
+  nav{padding:20px 32px;}
+  nav.scrolled{padding:14px 32px;}
+  .hero-vol{grid-template-columns:1fr;min-height:auto;}
+  .hv-foto{min-height:340px;}
+  .hv-content{padding:60px 32px;}
+  .form-section{grid-template-columns:1fr;padding:56px 32px;gap:40px;}
+  .form-sidebar{position:static;}
+  .ben-grid{grid-template-columns:1fr 1fr;gap:2px;}
+  .beneficios{padding:60px 32px;}
+}
+@media(max-width:640px){
+  .nav-links{display:none;}
+  .form-grid{grid-template-columns:1fr;}
+  .form-group.full{grid-column:1;}
+  .check-grid{grid-template-columns:1fr;}
+  .ben-grid{grid-template-columns:1fr;}
+  footer{padding:32px 28px;}
+}
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- NAV -->
+<nav id="navbar">
+  <div class="nav-logo"><img src="WakuCollective_Logo1.png" alt="WAKU Collective"></div>
+  <ul class="nav-links">
+    <li><a href="index.html">Inicio</a></li>
+    <li><a href="index.html#mision">Misión</a></li>
+    <li><a href="galeria.html">Galería</a></li>
+    <li><a href="index.html#impacto">Impacto</a></li>
+    <li><a href="voluntariado.html">Únete</a></li>
+  </ul>
+  <a href="#formulario" class="nav-cta active" onclick="document.getElementById('formulario').scrollIntoView({behavior:'smooth'});return false;">Inscríbete</a>
+</nav>
+
+<!-- HERO SPLIT -->
+<section class="hero-vol">
+  <div class="hv-foto">
+    <div class="hv-foto-placeholder">
+      <div class="hv-foto-placeholder-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="rgba(233,224,214,0.35)" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+      </div>
+      <p>Foto voluntarios · 800×1080px</p>
+    </div>
+    <div class="hv-foto-overlay"></div>
+    <div class="hv-foto-tag">
+      <p>Voluntarios activos</p>
+      <strong>80+</strong>
+      <p>y creciendo</p>
+    </div>
+  </div>
+
+  <div class="hv-content">
+    <p class="hv-eyebrow">Sé parte del cambio</p>
+    <h1 class="hv-title">Tu tiempo<br>puede cambiar<br><em>una vida.</em></h1>
+    <p class="hv-sub">WÁKU necesita personas como tú: con vocación de servicio, con ganas de hacer algo real. No importa tu profesión — importa tu corazón.</p>
+
+    <div class="pasos-rapidos">
+      <div class="paso-rapido">
+        <div class="paso-num-small">1</div>
+        <p class="paso-texto"><strong>Llena el formulario</strong> con tus datos y disponibilidad</p>
+      </div>
+      <div class="paso-rapido">
+        <div class="paso-num-small">2</div>
+        <p class="paso-texto"><strong>Te contactamos</strong> en menos de 72 horas por correo</p>
+      </div>
+      <div class="paso-rapido">
+        <div class="paso-num-small">3</div>
+        <p class="paso-texto"><strong>Únete a la siguiente brigada</strong> y sé parte de WÁKU</p>
+      </div>
+    </div>
+
+    <button class="scroll-cta" onclick="document.getElementById('formulario').scrollIntoView({behavior:'smooth'})">
+      <span class="scroll-line"></span>
+      Ir al formulario
+    </button>
+  </div>
+</section>
+
+<!-- BENEFICIOS -->
+<section class="beneficios">
+  <h2 class="ben-titulo reveal">¿Qué significa ser <em>voluntario WÁKU?</em></h2>
+  <div class="ben-grid">
+    <div class="ben-card reveal">
+      <span class="ben-emoji">🌿</span>
+      <h3 class="ben-nombre">Experiencia real</h3>
+      <p class="ben-desc">Trabajo directo en comunidades amazónicas y rurales. Nada de escritorios — campo real, impacto real.</p>
+    </div>
+    <div class="ben-card reveal rd1">
+      <span class="ben-emoji">🤝</span>
+      <h3 class="ben-nombre">Red de personas</h3>
+      <p class="ben-desc">Te unes a una comunidad de médicos, abogados, educadores y líderes comprometidos con el cambio.</p>
+    </div>
+    <div class="ben-card reveal rd2">
+      <span class="ben-emoji">📜</span>
+      <h3 class="ben-nombre">Certificación</h3>
+      <p class="ben-desc">Recibe certificado de participación en brigadas. Reconocimiento oficial de tu aporte a la comunidad.</p>
+    </div>
+    <div class="ben-card reveal rd3">
+      <span class="ben-emoji">✨</span>
+      <h3 class="ben-nombre">Propósito</h3>
+      <p class="ben-desc">Esa sensación que no se consigue en ningún otro lugar: saber que tu presencia hizo la diferencia.</p>
+    </div>
+  </div>
+</section>
+
+<!-- FORMULARIO -->
+<section style="background:#f5f0e8;padding:4px 0;">
+<div class="form-section" id="formulario">
+
+  <div class="form-wrap">
+    <h2 class="form-titulo reveal">Inscripción al<br><em>voluntariado</em></h2>
+    <p class="form-sub reveal">Completa el formulario y nos pondremos en contacto contigo. Todos los campos marcados son necesarios.</p>
+
+    <!-- FORMULARIO -->
+    <form id="volForm" novalidate>
+      <div class="form-grid">
+
+        <!-- Nombre -->
+        <div class="form-group full" id="fg-nombre">
+          <label class="form-label" for="nombre">Nombre completo *</label>
+          <input class="form-input" type="text" id="nombre" name="nombre" placeholder="Tu nombre y apellido" autocomplete="name">
+          <p class="error-msg">Por favor ingresa tu nombre completo</p>
+        </div>
+
+        <!-- Correo -->
+        <div class="form-group" id="fg-correo">
+          <label class="form-label" for="correo">Correo electrónico *</label>
+          <input class="form-input" type="email" id="correo" name="correo" placeholder="tu@correo.com" autocomplete="email">
+          <p class="error-msg">Ingresa un correo válido</p>
+        </div>
+
+        <!-- Teléfono -->
+        <div class="form-group" id="fg-telefono">
+          <label class="form-label" for="telefono">Teléfono / WhatsApp *</label>
+          <input class="form-input" type="tel" id="telefono" name="telefono" placeholder="+593 99 000 0000" autocomplete="tel">
+          <p class="error-msg">Ingresa tu número de contacto</p>
+        </div>
+
+        <!-- Ciudad -->
+        <div class="form-group" id="fg-ciudad">
+          <label class="form-label" for="ciudad">Ciudad *</label>
+          <input class="form-input" type="text" id="ciudad" name="ciudad" placeholder="Ej: Quito, Guayaquil..." autocomplete="address-level2">
+          <p class="error-msg">Ingresa tu ciudad</p>
+        </div>
+
+        <!-- País -->
+        <div class="form-group" id="fg-pais">
+          <label class="form-label" for="pais">País *</label>
+          <select class="form-input form-select" id="pais" name="pais">
+            <option value="">Selecciona tu país</option>
+            <option value="Ecuador">Ecuador</option>
+            <option value="Colombia">Colombia</option>
+            <option value="Perú">Perú</option>
+            <option value="Venezuela">Venezuela</option>
+            <option value="Argentina">Argentina</option>
+            <option value="Chile">Chile</option>
+            <option value="México">México</option>
+            <option value="España">España</option>
+            <option value="Otro">Otro</option>
+          </select>
+          <p class="error-msg">Selecciona tu país</p>
+        </div>
+
+        <!-- Profesión -->
+        <div class="form-group full" id="fg-profesion">
+          <label class="form-label" for="profesion">Profesión / Especialidad *</label>
+          <select class="form-input form-select" id="profesion" name="profesion">
+            <option value="">¿A qué te dedicas?</option>
+            <optgroup label="Salud">
+              <option value="Médico/a general">Médico/a general</option>
+              <option value="Enfermero/a">Enfermero/a</option>
+              <option value="Odontólogo/a">Odontólogo/a</option>
+              <option value="Psicólogo/a">Psicólogo/a</option>
+              <option value="Nutricionista">Nutricionista</option>
+              <option value="Otro - Salud">Otro - Salud</option>
+            </optgroup>
+            <optgroup label="Derecho y Social">
+              <option value="Abogado/a">Abogado/a</option>
+              <option value="Trabajador/a social">Trabajador/a social</option>
+              <option value="Psicopedagogo/a">Psicopedagogo/a</option>
+            </optgroup>
+            <optgroup label="Educación">
+              <option value="Docente / Educador/a">Docente / Educador/a</option>
+              <option value="Comunicador/a social">Comunicador/a social</option>
+            </optgroup>
+            <optgroup label="Otros">
+              <option value="Estudiante universitario/a">Estudiante universitario/a</option>
+              <option value="Logística / Administración">Logística / Administración</option>
+              <option value="Fotografía / Video">Fotografía / Video</option>
+              <option value="Tecnología">Tecnología</option>
+              <option value="Otra profesión">Otra profesión</option>
+            </optgroup>
+          </select>
+          <p class="error-msg">Selecciona tu profesión o especialidad</p>
+        </div>
+
+        <!-- Disponibilidad -->
+        <div class="form-group full" id="fg-disponibilidad">
+          <label class="form-label">Disponibilidad de tiempo * <span style="opacity:.6;font-weight:400;">(puedes elegir varias)</span></label>
+          <div class="check-grid">
+            <label class="check-opt"><input type="checkbox" name="disponibilidad" value="Fines de semana"><span>Fines de semana</span></label>
+            <label class="check-opt"><input type="checkbox" name="disponibilidad" value="Días de semana"><span>Días de semana</span></label>
+            <label class="check-opt"><input type="checkbox" name="disponibilidad" value="Brigadas de 3-5 días"><span>Brigadas de 3–5 días</span></label>
+            <label class="check-opt"><input type="checkbox" name="disponibilidad" value="Brigadas de más de 1 semana"><span>Brigadas de más de 1 semana</span></label>
+            <label class="check-opt"><input type="checkbox" name="disponibilidad" value="Solo apoyo remoto / online"><span>Solo apoyo remoto / online</span></label>
+            <label class="check-opt"><input type="checkbox" name="disponibilidad" value="Flexible"><span>Flexible según convocatoria</span></label>
+          </div>
+          <p class="error-msg" style="padding:0 18px 12px;">Selecciona al menos una opción</p>
+        </div>
+
+        <!-- Cómo llegaste -->
+        <div class="form-group full">
+          <label class="form-label" for="como">¿Cómo conociste WÁKU?</label>
+          <select class="form-input form-select" id="como" name="como">
+            <option value="">Cuéntanos</option>
+            <option value="Instagram">Instagram</option>
+            <option value="Facebook">Facebook</option>
+            <option value="TikTok">TikTok</option>
+            <option value="Un amigo / familiar">Un amigo o familiar me lo contó</option>
+            <option value="Universidad">Universidad / colegio</option>
+            <option value="Evento">Evento o brigada</option>
+            <option value="Prensa / medios">Prensa o medios</option>
+            <option value="Otro">Otro</option>
+          </select>
+        </div>
+
+        <!-- SUBMIT -->
+        <div class="form-submit-wrap">
+          <button type="submit" class="btn-submit" id="btnSubmit">
+            Enviar inscripción
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+          </button>
+          <p class="form-nota">Al enviar, aceptas que WÁKU guarde tus datos para contactarte sobre oportunidades de voluntariado.</p>
+        </div>
+
+      </div>
+    </form>
+
+    <!-- ÉXITO -->
+    <div class="form-success" id="formSuccess">
+      <div class="success-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+      </div>
+      <h2 class="success-titulo">¡Bienvenido/a<br>a <em>WÁKU!</em></h2>
+      <p class="success-sub">Recibimos tu inscripción. En menos de 72 horas recibirás un correo con los próximos pasos. Gracias por querer ser parte de este movimiento.</p>
+      <a href="index.html" class="success-back">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 12H5m7-7l-7 7 7 7"/></svg>
+        Volver al inicio
+      </a>
+    </div>
+  </div>
+
+  <!-- SIDEBAR -->
+  <div class="form-sidebar">
+
+    <div class="sidebar-card reveal">
+      <p class="sidebar-titulo">¿Qué pasa después?</p>
+      <div class="sidebar-item">
+        <span class="sidebar-emoji">📬</span>
+        <div>
+          <p class="sidebar-item-titulo">Confirmación inmediata</p>
+          <p class="sidebar-item-desc">Recibes un correo automático confirmando tu inscripción</p>
+        </div>
+      </div>
+      <div class="sidebar-item">
+        <span class="sidebar-emoji">📞</span>
+        <div>
+          <p class="sidebar-item-titulo">Te contactamos en 72h</p>
+          <p class="sidebar-item-desc">Un coordinador del equipo WÁKU se comunicará contigo</p>
+        </div>
+      </div>
+      <div class="sidebar-item">
+        <span class="sidebar-emoji">🌿</span>
+        <div>
+          <p class="sidebar-item-titulo">Orientación de bienvenida</p>
+          <p class="sidebar-item-desc">Sesión virtual para conocer el colectivo y las próximas brigadas</p>
+        </div>
+      </div>
+      <div class="sidebar-item">
+        <span class="sidebar-emoji">🚀</span>
+        <div>
+          <p class="sidebar-item-titulo">Primera brigada</p>
+          <p class="sidebar-item-desc">¡Te asignamos a la siguiente brigada según tu disponibilidad!</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="sidebar-quote reveal rd1">
+      <blockquote>"Pensé que iba a ayudar a otros. No esperaba que también me iba a cambiar a mí."</blockquote>
+      <cite>— Voluntaria WÁKU, Brigada 2025</cite>
+    </div>
+
+    <div class="sidebar-logo reveal rd2">
+      <img src="WakuCollective_Logo1.png" alt="WAKU Collective">
+    </div>
+
+  </div>
+</div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo"><img src="WakuCollective_Logo4.png" alt="WAKU Collective"></div>
+  <a href="index.html" class="footer-back">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 12H5m7-7l-7 7 7 7"/></svg>
+    Volver al inicio
+  </a>
+  <p class="footer-copy">© 2025 WÁKU Project · Todos los derechos reservados</p>
+</footer>
+
+<script>
+// CURSOR
+const cursor=document.getElementById('cursor'),ring=document.getElementById('cursorRing');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cursor.style.transform=`translate(${mx-5}px,${my-5}px)`;});
+(function anim(){rx+=(mx-rx)*.12;ry+=(my-ry)*.12;ring.style.transform=`translate(${rx-18}px,${ry-18}px)`;requestAnimationFrame(anim);})();
+
+// NAV
+const nb=document.getElementById('navbar');
+window.addEventListener('scroll',()=>nb.classList.toggle('scrolled',scrollY>60));
+
+// REVEAL
+const obs=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');obs.unobserve(e.target);}}),{threshold:.1});
+document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+
+// FORMULARIO VALIDACIÓN + ENVÍO SIMULADO
+document.getElementById('volForm').addEventListener('submit',function(e){
+  e.preventDefault();
+  let valid=true;
+
+  // Validar campos requeridos
+  const campos=[
+    {id:'fg-nombre',input:'nombre',check:v=>v.trim().split(' ').length>=2},
+    {id:'fg-correo',input:'correo',check:v=>/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v)},
+    {id:'fg-telefono',input:'telefono',check:v=>v.trim().length>=6},
+    {id:'fg-ciudad',input:'ciudad',check:v=>v.trim().length>=2},
+    {id:'fg-pais',input:'pais',check:v=>v!==''},
+    {id:'fg-profesion',input:'profesion',check:v=>v!==''},
+  ];
+
+  campos.forEach(({id,input,check})=>{
+    const fg=document.getElementById(id);
+    const val=document.getElementById(input).value;
+    if(!check(val)){fg.classList.add('error');valid=false;}
+    else{fg.classList.remove('error');}
+  });
+
+  // Disponibilidad
+  const checks=[...document.querySelectorAll('input[name="disponibilidad"]:checked')];
+  const fgDisp=document.getElementById('fg-disponibilidad');
+  if(checks.length===0){fgDisp.classList.add('error');valid=false;}
+  else{fgDisp.classList.remove('error');}
+
+  if(!valid){
+    document.querySelector('.form-group.error').scrollIntoView({behavior:'smooth',block:'center'});
+    return;
+  }
+
+  // Simular envío
+  const btn=document.getElementById('btnSubmit');
+  btn.textContent='Enviando...';
+  btn.disabled=true;
+  btn.style.opacity='.7';
+
+  setTimeout(()=>{
+    document.getElementById('volForm').style.display='none';
+    document.querySelector('.form-titulo').style.display='none';
+    document.querySelector('.form-sub').style.display='none';
+    document.getElementById('formSuccess').classList.add('show');
+    document.getElementById('formSuccess').scrollIntoView({behavior:'smooth',block:'center'});
+  },1400);
+});
+
+// Limpiar error al escribir
+document.querySelectorAll('.form-input,.form-select').forEach(inp=>{
+  inp.addEventListener('input',()=>{
+    const fg=inp.closest('.form-group');
+    if(fg)fg.classList.remove('error');
+  });
+});
+</script>
+</body>
+</html>

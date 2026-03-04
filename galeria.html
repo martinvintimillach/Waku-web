@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WÁKU — Galería</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Barlow+Condensed:wght@300;400;500;600;700;800&family=Barlow:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --v: #324001;
+  --c: #e9e0d6;
+  --n: #0d0d0d;
+  --v2: #3f5201;
+}
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior:smooth; }
+body { background:#f5f0e8; color:var(--v); font-family:'Barlow',sans-serif; font-weight:300; overflow-x:hidden; cursor:none; }
+
+.cursor { width:10px;height:10px;background:var(--v);border-radius:50%;position:fixed;top:0;left:0;pointer-events:none;z-index:9999;mix-blend-mode:multiply; }
+.cursor-ring { width:36px;height:36px;border:1.5px solid var(--v);border-radius:50%;position:fixed;top:0;left:0;pointer-events:none;z-index:9998;transition:transform 0.35s cubic-bezier(0.16,1,0.3,1);opacity:0.5; }
+
+/* NAV */
+nav { position:fixed;top:0;left:0;right:0;z-index:500;padding:24px 60px;display:flex;justify-content:space-between;align-items:center;transition:background 0.4s,padding 0.4s; }
+nav.scrolled { background:rgba(233,224,214,0.92);backdrop-filter:blur(12px);padding:16px 60px;border-bottom:1px solid rgba(50,64,1,0.1); }
+.nav-logo img { height:32px;display:block; }
+.nav-links { display:flex;gap:40px;list-style:none; }
+.nav-links a { font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:600;letter-spacing:.22em;text-transform:uppercase;color:var(--v);text-decoration:none;opacity:.7;transition:opacity .2s; }
+.nav-links a:hover,.nav-links a.active { opacity:1; }
+.nav-links a.active { border-bottom:2px solid var(--v);padding-bottom:2px; }
+.nav-cta { font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:var(--c);background:var(--v);padding:10px 22px;text-decoration:none;transition:background .2s; }
+.nav-cta:hover { background:var(--v2); }
+
+/* HERO GALERIA */
+.hero-galeria {
+  padding: 140px 60px 60px;
+  background: var(--v);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 60px;
+  align-items: end;
+}
+.hg-eyebrow { font-family:'Barlow Condensed',sans-serif;font-size:10px;letter-spacing:.32em;text-transform:uppercase;color:var(--c);opacity:.5;margin-bottom:16px;display:flex;align-items:center;gap:14px; }
+.hg-eyebrow::before { content:'';display:block;width:32px;height:1px;background:var(--c);opacity:.5; }
+.hg-title { font-family:'Cormorant Garamond',serif;font-size:clamp(44px,5vw,72px);font-weight:300;line-height:.95;color:var(--c); }
+.hg-title em { font-style:italic; }
+.hg-right { padding-bottom:8px; }
+.hg-desc { font-size:15px;line-height:1.85;color:var(--c);opacity:.6;max-width:380px;margin-bottom:32px; }
+.hg-stats { display:flex;gap:32px; }
+.hg-stat-num { font-family:'Cormorant Garamond',serif;font-size:36px;font-weight:600;color:var(--c);line-height:1; }
+.hg-stat-label { font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--c);opacity:.4;margin-top:4px; }
+
+/* FILTROS */
+.filtros-bar {
+  background: var(--c);
+  padding: 0 60px;
+  display: flex;
+  gap: 0;
+  border-bottom: 2px solid var(--v);
+  position: sticky;
+  top: 64px;
+  z-index: 100;
+}
+.filtro-btn {
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:11px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--v);opacity:.45;
+  padding:18px 28px;
+  background:none;border:none;cursor:pointer;
+  border-bottom:3px solid transparent;
+  transition:opacity .2s, border-color .2s;
+  margin-bottom:-2px;
+}
+.filtro-btn:hover { opacity:.8; }
+.filtro-btn.active { opacity:1;border-bottom-color:var(--v); }
+
+/* MAIN */
+.galeria-main { padding:48px 60px 80px; }
+
+/* GRID PRINCIPAL — layout masonry-like */
+.grid-galeria {
+  columns: 3;
+  column-gap: 3px;
+  margin-bottom: 4px;
+}
+.grid-item {
+  break-inside: avoid;
+  margin-bottom: 3px;
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+  display: block;
+}
+.grid-item img {
+  width:100%;display:block;
+  transition:transform .6s cubic-bezier(.16,1,.3,1);
+}
+.grid-item:hover img { transform:scale(1.04); }
+
+/* PLACEHOLDER FOTO */
+.ph {
+  width:100%;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;
+  transition:transform .6s cubic-bezier(.16,1,.3,1);
+}
+.grid-item:hover .ph { transform:scale(1.04); }
+.ph-icon { width:48px;height:48px;border:1.5px solid rgba(233,224,214,.25);border-radius:50%;display:flex;align-items:center;justify-content:center; }
+.ph-icon svg { width:22px;height:22px; }
+.ph-label { font-family:'Barlow Condensed',sans-serif;font-size:9px;letter-spacing:.24em;text-transform:uppercase;color:rgba(233,224,214,.3); }
+
+.ph-tall  { background:linear-gradient(160deg,#1a2000,#0d1300);min-height:480px; }
+.ph-med   { background:linear-gradient(160deg,#2e3a02,#1e2800);min-height:320px; }
+.ph-short { background:linear-gradient(160deg,#3a2e10,#241c08);min-height:220px; }
+.ph-wide  { background:linear-gradient(160deg,#1e2a00,#121800);min-height:260px; }
+.ph-video { background:linear-gradient(160deg,#0d1a20,#060f15);min-height:300px; }
+.ph-video2{ background:linear-gradient(160deg,#1a0d20,#0f0615);min-height:380px; }
+.ph-eq    { background:linear-gradient(135deg,#d9cfc4,#c5b9ac);min-height:350px; }
+.ph-eq .ph-icon { border-color:rgba(50,64,1,.2); }
+.ph-eq .ph-label { color:rgba(50,64,1,.3); }
+.ph-eq2   { background:linear-gradient(135deg,#cfc4b8,#b8ad9f);min-height:240px; }
+.ph-eq2 .ph-icon { border-color:rgba(50,64,1,.2); }
+.ph-eq2 .ph-label { color:rgba(50,64,1,.3); }
+
+/* OVERLAY HOVER */
+.item-overlay {
+  position:absolute;inset:0;
+  background:linear-gradient(to top, rgba(50,64,1,.75) 0%, transparent 50%);
+  opacity:0;transition:opacity .35s;
+  display:flex;flex-direction:column;justify-content:flex-end;
+  padding:20px;
+  z-index:2;
+}
+.grid-item:hover .item-overlay { opacity:1; }
+.item-cat { font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:var(--c);opacity:.65;margin-bottom:4px; }
+.item-titulo { font-family:'Cormorant Garamond',serif;font-size:17px;font-weight:600;color:var(--c);line-height:1.2; }
+
+/* BADGE VIDEO */
+.badge-video {
+  position:absolute;top:14px;right:14px;z-index:3;
+  background:rgba(0,0,0,.6);
+  padding:5px 10px;
+  display:flex;align-items:center;gap:6px;
+  backdrop-filter:blur(4px);
+}
+.badge-video span { font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:white; }
+
+/* PLAY ICON */
+.play-icon {
+  position:absolute;top:50%;left:50%;
+  transform:translate(-50%,-50%);
+  width:52px;height:52px;
+  background:rgba(233,224,214,.15);
+  border:2px solid rgba(233,224,214,.4);
+  border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  z-index:3;
+  transition:background .3s, transform .3s;
+  backdrop-filter:blur(4px);
+}
+.grid-item:hover .play-icon { background:rgba(233,224,214,.25);transform:translate(-50%,-50%) scale(1.1); }
+.play-icon svg { width:18px;height:18px;fill:white;margin-left:3px; }
+
+/* SECCIÓN LABEL */
+.seccion-label {
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:10px;font-weight:700;letter-spacing:.3em;text-transform:uppercase;
+  color:var(--v);opacity:.4;
+  margin:48px 0 20px;
+  display:flex;align-items:center;gap:16px;
+}
+.seccion-label::after { content:'';flex:1;height:1px;background:var(--v);opacity:.15; }
+
+/* LIGHTBOX */
+.lightbox {
+  position:fixed;inset:0;
+  background:rgba(13,13,13,.96);
+  z-index:2000;
+  display:none;
+  align-items:center;justify-content:center;
+  padding:40px;
+}
+.lightbox.open { display:flex; }
+.lb-close {
+  position:absolute;top:28px;right:36px;
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:11px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;
+  color:rgba(233,224,214,.5);
+  cursor:pointer;background:none;border:none;
+  display:flex;align-items:center;gap:8px;
+  transition:color .2s;
+}
+.lb-close:hover { color:var(--c); }
+.lb-content {
+  max-width:900px;width:100%;
+  display:grid;grid-template-columns:1fr 320px;
+  gap:32px;align-items:center;
+}
+.lb-media {
+  aspect-ratio:4/3;
+  background:rgba(233,224,214,.05);
+  border:1px solid rgba(233,224,214,.1);
+  display:flex;align-items:center;justify-content:center;
+  border-radius:2px;
+  overflow:hidden;
+}
+.lb-media .ph { min-height:400px;width:100%; }
+.lb-info { padding:16px 0; }
+.lb-cat { font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;letter-spacing:.28em;text-transform:uppercase;color:var(--c);opacity:.4;margin-bottom:14px; }
+.lb-titulo { font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:600;color:var(--c);line-height:1.2;margin-bottom:16px; }
+.lb-desc { font-size:13px;line-height:1.85;color:var(--c);opacity:.55; }
+.lb-meta { margin-top:28px;padding-top:20px;border-top:1px solid rgba(233,224,214,.1); }
+.lb-meta p { font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--c);opacity:.3;line-height:2.2; }
+.lb-nav { display:flex;gap:8px;margin-top:24px; }
+.lb-btn {
+  flex:1;padding:12px;
+  background:rgba(233,224,214,.06);
+  border:1px solid rgba(233,224,214,.15);
+  color:var(--c);opacity:.6;
+  font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;
+  cursor:pointer;transition:background .2s,opacity .2s;text-align:center;
+}
+.lb-btn:hover { background:rgba(233,224,214,.12);opacity:1; }
+
+/* FOOTER */
+footer { background:var(--n);padding:40px 60px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:20px; }
+.footer-logo img { height:28px;filter:brightness(0) invert(1);opacity:.4; }
+.footer-back { font-family:'Barlow Condensed',sans-serif;font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:var(--c);opacity:.35;text-decoration:none;display:flex;align-items:center;gap:10px;transition:opacity .2s; }
+.footer-back:hover { opacity:.7; }
+.footer-copy { font-family:'Barlow Condensed',sans-serif;font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--c);opacity:.25; }
+
+/* REVEAL */
+.reveal { opacity:0;transform:translateY(24px);transition:opacity .8s cubic-bezier(.16,1,.3,1),transform .8s cubic-bezier(.16,1,.3,1); }
+.reveal.visible { opacity:1;transform:translateY(0); }
+
+/* HIDDEN para filtros */
+.grid-item.hidden { display:none; }
+
+@media(max-width:1024px) {
+  nav { padding:20px 32px; }
+  nav.scrolled { padding:14px 32px; }
+  .hero-galeria { padding:120px 32px 48px;grid-template-columns:1fr; }
+  .filtros-bar { padding:0 32px;overflow-x:auto; }
+  .galeria-main { padding:36px 32px 60px; }
+  .grid-galeria { columns:2; }
+  .lb-content { grid-template-columns:1fr; }
+  .lb-media .ph { min-height:260px; }
+}
+@media(max-width:640px) {
+  .grid-galeria { columns:1; }
+  .nav-links { display:none; }
+  footer { padding:32px 28px; }
+}
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- NAV -->
+<nav id="navbar">
+  <div class="nav-logo"><img src="WakuCollective_Logo1.png" alt="WAKU Collective"></div>
+  <ul class="nav-links">
+    <li><a href="index.html">Inicio</a></li>
+    <li><a href="index.html#mision">Misión</a></li>
+    <li><a href="galeria.html" class="active">Galería</a></li>
+    <li><a href="index.html#impacto">Impacto</a></li>
+    <li><a href="index.html#historia">Historia</a></li>
+  </ul>
+  <a href="voluntariado.html" class="nav-cta">Únete</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero-galeria">
+  <div>
+    <p class="hg-eyebrow">Memorias que importan</p>
+    <h1 class="hg-title">Cada imagen<br>es una<br><em>historia real.</em></h1>
+  </div>
+  <div class="hg-right">
+    <p class="hg-desc">Fotos, videos y momentos de nuestras brigadas, el equipo y las comunidades que acompañamos. Cada archivo es un testimonio de lo que juntos podemos lograr.</p>
+    <div class="hg-stats">
+      <div>
+        <p class="hg-stat-num">48+</p>
+        <p class="hg-stat-label">Fotos</p>
+      </div>
+      <div>
+        <p class="hg-stat-num">6</p>
+        <p class="hg-stat-label">Videos</p>
+      </div>
+      <div>
+        <p class="hg-stat-num">3</p>
+        <p class="hg-stat-label">Brigadas</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FILTROS -->
+<div class="filtros-bar">
+  <button class="filtro-btn active" data-filter="todos">Todo</button>
+  <button class="filtro-btn" data-filter="brigadas">Brigadas</button>
+  <button class="filtro-btn" data-filter="equipo">Equipo</button>
+  <button class="filtro-btn" data-filter="videos">Videos</button>
+</div>
+
+<!-- GALERÍA -->
+<div class="galeria-main">
+
+  <p class="seccion-label reveal">Brigadas · Campo · Comunidades</p>
+
+  <div class="grid-galeria" id="gridGaleria">
+
+    <!-- FILA 1 -->
+    <div class="grid-item reveal" data-cat="brigadas" data-titulo="Primera brigada médica" data-desc="Atención primaria de salud en comunidad Achuar, provincia de Pastaza. Más de 80 personas atendidas en un solo día." data-fecha="Marzo 2025" data-lugar="Pastaza, Ecuador" onclick="openLightbox(this)">
+      <div class="ph ph-tall">
+        <div class="ph-icon"><svg viewBox="0 0 24 24" fill="none" stroke="rgba(233,224,214,0.4)" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg></div>
+        <p class="ph-label">800×1200px</p>
+      </div>
+      <div class="item-overlay"><p class="item-cat">Brigadas</p><p class="item-titulo">Primera brigada médica</p></div>
+    </div>
+
+    <div class="grid-item reveal" data-cat="brigadas" data-titulo="Atención pediátrica" data-desc="Revisión médica a niños de la comunidad Shuar. Vacunación y control de crecimiento." data-fecha="Marzo 2025" data-lugar="Morona Santiago" onclick="openLightbox(this)">
+      <div class="ph ph-med">
+        <div class="ph-icon"><svg viewBox="0 0 24 24" fill="none" stroke="rgba(233,224,214,0.4)" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg></div>
+        <p class="ph-label">600×320px</p>
+      </div>
+      <div class="item-overlay"><p class="item-cat">Brigadas</p><p class="item-titulo">Atención pediátrica</p></div>
+    </div>
+
+    <div class="grid-item reveal" data-cat="videos" data-titulo="Brigada en la selva" data-desc="Documentario de nuestro recorrido río adentro para llegar a comunidades sin acceso a servicios de salud." data-fecha="Abril 2025" data-lugar="Río Pastaza" onclick="openLightbox(this)">
+      <div class="ph ph-video" style="position:relative;">
+        <div class="ph-icon"><svg viewBox="0 0 24 24" fill="none" stroke="rgba(233,224,214,0.4)" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M15 10l4.553-2.069A1 1 0 0121 8.868v6.264a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg></div>
+        <p class="ph-label">Video · 1920×1080px</p>
+      </div>
+      <div class="play-icon"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+      <div class="badge-video"><svg width="10" height="10" viewBox="0 0 24 24" fill="white"><path d="M8 5v14l11-7z"/></svg><span>Video</span></div>
+      <div class="item-overlay"><p class="item-cat">Video</p><p class="item-titulo">Brigada en la selva</p></div>
+    </div>
+
+    <!-- FILA 2 -->
+    <div class="grid-item reveal" data-cat="brigadas" data-titulo="Río adentro" data-desc="El recorrido en canoa para llegar a comunidades remotas. La distancia no es un obstáculo cuando la voluntad es más grande." data-fecha="Abril 2025" data-lugar="Amazonía Ecuatoriana" onclick="openLightbox(this)">
+      <div class="ph ph-short">
+        <div class="ph-icon"><svg viewBox="0 0 24 24" fill="none" stroke="rgba(233,224,214,0.4)" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg></div>
+        <p class="ph-label">700×220px</p>
+      </div>
+      <div class="item-overlay"><p class="item-cat">Brigadas</p><p class="item-titulo">Río adentro</p></div>
+    </div>
+
+    <div class="grid-item reveal" data-cat="equipo" data-titulo="Equipo fundador" data-desc="Los médicos, abogados y voluntarios que dieron vida a WÁKU. Retrato grupal tras la primera brigada." data-fecha="Enero 2025" data-lugar="Quito, Ecuador" onclick="openLightbox(this)">
+      <div class="ph ph-eq">
+        <div class="ph-icon"><svg viewBox="0 0 24 24" fill="none" stroke="rgba(50,64,1,0.35)" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/></svg></div>
+        <p class="ph-label" style="color:rgba(50,64,1,.3);">Retrato grupal · 800×350px</p>
+      </div>
+      <div class="item-overlay"><p class="item-cat">Equipo</p><p class="item-titulo">Equipo fundador</p></div>
+    </div>
+
+    <div class="grid-item reveal" data-cat="brigadas" data-titulo="Consulta médica" data-desc="Atención personalizada con respeto a la cultura y lengua de cada paciente." data-fecha="Marzo 2025" data-lugar="Pastaza" onclick="openLightbox(this)">
+      <div class="ph ph-med">
+        <div class="ph-icon"><svg viewBox="0 0 24 24" fill="none" stroke="rgba(233,224,214,0.4)" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg></div>
+        <p class="ph-label">600×320px</p>
+      </div>
+      <div class="item-overlay"><p class="item-cat">Brigadas</p><p class="item-titulo">Consulta médica</p></div>
+    </div>
+
+    <!-- FILA 3 -->
+    <div class="grid-item reveal" data-cat="videos" data-titulo="Testimonios de la comunidad" data-desc="Las palabras de quienes reciben la ayuda son el motor que nos impulsa a seguir." data-fecha="Abril 2025" data-lugar="Comunidad Achuar" onclick="openLightbox(this)">
+      <div class="ph ph-video2" style="position:relative;">
+        <div class="ph-icon"><svg viewBox="0 0 24 24" fill="none" stroke="rgba(233,224,214,0.4)" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M15 10l4.553-2.069A1 1 0 0121 8.868v6.264a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg></div>
+        <p class="ph-label">Video · 1920×1080px</p>
+      </div>
+      <div class="play-icon"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+      <div class="badge-video"><svg width="10" height="10" viewBox="0 0 24 24" fill="white"><path d="M8 5v14l11-7z"/></svg><span>Video</span></div>
+      <div class="item-overlay"><p class="item-cat">Video</p><p class="item-titulo">Testimonios</p></div>
+    </div>
+
+    <div class="grid-item reveal" data-cat="equipo" data-titulo="Voluntarios en preparación" data-desc="Sesión de capacitación previa a la brigada. Cada voluntario recibe entrenamiento específico para el trabajo en campo." data-fecha="Febrero 2025" data-lugar="Quito, Ecuador" onclick="openLightbox(this)">
+      <div class="ph ph-eq2">
+        <div class="ph-icon"><svg viewBox="0 0 24 24" fill="none" stroke="rgba(50,64,1,0.35)" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg></div>
+        <p class="ph-label" style="color:rgba(50,64,1,.3);">800×240px</p>
+      </div>
+      <div class="item-overlay"><p class="item-cat">Equipo</p><p class="item-titulo">Capacitación voluntarios</p></div>
+    </div>
+
+    <div class="grid-item reveal" data-cat="brigadas" data-titulo="Selva amazónica" data-desc="La naturaleza que nos rodea y que protegemos. El territorio donde nacieron los primeros WÁKU." data-fecha="Marzo 2025" data-lugar="Amazonía" onclick="openLightbox(this)">
+      <div class="ph ph-tall">
+        <div class="ph-icon"><svg viewBox="0 0 24 24" fill="none" stroke="rgba(233,224,214,0.4)" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg></div>
+        <p class="ph-label">600×480px</p>
+      </div>
+      <div class="item-overlay"><p class="item-cat">Brigadas</p><p class="item-titulo">Selva amazónica</p></div>
+    </div>
+
+    <!-- FILA 4 -->
+    <div class="grid-item reveal" data-cat="equipo" data-titulo="Coordinación de campo" data-desc="El trabajo en equipo es la clave. Coordinación logística antes de cada brigada." data-fecha="Abril 2025" data-lugar="Ecuador" onclick="openLightbox(this)">
+      <div class="ph ph-eq">
+        <div class="ph-icon"><svg viewBox="0 0 24 24" fill="none" stroke="rgba(50,64,1,0.35)" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg></div>
+        <p class="ph-label" style="color:rgba(50,64,1,.3);">800×350px</p>
+      </div>
+      <div class="item-overlay"><p class="item-cat">Equipo</p><p class="item-titulo">Coordinación de campo</p></div>
+    </div>
+
+    <div class="grid-item reveal" data-cat="brigadas" data-titulo="Comunidad Shuar" data-desc="Encuentro intercultural. El respeto y la empatía como base de cada intervención." data-fecha="Mayo 2025" data-lugar="Morona Santiago" onclick="openLightbox(this)">
+      <div class="ph ph-med">
+        <div class="ph-icon"><svg viewBox="0 0 24 24" fill="none" stroke="rgba(233,224,214,0.4)" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg></div>
+        <p class="ph-label">600×320px</p>
+      </div>
+      <div class="item-overlay"><p class="item-cat">Brigadas</p><p class="item-titulo">Comunidad Shuar</p></div>
+    </div>
+
+    <div class="grid-item reveal" data-cat="videos" data-titulo="¿Qué es WÁKU?" data-desc="Video institucional explicando el origen, misión y visión del colectivo." data-fecha="Enero 2025" data-lugar="Ecuador" onclick="openLightbox(this)">
+      <div class="ph ph-video" style="position:relative;">
+        <div class="ph-icon"><svg viewBox="0 0 24 24" fill="none" stroke="rgba(233,224,214,0.4)" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M15 10l4.553-2.069A1 1 0 0121 8.868v6.264a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg></div>
+        <p class="ph-label">Video · 1920×1080px</p>
+      </div>
+      <div class="play-icon"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+      <div class="badge-video"><svg width="10" height="10" viewBox="0 0 24 24" fill="white"><path d="M8 5v14l11-7z"/></svg><span>Video</span></div>
+      <div class="item-overlay"><p class="item-cat">Video</p><p class="item-titulo">¿Qué es WÁKU?</p></div>
+    </div>
+
+  </div><!-- /grid -->
+</div>
+
+<!-- LIGHTBOX -->
+<div class="lightbox" id="lightbox">
+  <button class="lb-close" onclick="closeLightbox()">
+    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
+    Cerrar
+  </button>
+  <div class="lb-content">
+    <div class="lb-media" id="lbMedia"></div>
+    <div class="lb-info">
+      <p class="lb-cat" id="lbCat"></p>
+      <h2 class="lb-titulo" id="lbTitulo"></h2>
+      <p class="lb-desc" id="lbDesc"></p>
+      <div class="lb-meta">
+        <p id="lbMeta"></p>
+      </div>
+      <div class="lb-nav">
+        <button class="lb-btn" onclick="navLightbox(-1)">← Anterior</button>
+        <button class="lb-btn" onclick="navLightbox(1)">Siguiente →</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo"><img src="WakuCollective_Logo4.png" alt="WAKU Collective"></div>
+  <a href="index.html" class="footer-back">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 12H5m7-7l-7 7 7 7"/></svg>
+    Volver al inicio
+  </a>
+  <p class="footer-copy">© 2025 WÁKU Project</p>
+</footer>
+
+<script>
+// CURSOR
+const cursor=document.getElementById('cursor'),ring=document.getElementById('cursorRing');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cursor.style.transform=`translate(${mx-5}px,${my-5}px)`;});
+(function anim(){rx+=(mx-rx)*.12;ry+=(my-ry)*.12;ring.style.transform=`translate(${rx-18}px,${ry-18}px)`;requestAnimationFrame(anim);})();
+
+// NAV SCROLL
+const nb=document.getElementById('navbar');
+window.addEventListener('scroll',()=>nb.classList.toggle('scrolled',scrollY>60));
+
+// REVEAL
+const obs=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');obs.unobserve(e.target);}}),{threshold:.1});
+document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+
+// FILTROS
+const btns=document.querySelectorAll('.filtro-btn');
+btns.forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    btns.forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    const f=btn.dataset.filter;
+    document.querySelectorAll('.grid-item').forEach(item=>{
+      if(f==='todos'||item.dataset.cat===f){item.classList.remove('hidden');}
+      else{item.classList.add('hidden');}
+    });
+  });
+});
+
+// LIGHTBOX
+let items=[],currentIdx=0;
+function openLightbox(el){
+  items=Array.from(document.querySelectorAll('.grid-item:not(.hidden)'));
+  currentIdx=items.indexOf(el);
+  showItem(currentIdx);
+  document.getElementById('lightbox').classList.add('open');
+  document.body.style.overflow='hidden';
+}
+function showItem(i){
+  const el=items[i];
+  const ph=el.querySelector('.ph').cloneNode(true);
+  ph.style.minHeight='400px';ph.style.width='100%';
+  document.getElementById('lbMedia').innerHTML='';
+  document.getElementById('lbMedia').appendChild(ph);
+  document.getElementById('lbCat').textContent=el.dataset.cat.toUpperCase();
+  document.getElementById('lbTitulo').textContent=el.dataset.titulo;
+  document.getElementById('lbDesc').textContent=el.dataset.desc;
+  document.getElementById('lbMeta').innerHTML=`📅 ${el.dataset.fecha}&nbsp;&nbsp;·&nbsp;&nbsp;📍 ${el.dataset.lugar}`;
+}
+function closeLightbox(){
+  document.getElementById('lightbox').classList.remove('open');
+  document.body.style.overflow='';
+}
+function navLightbox(dir){
+  currentIdx=(currentIdx+dir+items.length)%items.length;
+  showItem(currentIdx);
+}
+document.getElementById('lightbox').addEventListener('click',function(e){if(e.target===this)closeLightbox();});
+document.addEventListener('keydown',e=>{
+  if(document.getElementById('lightbox').classList.contains('open')){
+    if(e.key==='Escape')closeLightbox();
+    if(e.key==='ArrowRight')navLightbox(1);
+    if(e.key==='ArrowLeft')navLightbox(-1);
+  }
+});
+</script>
+</body>
+</html>
