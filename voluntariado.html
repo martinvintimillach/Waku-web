@@ -296,7 +296,11 @@ footer{background:var(--n);padding:40px 60px;display:flex;justify-content:space-
     <p class="form-sub reveal">Completa el formulario y nos pondremos en contacto contigo. Todos los campos marcados son necesarios.</p>
 
     <!-- FORMULARIO -->
-    <form id="volForm" novalidate>
+    <form id="volForm" novalidate action="https://api.web3forms.com/submit" method="POST">
+      <input type="hidden" name="access_key" value="4ff83119-354f-4c99-b2cf-61071b7f6d30">
+      <input type="hidden" name="subject" value="Nueva inscripción de voluntariado — WÁKU">
+      <input type="hidden" name="from_name" value="WÁKU Collective Web">
+      <input type="checkbox" name="botcheck" style="display:none;">
       <div class="form-grid">
 
         <!-- Nombre -->
@@ -507,52 +511,79 @@ window.addEventListener('scroll',()=>nb.classList.toggle('scrolled',scrollY>60))
 const obs=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');obs.unobserve(e.target);}}),{threshold:.1});
 document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
 
-// FORMULARIO VALIDACIÓN + ENVÍO SIMULADO
-document.getElementById('volForm').addEventListener('submit',function(e){
+// FORMULARIO VALIDACIÓN + ENVÍO REAL Web3Forms
+document.getElementById('volForm').addEventListener('submit', async function(e){
   e.preventDefault();
-  let valid=true;
+  let valid = true;
 
   // Validar campos requeridos
-  const campos=[
-    {id:'fg-nombre',input:'nombre',check:v=>v.trim().split(' ').length>=2},
-    {id:'fg-correo',input:'correo',check:v=>/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v)},
-    {id:'fg-telefono',input:'telefono',check:v=>v.trim().length>=6},
-    {id:'fg-ciudad',input:'ciudad',check:v=>v.trim().length>=2},
-    {id:'fg-pais',input:'pais',check:v=>v!==''},
-    {id:'fg-profesion',input:'profesion',check:v=>v!==''},
+  const campos = [
+    {id:'fg-nombre',  input:'nombre',   check: v => v.trim().split(' ').length >= 2},
+    {id:'fg-correo',  input:'correo',   check: v => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v)},
+    {id:'fg-telefono',input:'telefono', check: v => v.trim().length >= 6},
+    {id:'fg-ciudad',  input:'ciudad',   check: v => v.trim().length >= 2},
+    {id:'fg-pais',    input:'pais',     check: v => v !== ''},
+    {id:'fg-profesion',input:'profesion',check: v => v !== ''},
   ];
 
-  campos.forEach(({id,input,check})=>{
-    const fg=document.getElementById(id);
-    const val=document.getElementById(input).value;
-    if(!check(val)){fg.classList.add('error');valid=false;}
-    else{fg.classList.remove('error');}
+  campos.forEach(({id, input, check}) => {
+    const fg  = document.getElementById(id);
+    const val = document.getElementById(input).value;
+    if (!check(val)) { fg.classList.add('error'); valid = false; }
+    else             { fg.classList.remove('error'); }
   });
 
   // Disponibilidad
-  const checks=[...document.querySelectorAll('input[name="disponibilidad"]:checked')];
-  const fgDisp=document.getElementById('fg-disponibilidad');
-  if(checks.length===0){fgDisp.classList.add('error');valid=false;}
-  else{fgDisp.classList.remove('error');}
+  const checks  = [...document.querySelectorAll('input[name="disponibilidad"]:checked')];
+  const fgDisp  = document.getElementById('fg-disponibilidad');
+  if (checks.length === 0) { fgDisp.classList.add('error'); valid = false; }
+  else                     { fgDisp.classList.remove('error'); }
 
-  if(!valid){
-    document.querySelector('.form-group.error').scrollIntoView({behavior:'smooth',block:'center'});
+  if (!valid) {
+    document.querySelector('.form-group.error').scrollIntoView({behavior:'smooth', block:'center'});
     return;
   }
 
-  // Simular envío
-  const btn=document.getElementById('btnSubmit');
-  btn.textContent='Enviando...';
-  btn.disabled=true;
-  btn.style.opacity='.7';
+  // Botón cargando
+  const btn = document.getElementById('btnSubmit');
+  btn.innerHTML = 'Enviando... <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10" stroke-dasharray="31.4" stroke-dashoffset="31.4" style="animation:spin 1s linear infinite"/></svg>';
+  btn.disabled = true;
+  btn.style.opacity = '.7';
 
-  setTimeout(()=>{
-    document.getElementById('volForm').style.display='none';
-    document.querySelector('.form-titulo').style.display='none';
-    document.querySelector('.form-sub').style.display='none';
-    document.getElementById('formSuccess').classList.add('show');
-    document.getElementById('formSuccess').scrollIntoView({behavior:'smooth',block:'center'});
-  },1400);
+  // Recopilar disponibilidad como texto
+  const disponibilidad = checks.map(c => c.value).join(', ');
+
+  // Construir FormData
+  const formData = new FormData(this);
+  formData.delete('disponibilidad'); // quitar los checkboxes individuales
+  formData.append('disponibilidad', disponibilidad);
+
+  try {
+    const res  = await fetch('https://api.web3forms.com/submit', {
+      method: 'POST',
+      body: formData
+    });
+    const data = await res.json();
+
+    if (data.success) {
+      // Mostrar pantalla de éxito
+      document.getElementById('volForm').style.display = 'none';
+      document.querySelector('.form-titulo').style.display = 'none';
+      document.querySelector('.form-sub').style.display = 'none';
+      document.getElementById('formSuccess').classList.add('show');
+      document.getElementById('formSuccess').scrollIntoView({behavior:'smooth', block:'center'});
+    } else {
+      btn.innerHTML = 'Enviar inscripción <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>';
+      btn.disabled = false;
+      btn.style.opacity = '1';
+      alert('Hubo un problema al enviar. Por favor intenta de nuevo.');
+    }
+  } catch(err) {
+    btn.innerHTML = 'Enviar inscripción <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>';
+    btn.disabled = false;
+    btn.style.opacity = '1';
+    alert('Error de conexión. Verifica tu internet e intenta de nuevo.');
+  }
 });
 
 // Limpiar error al escribir
