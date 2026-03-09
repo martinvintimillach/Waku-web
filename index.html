@@ -1452,7 +1452,7 @@ footer {
       <p class="footer-tagline">"Amigo que ayuda" — Lengua Achuar</p>
       <div class="footer-social">
         <a href="https://www.instagram.com/waku_ec/" target="_blank" class="social-btn">ig</a>
-        <a href="/cdn-cgi/l/email-protection#c3b4a2a8b69ca6a083acb6b7afacaca8eda0acae" class="social-btn">✉</a>
+        <a href="#" class="social-btn" id="btnEmailSocial">✉</a>
       </div>
     </div>
     <div>
@@ -1475,12 +1475,10 @@ footer {
       </ul>
     </div>
     <div>
-      <p class="footer-col-title">Contacto</p>
-      <ul class="footer-links">
-        <li><a href="/cdn-cgi/l/email-protection#e493858f91bb8187a48b9190888b8b8fca878b89"><span class="__cf_email__" data-cfemail="85f2e4eef0dae0e6c5eaf0f1e9eaeaeeabe6eae8">[email&#160;protected]</span></a></li>
+        <li><a href="#" id="footer-email-1">waku_ec@outlook.com</a></li>
         <li><a href="https://www.instagram.com/waku_ec/" target="_blank">Instagram</a></li>
         <li><a href="#">Ecuador · Latinoamérica</a></li>
-        <li><a href="/cdn-cgi/l/email-protection#4532242e301a2026052a3031292a2a2e6b262a28" style="margin-top:8px; display:block;">Prensa y medios</a></li>
+        <li><a href="#" id="footer-email-2" style="margin-top:8px; display:block;">Prensa y medios</a></li>
       </ul>
     </div>
   </div>
@@ -1492,10 +1490,17 @@ footer {
   </div>
 </footer>
 
-<!-- ============================================
-     JS
-     ============================================ -->
 <script>
+  // Correo via JS para evitar bloqueos
+  var u = 'waku_ec';
+  var d = 'outlook.com';
+  var e = u + '@' + d;
+  var els = ['footer-email-1','footer-email-2','btnEmailSocial'];
+  els.forEach(function(id){
+    var el = document.getElementById(id);
+    if(el){ el.href = 'mailto:' + e; }
+  });
+
   // Cursor personalizado
   const cursor = document.getElementById('cursor');
   const ring = document.getElementById('cursorRing');
