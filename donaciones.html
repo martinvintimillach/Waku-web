@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WÁKU — Dona y transforma vidas</title>
+<link rel="icon" type="image/png" href="Waku_Logo_1.png">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Barlow+Condensed:wght@300;400;500;600;700;800&family=Barlow:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root { --v:#324001;--c:#e9e0d6;--n:#0d0d0d;--v2:#3f5201;--b:#ffffff; }
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{background:#f5f0e8;color:var(--v);font-family:'Barlow',sans-serif;font-weight:300;overflow-x:hidden;cursor:none;}
+
+.cursor{width:10px;height:10px;background:var(--v);border-radius:50%;position:fixed;top:0;left:0;pointer-events:none;z-index:9999;mix-blend-mode:multiply;}
+.cursor-ring{width:36px;height:36px;border:1.5px solid var(--v);border-radius:50%;position:fixed;top:0;left:0;pointer-events:none;z-index:9998;transition:transform 0.35s cubic-bezier(0.16,1,0.3,1);opacity:0.5;}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:500;padding:24px 60px;display:flex;justify-content:space-between;align-items:center;transition:background .4s,padding .4s;}
+nav.scrolled{background:rgba(233,224,214,.95);backdrop-filter:blur(12px);padding:16px 60px;border-bottom:1px solid rgba(50,64,1,.1);}
+.nav-logo a{display:block;}
+.nav-logo img{height:32px;display:block;}
+.nav-links{display:flex;gap:40px;list-style:none;}
+.nav-links a{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:600;letter-spacing:.22em;text-transform:uppercase;color:var(--v);text-decoration:none;opacity:.7;transition:opacity .2s;}
+.nav-links a:hover,.nav-links a.active{opacity:1;}
+.nav-cta{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:var(--c);background:var(--v);padding:10px 22px;text-decoration:none;transition:background .2s;}
+.nav-cta:hover{background:var(--v2);}
+
+/* HERO */
+.hero-don{
+  background:var(--v);
+  padding:160px 60px 100px;
+  position:relative;
+  overflow:hidden;
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:60px;
+  align-items:center;
+}
+.hero-don::before{
+  content:'DONA';
+  position:absolute;
+  right:-40px;bottom:-60px;
+  font-family:'Cormorant Garamond',serif;
+  font-size:280px;font-weight:600;
+  color:rgba(233,224,214,.04);
+  line-height:1;
+  pointer-events:none;
+  letter-spacing:-.02em;
+}
+.hd-eyebrow{font-family:'Barlow Condensed',sans-serif;font-size:10px;letter-spacing:.32em;text-transform:uppercase;color:var(--c);opacity:.45;margin-bottom:20px;display:flex;align-items:center;gap:14px;}
+.hd-eyebrow::before{content:'';display:block;width:28px;height:1px;background:var(--c);opacity:.4;}
+.hd-title{font-family:'Cormorant Garamond',serif;font-size:clamp(44px,5vw,72px);font-weight:300;line-height:.96;color:var(--c);margin-bottom:28px;}
+.hd-title em{font-style:italic;}
+.hd-sub{font-size:15px;line-height:1.9;color:var(--c);opacity:.6;max-width:420px;margin-bottom:40px;}
+.hd-impacto{display:flex;gap:32px;flex-wrap:wrap;}
+.hd-imp-item{border-left:2px solid rgba(233,224,214,.2);padding-left:18px;}
+.hd-imp-num{font-family:'Cormorant Garamond',serif;font-size:36px;font-weight:600;color:var(--c);line-height:1;}
+.hd-imp-label{font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--c);opacity:.4;margin-top:4px;}
+
+/* HERO DERECHA — foto */
+.hd-foto{
+  position:relative;
+  min-height:480px;
+  overflow:hidden;
+}
+.hd-foto img{width:100%;height:100%;object-fit:cover;object-position:center;display:block;}
+.hd-foto-ph{
+  width:100%;height:100%;min-height:480px;
+  background:linear-gradient(160deg,#1e2a00,#0d1500);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;
+}
+.hd-foto-ph svg{width:32px;height:32px;color:rgba(233,224,214,.25);}
+.hd-foto-ph p{font-family:'Barlow Condensed',sans-serif;font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:rgba(233,224,214,.2);}
+.hd-foto-tag{
+  position:absolute;bottom:0;left:0;right:0;
+  background:linear-gradient(to top,rgba(50,64,1,.85),transparent);
+  padding:40px 28px 24px;
+}
+.hd-foto-tag p{font-family:'Cormorant Garamond',serif;font-size:16px;font-style:italic;font-weight:400;color:var(--c);opacity:.85;line-height:1.5;}
+.hd-foto-tag cite{font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--c);opacity:.4;font-style:normal;display:block;margin-top:8px;}
+
+/* MONTOS SUGERIDOS */
+.montos-section{padding:80px 60px;background:#f5f0e8;}
+.sec-eyebrow{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:.3em;text-transform:uppercase;color:var(--v);opacity:.4;margin-bottom:16px;display:flex;align-items:center;gap:16px;}
+.sec-eyebrow::after{content:'';flex:1;height:1px;background:var(--v);opacity:.12;}
+.sec-titulo{font-family:'Cormorant Garamond',serif;font-size:clamp(32px,3.5vw,48px);font-weight:300;line-height:1.1;color:var(--v);margin-bottom:48px;}
+.sec-titulo em{font-style:italic;}
+
+.montos-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:3px;margin-bottom:3px;}
+.monto-card{
+  background:white;
+  border:1px solid rgba(50,64,1,.1);
+  padding:32px 28px;
+  cursor:pointer;
+  transition:background .25s,border-color .25s,transform .25s;
+  position:relative;
+  overflow:hidden;
+}
+.monto-card::before{
+  content:'';position:absolute;inset:0;
+  background:var(--v);
+  transform:scaleY(0);transform-origin:bottom;
+  transition:transform .35s cubic-bezier(.16,1,.3,1);
+  z-index:0;
+}
+.monto-card:hover::before,.monto-card.selected::before{transform:scaleY(1);}
+.monto-card>*{position:relative;z-index:1;}
+.monto-card:hover .monto-valor,.monto-card.selected .monto-valor{color:var(--c);}
+.monto-card:hover .monto-desc,.monto-card.selected .monto-desc{color:var(--c);opacity:.6;}
+.monto-card:hover .monto-tag,.monto-card.selected .monto-tag{background:rgba(233,224,214,.15);color:var(--c);}
+.monto-valor{font-family:'Cormorant Garamond',serif;font-size:42px;font-weight:600;color:var(--v);line-height:1;margin-bottom:8px;transition:color .25s;}
+.monto-moneda{font-size:18px;opacity:.5;}
+.monto-tag{display:inline-block;font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--v);background:rgba(50,64,1,.07);padding:4px 10px;margin-bottom:14px;transition:all .25s;}
+.monto-desc{font-size:12px;line-height:1.7;color:var(--v);opacity:.55;transition:color .25s,opacity .25s;}
+
+.monto-libre{
+  background:white;border:1px solid rgba(50,64,1,.1);
+  padding:28px;
+  display:flex;align-items:center;gap:20px;
+}
+.monto-libre-label{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:var(--v);opacity:.5;white-space:nowrap;}
+.monto-libre-input{
+  flex:1;border:none;border-bottom:2px solid rgba(50,64,1,.15);outline:none;background:none;
+  font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:600;color:var(--v);
+  padding:4px 0;transition:border-color .2s;
+}
+.monto-libre-input:focus{border-bottom-color:var(--v);}
+.monto-libre-input::placeholder{color:rgba(50,64,1,.2);}
+.monto-moneda-libre{font-family:'Cormorant Garamond',serif;font-size:22px;color:var(--v);opacity:.3;}
+
+/* DATOS BANCARIOS */
+.banco-section{padding:80px 60px;background:var(--v);}
+.banco-grid{display:grid;grid-template-columns:1fr 1fr;gap:3px;margin-top:48px;}
+
+.banco-card{
+  background:rgba(233,224,214,.06);
+  border:1px solid rgba(233,224,214,.1);
+  padding:40px;
+  position:relative;
+  overflow:hidden;
+}
+.banco-card.principal{background:rgba(233,224,214,.1);border-color:rgba(233,224,214,.2);}
+.banco-card::after{
+  content:'';
+  position:absolute;top:0;left:0;
+  width:3px;height:100%;
+  background:var(--c);opacity:.2;
+}
+.banco-card.principal::after{opacity:.6;}
+
+.banco-titulo{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:.28em;text-transform:uppercase;color:var(--c);opacity:.4;margin-bottom:28px;}
+.banco-fila{display:flex;justify-content:space-between;align-items:center;padding:14px 0;border-bottom:1px solid rgba(233,224,214,.08);}
+.banco-fila:last-of-type{border:none;}
+.banco-key{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--c);opacity:.4;}
+.banco-val{font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:700;letter-spacing:.06em;color:var(--c);text-align:right;}
+.banco-val.grande{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:600;letter-spacing:.02em;}
+
+.copiar-btn{
+  margin-top:20px;width:100%;
+  background:rgba(233,224,214,.08);border:1px solid rgba(233,224,214,.15);
+  color:var(--c);opacity:.6;
+  font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;
+  padding:14px;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;gap:10px;
+  transition:background .2s,opacity .2s;
+}
+.copiar-btn:hover{background:rgba(233,224,214,.16);opacity:1;}
+.copiar-btn.copiado{background:rgba(233,224,214,.2);opacity:1;color:var(--c);}
+.copiar-btn svg{width:13px;height:13px;}
+
+/* ANONIMO */
+.anonimo-card{
+  grid-column:1/-1;
+  background:rgba(233,224,214,.04);
+  border:1px solid rgba(233,224,214,.08);
+  padding:32px 40px;
+  display:flex;align-items:center;gap:32px;
+  margin-top:3px;
+}
+.anonimo-icon{
+  width:56px;height:56px;flex-shrink:0;
+  border:1.5px solid rgba(233,224,214,.2);border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+}
+.anonimo-icon svg{width:22px;height:22px;color:var(--c);opacity:.5;}
+.anonimo-titulo{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:600;color:var(--c);margin-bottom:6px;}
+.anonimo-desc{font-size:13px;line-height:1.75;color:var(--c);opacity:.5;}
+
+/* PASOS */
+.pasos-section{padding:80px 60px;background:#f5f0e8;}
+.pasos-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:3px;margin-top:48px;}
+.paso-card{background:white;border:1px solid rgba(50,64,1,.08);padding:36px 28px;position:relative;}
+.paso-num{font-family:'Cormorant Garamond',serif;font-size:64px;font-weight:300;color:var(--v);opacity:.08;line-height:1;margin-bottom:16px;}
+.paso-titulo{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:600;color:var(--v);margin-bottom:10px;}
+.paso-desc{font-size:12px;line-height:1.75;color:var(--v);opacity:.5;}
+
+/* COMPROBANTE */
+.comprobante-section{
+  padding:60px;
+  background:white;
+  border-top:1px solid rgba(50,64,1,.08);
+  display:flex;align-items:center;gap:48px;
+  flex-wrap:wrap;
+}
+.comp-texto h3{font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:600;color:var(--v);margin-bottom:8px;}
+.comp-texto p{font-size:14px;line-height:1.8;color:var(--v);opacity:.55;max-width:480px;}
+.comp-email{
+  display:flex;align-items:center;gap:14px;
+  background:var(--v);padding:16px 24px;
+  font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--c);
+  text-decoration:none;white-space:nowrap;
+  transition:background .2s;
+}
+.comp-email:hover{background:var(--v2);}
+.comp-email svg{width:16px;height:16px;flex-shrink:0;}
+
+/* REVEAL */
+.reveal{opacity:0;transform:translateY(24px);transition:opacity .8s cubic-bezier(.16,1,.3,1),transform .8s cubic-bezier(.16,1,.3,1);}
+.reveal.visible{opacity:1;transform:translateY(0);}
+.rd1{transition-delay:.1s;}.rd2{transition-delay:.2s;}.rd3{transition-delay:.3s;}
+
+/* FOOTER */
+footer{background:var(--n);padding:40px 60px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:20px;}
+.footer-logo img{height:28px;filter:brightness(0) invert(1);opacity:.4;}
+.footer-back{font-family:'Barlow Condensed',sans-serif;font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:var(--c);opacity:.35;text-decoration:none;display:flex;align-items:center;gap:10px;transition:opacity .2s;}
+.footer-back:hover{opacity:.7;}
+.footer-copy{font-family:'Barlow Condensed',sans-serif;font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--c);opacity:.25;}
+
+@media(max-width:1024px){
+  nav{padding:20px 32px;}nav.scrolled{padding:14px 32px;}
+  .hero-don{grid-template-columns:1fr;padding:120px 32px 60px;gap:40px;}
+  .montos-section,.banco-section,.pasos-section{padding:60px 32px;}
+  .montos-grid,.pasos-grid{grid-template-columns:1fr 1fr;}
+  .banco-grid{grid-template-columns:1fr;}
+  .comprobante-section{padding:40px 32px;flex-direction:column;align-items:flex-start;gap:24px;}
+}
+@media(max-width:640px){
+  .nav-links{display:none;}
+  .montos-grid,.pasos-grid{grid-template-columns:1fr;}
+  .anonimo-card{flex-direction:column;gap:16px;}
+  footer{padding:32px 28px;}
+}
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- NAV -->
+<nav id="navbar">
+  <div class="nav-logo"><a href="index.html"><img src="WakuCollective_Logo1.png" alt="WAKU Collective"></a></div>
+  <ul class="nav-links">
+    <li><a href="index.html">Inicio</a></li>
+    <li><a href="index.html#mision">Misión</a></li>
+    <li><a href="galeria.html">Galería</a></li>
+    <li><a href="voluntariado.html">Voluntariado</a></li>
+    <li><a href="donaciones.html" class="active">Donar</a></li>
+  </ul>
+  <a href="#datos-bancarios" class="nav-cta" onclick="document.getElementById('datos-bancarios').scrollIntoView({behavior:'smooth'});return false;">Donar ahora</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero-don">
+  <div>
+    <p class="hd-eyebrow">Cada valor suma</p>
+    <h1 class="hd-title">Tu donación<br>llega directo<br><em>a quien más<br>lo necesita.</em></h1>
+    <p class="hd-sub">El 100% de las donaciones se destina a financiar brigadas médicas, materiales educativos y acompañamiento social en comunidades amazónicas y rurales.</p>
+    <div class="hd-impacto">
+      <div class="hd-imp-item">
+        <p class="hd-imp-num">500+</p>
+        <p class="hd-imp-label">Personas atendidas</p>
+      </div>
+      <div class="hd-imp-item">
+        <p class="hd-imp-num">12</p>
+        <p class="hd-imp-label">Comunidades</p>
+      </div>
+      <div class="hd-imp-item">
+        <p class="hd-imp-num">100%</p>
+        <p class="hd-imp-label">Va al campo</p>
+      </div>
+    </div>
+  </div>
+  <div class="hd-foto">
+    <div class="hd-foto-ph">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+      <p>Foto donaciones · 700×480px</p>
+    </div>
+    <div class="hd-foto-tag">
+      <p>"Gracias a WÁKU tuve médico por primera vez en mi vida."</p>
+      <cite>— Miembro comunidad Achuar, Pastaza</cite>
+    </div>
+  </div>
+</section>
+
+<!-- MONTOS -->
+<section class="montos-section">
+  <p class="sec-eyebrow reveal">¿Cuánto quieres donar?</p>
+  <h2 class="sec-titulo reveal">Elige el impacto<br><em>que quieres generar</em></h2>
+
+  <div class="montos-grid">
+    <div class="monto-card reveal" onclick="seleccionarMonto(this, 5)">
+      <div class="monto-tag">Pequeño gran gesto</div>
+      <p class="monto-valor"><span class="monto-moneda">$</span> 5</p>
+      <p class="monto-desc">Cubre materiales básicos de atención médica para una persona en brigada.</p>
+    </div>
+    <div class="monto-card reveal rd1" onclick="seleccionarMonto(this, 15)">
+      <div class="monto-tag">Impacto real</div>
+      <p class="monto-valor"><span class="monto-moneda">$</span> 15</p>
+      <p class="monto-desc">Financia medicamentos e insumos para atender a una familia completa.</p>
+    </div>
+    <div class="monto-card reveal rd2" onclick="seleccionarMonto(this, 30)">
+      <div class="monto-tag">Transformador</div>
+      <p class="monto-valor"><span class="monto-moneda">$</span> 30</p>
+      <p class="monto-desc">Costea el transporte fluvial de un voluntario hasta comunidades remotas.</p>
+    </div>
+    <div class="monto-card reveal rd3" onclick="seleccionarMonto(this, 50)">
+      <div class="monto-tag">Héroe WÁKU</div>
+      <p class="monto-valor"><span class="monto-moneda">$</span> 50</p>
+      <p class="monto-desc">Apoya una brigada completa — salud, educación y acompañamiento social.</p>
+    </div>
+  </div>
+
+  <div class="monto-libre reveal">
+    <span class="monto-moneda-libre">$</span>
+    <input class="monto-libre-input" type="number" min="1" placeholder="Otro monto" id="montoLibre" oninput="limpiarSeleccion()">
+    <span class="monto-libre-label">Monto libre · USD</span>
+  </div>
+</section>
+
+<!-- DATOS BANCARIOS -->
+<section class="banco-section" id="datos-bancarios">
+  <p class="sec-eyebrow reveal" style="color:var(--c);opacity:.4;">Transferencia bancaria</p>
+  <h2 class="sec-titulo reveal" style="color:var(--c);">Datos para<br><em>tu donación</em></h2>
+
+  <div class="banco-grid">
+
+    <!-- CUENTA PRINCIPAL -->
+    <div class="banco-card principal reveal">
+      <p class="banco-titulo">Cuenta bancaria · Ecuador</p>
+      <div class="banco-fila">
+        <span class="banco-key">Beneficiario</span>
+        <span class="banco-val">Daniela Delgado Orellana</span>
+      </div>
+      <div class="banco-fila">
+        <span class="banco-key">Banco</span>
+        <span class="banco-val">Banco Pichincha</span>
+      </div>
+      <div class="banco-fila">
+        <span class="banco-key">Tipo de cuenta</span>
+        <span class="banco-val">Cuenta de Ahorros</span>
+      </div>
+      <div class="banco-fila">
+        <span class="banco-key">Número de cuenta</span>
+        <span class="banco-val grande">2212009563</span>
+      </div>
+      <div class="banco-fila">
+        <span class="banco-key">Cédula</span>
+        <span class="banco-val grande">0105232813</span>
+      </div>
+      <button class="copiar-btn" id="btnCopiar" onclick="copiarDatos()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path stroke-linecap="round" stroke-linejoin="round" d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+        Copiar datos de la cuenta
+      </button>
+    </div>
+
+    <!-- INSTRUCCIONES -->
+    <div class="banco-card reveal rd1">
+      <p class="banco-titulo">¿Cómo hacer la transferencia?</p>
+      <div class="banco-fila" style="align-items:flex-start;gap:16px;border:none;padding:12px 0;">
+        <span style="font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:600;color:var(--c);opacity:.3;line-height:1;flex-shrink:0;">1</span>
+        <span style="font-size:13px;color:var(--c);opacity:.55;line-height:1.7;">Ingresa a tu app bancaria o banca en línea</span>
+      </div>
+      <div class="banco-fila" style="align-items:flex-start;gap:16px;border:none;padding:12px 0;">
+        <span style="font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:600;color:var(--c);opacity:.3;line-height:1;flex-shrink:0;">2</span>
+        <span style="font-size:13px;color:var(--c);opacity:.55;line-height:1.7;">Selecciona transferencia a otro banco o a Banco Pichincha</span>
+      </div>
+      <div class="banco-fila" style="align-items:flex-start;gap:16px;border:none;padding:12px 0;">
+        <span style="font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:600;color:var(--c);opacity:.3;line-height:1;flex-shrink:0;">3</span>
+        <span style="font-size:13px;color:var(--c);opacity:.55;line-height:1.7;">Ingresa los datos de la cuenta y el monto que deseas donar</span>
+      </div>
+      <div class="banco-fila" style="align-items:flex-start;gap:16px;border:none;padding:12px 0;">
+        <span style="font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:600;color:var(--c);opacity:.3;line-height:1;flex-shrink:0;">4</span>
+        <span style="font-size:13px;color:var(--c);opacity:.55;line-height:1.7;">Confirma la transferencia — ¡listo! Ya eres parte de WÁKU</span>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- DONACIÓN ANÓNIMA -->
+  <div class="anonimo-card reveal">
+    <div class="anonimo-icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z"/></svg>
+    </div>
+    <div>
+      <h3 class="anonimo-titulo">¿Quieres donar de forma anónima?</h3>
+      <p class="anonimo-desc">No hay problema. Al hacer la transferencia simplemente no pongas tu nombre en el concepto o referencia — puedes dejarla en blanco o escribir cualquier texto. Tu donación llega igual y es igual de valiosa para las comunidades. No necesitas identificarte.</p>
+    </div>
+  </div>
+
+</section>
+
+<!-- PASOS DESPUÉS -->
+<section class="pasos-section">
+  <p class="sec-eyebrow reveal">¿Y después qué?</p>
+  <h2 class="sec-titulo reveal">Tu donación en<br><em>acción</em></h2>
+  <div class="pasos-grid">
+    <div class="paso-card reveal">
+      <p class="paso-num">01</p>
+      <h3 class="paso-titulo">Recibimos tu transferencia</h3>
+      <p class="paso-desc">El equipo WÁKU recibe el depósito y lo registra en nuestro fondo de brigadas.</p>
+    </div>
+    <div class="paso-card reveal rd1">
+      <p class="paso-num">02</p>
+      <h3 class="paso-titulo">Se asigna a una brigada</h3>
+      <p class="paso-desc">Los fondos se destinan a la próxima brigada — medicamentos, transporte e insumos.</p>
+    </div>
+    <div class="paso-card reveal rd2">
+      <p class="paso-num">03</p>
+      <h3 class="paso-titulo">Llegamos a la comunidad</h3>
+      <p class="paso-desc">Tu donación hace posible que el equipo llegue a comunidades sin acceso a servicios básicos.</p>
+    </div>
+    <div class="paso-card reveal rd3">
+      <p class="paso-num">04</p>
+      <h3 class="paso-titulo">Compartimos el impacto</h3>
+      <p class="paso-desc">Publicamos en redes los resultados de cada brigada. Puedes ver en qué se usó tu aporte.</p>
+    </div>
+  </div>
+</section>
+
+<!-- COMPROBANTE -->
+<div class="comprobante-section reveal">
+  <div class="comp-texto">
+    <h3>¿Hiciste tu transferencia?</h3>
+    <p>Si deseas recibir confirmación de tu donación o necesitas un comprobante, escríbenos al correo con el número de transacción. Respondemos en menos de 24 horas.</p>
+  </div>
+  <a href="mailto:waku_ec@outlook.com?subject=Comprobante%20de%20donación%20WÁKU" class="comp-email">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+    Enviar comprobante
+  </a>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo"><a href="index.html"><img src="WakuCollective_Logo4.png" alt="WAKU Collective"></a></div>
+  <a href="index.html" class="footer-back">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 12H5m7-7l-7 7 7 7"/></svg>
+    Volver al inicio
+  </a>
+  <p class="footer-copy">© 2025 WÁKU Project · Todos los derechos reservados</p>
+</footer>
+
+<script>
+// CURSOR
+const cursor=document.getElementById('cursor'),ring=document.getElementById('cursorRing');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cursor.style.transform=`translate(${mx-5}px,${my-5}px)`;});
+(function anim(){rx+=(mx-rx)*.12;ry+=(my-ry)*.12;ring.style.transform=`translate(${rx-18}px,${ry-18}px)`;requestAnimationFrame(anim);})();
+
+// NAV
+const nb=document.getElementById('navbar');
+window.addEventListener('scroll',()=>nb.classList.toggle('scrolled',scrollY>60));
+
+// REVEAL
+const obs=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');obs.unobserve(e.target);}}),{threshold:.1});
+document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+
+// MONTOS
+function seleccionarMonto(card, monto){
+  document.querySelectorAll('.monto-card').forEach(c=>c.classList.remove('selected'));
+  card.classList.add('selected');
+  document.getElementById('montoLibre').value='';
+}
+function limpiarSeleccion(){
+  document.querySelectorAll('.monto-card').forEach(c=>c.classList.remove('selected'));
+}
+
+// COPIAR DATOS
+function copiarDatos(){
+  const datos = `Beneficiario: Daniela Delgado Orellana\nBanco: Banco Pichincha\nTipo: Cuenta de Ahorros\nNúmero: 2212009563\nCédula: 0105232813`;
+  navigator.clipboard.writeText(datos).then(()=>{
+    const btn=document.getElementById('btnCopiar');
+    btn.classList.add('copiado');
+    btn.innerHTML=`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg> ¡Datos copiados!`;
+    setTimeout(()=>{
+      btn.classList.remove('copiado');
+      btn.innerHTML=`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path stroke-linecap="round" stroke-linejoin="round" d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg> Copiar datos de la cuenta`;
+    },3000);
+  });
+}
+</script>
+</body>
+</html>
