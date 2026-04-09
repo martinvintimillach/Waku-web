@@ -10,7 +10,7 @@
 :root { --v:#324001;--c:#e9e0d6;--n:#0d0d0d;--v2:#3f5201;--err:#8b2020;--ok:#2d6a2d; }
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
 html{scroll-behavior:smooth;}
-body{background:#f5f0e8;color:var(--v);font-family:'Barlow',sans-serif;font-weight:300;overflow-x:hidden;cursor:none;}
+body{background:#f5f0e8;color:var(--v);font-family:'Barlow',sans-serif;font-weight:300;overflow-x:hidden;cursor:default;}
 
 .cursor{width:10px;height:10px;background:var(--v);border-radius:50%;position:fixed;top:0;left:0;pointer-events:none;z-index:9999;mix-blend-mode:multiply;}
 .cursor-ring{width:36px;height:36px;border:1.5px solid var(--v);border-radius:50%;position:fixed;top:0;left:0;pointer-events:none;z-index:9998;transition:transform 0.35s cubic-bezier(0.16,1,0.3,1);opacity:0.5;}
@@ -201,8 +201,6 @@ footer{background:var(--n);padding:40px 60px;display:flex;justify-content:space-
 </head>
 <body>
 
-<div class="cursor" id="cursor"></div>
-<div class="cursor-ring" id="cursorRing"></div>
 
 <!-- NAV -->
 <nav id="navbar">
@@ -494,10 +492,6 @@ footer{background:var(--n);padding:40px 60px;display:flex;justify-content:space-
 
 <script>
 // CURSOR
-const cursor=document.getElementById('cursor'),ring=document.getElementById('cursorRing');
-let mx=0,my=0,rx=0,ry=0;
-document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cursor.style.transform=`translate(${mx-5}px,${my-5}px)`;});
-(function anim(){rx+=(mx-rx)*.12;ry+=(my-ry)*.12;ring.style.transform=`translate(${rx-18}px,${ry-18}px)`;requestAnimationFrame(anim);})();
 
 // NAV
 const nb=document.getElementById('navbar');
