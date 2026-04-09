@@ -10,7 +10,7 @@
 :root { --v:#324001;--c:#e9e0d6;--n:#0d0d0d;--v2:#3f5201;--b:#ffffff; }
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
 html{scroll-behavior:smooth;}
-body{background:#f5f0e8;color:var(--v);font-family:'Barlow',sans-serif;font-weight:300;overflow-x:hidden;cursor:none;}
+body{background:#f5f0e8;color:var(--v);font-family:'Barlow',sans-serif;font-weight:300;overflow-x:hidden;cursor:default;}
 
 .cursor{width:10px;height:10px;background:var(--v);border-radius:50%;position:fixed;top:0;left:0;pointer-events:none;z-index:9999;mix-blend-mode:multiply;}
 .cursor-ring{width:36px;height:36px;border:1.5px solid var(--v);border-radius:50%;position:fixed;top:0;left:0;pointer-events:none;z-index:9998;transition:transform 0.35s cubic-bezier(0.16,1,0.3,1);opacity:0.5;}
@@ -245,8 +245,6 @@ footer{background:var(--n);padding:40px 60px;display:flex;justify-content:space-
 </head>
 <body>
 
-<div class="cursor" id="cursor"></div>
-<div class="cursor-ring" id="cursorRing"></div>
 
 <!-- NAV -->
 <nav id="navbar">
@@ -435,7 +433,7 @@ footer{background:var(--n);padding:40px 60px;display:flex;justify-content:space-
     <h3>¿Hiciste tu transferencia?</h3>
     <p>Si deseas recibir confirmación de tu donación o necesitas un comprobante, escríbenos al correo con el número de transacción. Respondemos en menos de 24 horas.</p>
   </div>
-  <a href="mailto:waku_ec@outlook.com?subject=Comprobante%20de%20donación%20WÁKU" class="comp-email">
+  <a href="/cdn-cgi/l/email-protection#6f180e041a300a0c2f001a1b03000004410c0002501c1a0d050a0c1b522c00021f1d000d0e011b0a4a5d5f0b0a4a5d5f0b00010e0c06acdc014a5d5f38acee243a" class="comp-email">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
     Enviar comprobante
   </a>
@@ -451,12 +449,8 @@ footer{background:var(--n);padding:40px 60px;display:flex;justify-content:space-
   <p class="footer-copy">© 2025 WÁKU Project · Todos los derechos reservados</p>
 </footer>
 
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 // CURSOR
-const cursor=document.getElementById('cursor'),ring=document.getElementById('cursorRing');
-let mx=0,my=0,rx=0,ry=0;
-document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cursor.style.transform=`translate(${mx-5}px,${my-5}px)`;});
-(function anim(){rx+=(mx-rx)*.12;ry+=(my-ry)*.12;ring.style.transform=`translate(${rx-18}px,${ry-18}px)`;requestAnimationFrame(anim);})();
 
 // NAV
 const nb=document.getElementById('navbar');
@@ -485,10 +479,4 @@ function copiarDatos(){
     btn.innerHTML=`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg> ¡Datos copiados!`;
     setTimeout(()=>{
       btn.classList.remove('copiado');
-      btn.innerHTML=`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path stroke-linecap="round" stroke-linejoin="round" d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg> Copiar datos de la cuenta`;
-    },3000);
-  });
-}
-</script>
-</body>
-</html>
+      btn.innerHTML=`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="
