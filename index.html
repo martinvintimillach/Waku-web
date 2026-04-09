@@ -5,7 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>WÁKU Collective — Amigo que ayuda</title>
 <link rel="icon" type="image/png" href="Waku_Logo_1.png">
-<link rel="icon" type="image/png" href="Waku_Logo_1.png">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400;1,600&family=Barlow+Condensed:wght@300;400;500;600;700;800&family=Barlow:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
 /* ============================================
@@ -1454,15 +1453,14 @@ footer {
   </div>
 </footer>
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+<script>
   // Correo via JS para evitar bloqueos
   var u = 'waku_ec';
   var d = 'outlook.com';
-  var e = u + '@' + d;
-  var els = ['footer-email-1','footer-email-2','btnEmailSocial'];
-  els.forEach(function(id){
+  var em = u + '@' + d;
+  ['footer-email-1','footer-email-2','btnEmailSocial'].forEach(function(id){
     var el = document.getElementById(id);
-    if(el){ el.href = 'mailto:' + e; }
+    if(el){ el.href = 'mailto:' + em; }
   });
 
   // Cursor personalizado
@@ -1491,4 +1489,14 @@ footer {
   const reveals = document.querySelectorAll('.reveal');
   const observer = new IntersectionObserver((entries) => {
     entries.forEach(e => {
-      if (e.isIntersecting)
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+        observer.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.12 });
+  reveals.forEach(el => observer.observe(el));
+</script>
+
+</body>
+</html>
