@@ -432,14 +432,12 @@ footer{background:var(--n);padding:40px 60px;display:flex;justify-content:space-
   <div class="comp-texto">
     <h3>¿Hiciste tu transferencia?</h3>
     <p>Si deseas recibir confirmación de tu donación o necesitas un comprobante, escríbenos al correo con el número de transacción. Respondemos en menos de 24 horas.</p>
-  </div>
-  <a href="/cdn-cgi/l/email-protection#6f180e041a300a0c2f001a1b03000004410c0002501c1a0d050a0c1b522c00021f1d000d0e011b0a4a5d5f0b0a4a5d5f0b00010e0c06acdc014a5d5f38acee243a" class="comp-email">
+  <a href="#" id="comp-email-btn" class="comp-email">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
     Enviar comprobante
   </a>
 </div>
 
-<!-- FOOTER -->
 <footer>
   <div class="footer-logo"><a href="index.html"><img src="WakuCollective_Logo4.png" alt="WAKU Collective"></a></div>
   <a href="index.html" class="footer-back">
@@ -449,34 +447,44 @@ footer{background:var(--n);padding:40px 60px;display:flex;justify-content:space-
   <p class="footer-copy">© 2025 WÁKU Project · Todos los derechos reservados</p>
 </footer>
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
-// CURSOR
+<script>
+  // Email via JS
+  var u='waku_ec', d='outlook.com';
+  var btn=document.getElementById('comp-email-btn');
+  if(btn){ btn.href='mailto:'+u+'@'+d+'?subject=Comprobante%20de%20donaci%C3%B3n%20W%C3%81KU'; }
 
-// NAV
-const nb=document.getElementById('navbar');
-window.addEventListener('scroll',()=>nb.classList.toggle('scrolled',scrollY>60));
+  // NAV
+  const nb=document.getElementById('navbar');
+  window.addEventListener('scroll',()=>nb.classList.toggle('scrolled',scrollY>60));
 
-// REVEAL
-const obs=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');obs.unobserve(e.target);}}),{threshold:.1});
-document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+  // REVEAL
+  const obs=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');obs.unobserve(e.target);}}),{threshold:.1});
+  document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
 
-// MONTOS
-function seleccionarMonto(card, monto){
-  document.querySelectorAll('.monto-card').forEach(c=>c.classList.remove('selected'));
-  card.classList.add('selected');
-  document.getElementById('montoLibre').value='';
-}
-function limpiarSeleccion(){
-  document.querySelectorAll('.monto-card').forEach(c=>c.classList.remove('selected'));
-}
+  // MONTOS
+  function seleccionarMonto(card,monto){
+    document.querySelectorAll('.monto-card').forEach(c=>c.classList.remove('selected'));
+    card.classList.add('selected');
+    document.getElementById('montoLibre').value='';
+  }
+  function limpiarSeleccion(){
+    document.querySelectorAll('.monto-card').forEach(c=>c.classList.remove('selected'));
+  }
 
-// COPIAR DATOS
-function copiarDatos(){
-  const datos = `Beneficiario: Daniela Delgado Orellana\nBanco: Banco Pichincha\nTipo: Cuenta de Ahorros\nNúmero: 2212009563\nCédula: 0105232813`;
-  navigator.clipboard.writeText(datos).then(()=>{
-    const btn=document.getElementById('btnCopiar');
-    btn.classList.add('copiado');
-    btn.innerHTML=`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg> ¡Datos copiados!`;
-    setTimeout(()=>{
-      btn.classList.remove('copiado');
-      btn.innerHTML=`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="
+  // COPIAR DATOS
+  function copiarDatos(){
+    const datos='Beneficiario: Daniela Delgado Orellana\nBanco: Banco Pichincha\nTipo: Cuenta de Ahorros\nNúmero: 2212009563\nCédula: 0105232813';
+    navigator.clipboard.writeText(datos).then(()=>{
+      const btn=document.getElementById('btnCopiar');
+      btn.classList.add('copiado');
+      btn.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg> ¡Datos copiados!';
+      setTimeout(()=>{
+        btn.classList.remove('copiado');
+        btn.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path stroke-linecap="round" stroke-linejoin="round" d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg> Copiar datos de la cuenta';
+      },3000);
+    });
+  }
+</script>
+
+</body>
+</html>
