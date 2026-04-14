@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WÁKU — Merch</title>
+<link rel="icon" type="image/png" href="Waku_Logo_1.png">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Barlow+Condensed:wght@300;400;500;600;700;800&family=Barlow:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root{--v:#324001;--c:#e9e0d6;--n:#0d0d0d;--v2:#3f5201;--b:#ffffff;}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{background:#f5f0e8;color:var(--v);font-family:'Barlow',sans-serif;font-weight:300;overflow-x:hidden;}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:500;padding:24px 60px;display:flex;justify-content:space-between;align-items:center;background:rgba(233,224,214,0.95);backdrop-filter:blur(12px);border-bottom:1px solid rgba(50,64,1,.1);transition:padding .4s;}
+nav.scrolled{padding:16px 60px;}
+.nav-logo a{display:block;}
+.nav-logo img{height:32px;display:block;}
+.nav-links{display:flex;gap:40px;list-style:none;}
+.nav-links a{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:600;letter-spacing:.22em;text-transform:uppercase;color:var(--v);text-decoration:none;opacity:.7;transition:opacity .2s;}
+.nav-links a:hover,.nav-links a.active{opacity:1;}
+.nav-cta{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:var(--c);background:var(--v);padding:10px 22px;text-decoration:none;transition:background .2s;}
+.nav-cta:hover{background:var(--v2);}
+
+/* HERO */
+.hero-merch{
+  background:var(--v);
+  padding:140px 60px 80px;
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:60px;
+  align-items:center;
+  position:relative;
+  overflow:hidden;
+}
+.hero-merch::after{
+  content:'MERCH';
+  position:absolute;right:-20px;bottom:-40px;
+  font-family:'Cormorant Garamond',serif;
+  font-size:220px;font-weight:600;
+  color:rgba(233,224,214,.04);
+  line-height:1;pointer-events:none;
+}
+.hm-eyebrow{font-family:'Barlow Condensed',sans-serif;font-size:10px;letter-spacing:.32em;text-transform:uppercase;color:var(--c);opacity:.45;margin-bottom:20px;display:flex;align-items:center;gap:14px;}
+.hm-eyebrow::before{content:'';display:block;width:28px;height:1px;background:var(--c);opacity:.4;}
+.hm-title{font-family:'Cormorant Garamond',serif;font-size:clamp(44px,5vw,72px);font-weight:300;line-height:.96;color:var(--c);margin-bottom:24px;}
+.hm-title em{font-style:italic;}
+.hm-sub{font-size:15px;line-height:1.9;color:var(--c);opacity:.6;max-width:400px;margin-bottom:36px;}
+.hm-nota{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--c);opacity:.35;display:flex;align-items:center;gap:10px;}
+.hm-nota::before{content:'';display:block;width:20px;height:1px;background:var(--c);opacity:.3;}
+
+/* HERO IMAGEN DERECHA */
+.hm-foto{position:relative;display:grid;grid-template-columns:1fr 1fr;gap:3px;}
+.hm-foto-item{overflow:hidden;}
+.hm-foto-item img{width:100%;height:280px;object-fit:cover;object-position:top center;display:block;transition:transform .6s cubic-bezier(.16,1,.3,1);}
+.hm-foto-item:hover img{transform:scale(1.04);}
+
+/* FILTROS */
+.filtros{
+  background:var(--c);
+  padding:0 60px;
+  display:flex;gap:0;
+  border-bottom:2px solid var(--v);
+  position:sticky;top:64px;z-index:100;
+}
+.filtro-btn{
+  font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--v);opacity:.45;
+  padding:18px 28px;background:none;border:none;cursor:pointer;
+  border-bottom:3px solid transparent;transition:opacity .2s,border-color .2s;margin-bottom:-2px;
+}
+.filtro-btn:hover{opacity:.8;}
+.filtro-btn.active{opacity:1;border-bottom-color:var(--v);}
+
+/* PRODUCTOS */
+.productos-section{padding:60px;}
+.sec-eyebrow{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:.3em;text-transform:uppercase;color:var(--v);opacity:.4;margin-bottom:16px;display:flex;align-items:center;gap:16px;}
+.sec-eyebrow::after{content:'';flex:1;height:1px;background:var(--v);opacity:.12;}
+.sec-titulo{font-family:'Cormorant Garamond',serif;font-size:clamp(28px,3vw,42px);font-weight:300;line-height:1.1;color:var(--v);margin-bottom:48px;}
+.sec-titulo em{font-style:italic;}
+
+.productos-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:3px;}
+
+/* CARD PRODUCTO */
+.producto-card{
+  background:white;
+  position:relative;
+  overflow:hidden;
+  cursor:pointer;
+}
+.producto-card.hidden{display:none;}
+.producto-img{
+  position:relative;overflow:hidden;
+  aspect-ratio:1/1;
+  background:#e8e4de;
+}
+.producto-img img{width:100%;height:100%;object-fit:cover;object-position:top center;display:block;transition:transform .6s cubic-bezier(.16,1,.3,1);}
+.producto-card:hover .producto-img img{transform:scale(1.05);}
+
+.producto-tipo{
+  position:absolute;top:12px;left:12px;z-index:2;
+  font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;
+  background:var(--v);color:var(--c);padding:4px 10px;
+}
+.producto-info{padding:20px;}
+.producto-nombre{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:600;color:var(--v);margin-bottom:4px;line-height:1.2;}
+.producto-frase{font-size:11px;color:var(--v);opacity:.45;margin-bottom:14px;line-height:1.5;}
+.producto-bottom{display:flex;align-items:center;justify-content:space-between;gap:12px;}
+.producto-precio{font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:600;color:var(--v);line-height:1;}
+.producto-precio span{font-size:14px;opacity:.5;}
+
+/* TALLAS */
+.tallas{display:flex;gap:4px;flex-wrap:wrap;}
+.talla{
+  font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;letter-spacing:.1em;
+  width:28px;height:28px;display:flex;align-items:center;justify-content:center;
+  border:1px solid rgba(50,64,1,.2);color:var(--v);opacity:.6;
+  cursor:pointer;transition:all .2s;
+}
+.talla:hover,.talla.selected{background:var(--v);color:var(--c);opacity:1;border-color:var(--v);}
+
+/* BTN WHATSAPP */
+.btn-wsp{
+  font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;
+  background:var(--v);color:var(--c);border:none;
+  padding:11px 18px;cursor:pointer;
+  display:flex;align-items:center;gap:8px;
+  transition:background .2s,gap .2s;
+  text-decoration:none;white-space:nowrap;
+}
+.btn-wsp:hover{background:var(--v2);gap:12px;}
+.btn-wsp svg{width:14px;height:14px;flex-shrink:0;}
+
+/* INFO PEDIDO */
+.info-pedido{
+  background:var(--v);
+  padding:60px;
+  display:grid;
+  grid-template-columns:1fr 1fr 1fr;
+  gap:3px;
+  margin-top:3px;
+}
+.info-card{background:rgba(233,224,214,.06);border:1px solid rgba(233,224,214,.1);padding:32px 28px;}
+.info-num{font-family:'Cormorant Garamond',serif;font-size:48px;font-weight:300;color:var(--c);opacity:.25;line-height:1;margin-bottom:12px;}
+.info-titulo{font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:600;color:var(--c);margin-bottom:8px;}
+.info-desc{font-size:12px;line-height:1.75;color:var(--c);opacity:.5;}
+
+/* CTA FINAL */
+.cta-merch{
+  background:#f5f0e8;
+  padding:80px 60px;
+  text-align:center;
+  border-top:1px solid rgba(50,64,1,.08);
+}
+.cta-merch h2{font-family:'Cormorant Garamond',serif;font-size:clamp(32px,4vw,52px);font-weight:300;color:var(--v);margin-bottom:16px;line-height:1.1;}
+.cta-merch h2 em{font-style:italic;}
+.cta-merch p{font-size:14px;color:var(--v);opacity:.55;margin-bottom:36px;max-width:440px;margin-left:auto;margin-right:auto;line-height:1.8;}
+.cta-merch-btns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;}
+.btn-primary-merch{
+  font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;
+  color:var(--c);background:var(--v);border:none;padding:16px 36px;cursor:pointer;
+  display:inline-flex;align-items:center;gap:14px;transition:background .25s,gap .25s;text-decoration:none;
+}
+.btn-primary-merch:hover{background:var(--v2);gap:20px;}
+.btn-outline-merch{
+  font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;
+  color:var(--v);background:none;border:2px solid var(--v);padding:16px 36px;cursor:pointer;
+  display:inline-flex;align-items:center;gap:14px;transition:all .25s;text-decoration:none;
+}
+.btn-outline-merch:hover{background:var(--v);color:var(--c);}
+
+/* REVEAL */
+.reveal{opacity:0;transform:translateY(24px);transition:opacity .8s cubic-bezier(.16,1,.3,1),transform .8s cubic-bezier(.16,1,.3,1);}
+.reveal.visible{opacity:1;transform:translateY(0);}
+.rd1{transition-delay:.1s;}.rd2{transition-delay:.2s;}.rd3{transition-delay:.3s;}
+
+/* FOOTER */
+footer{background:var(--n);padding:40px 60px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:20px;}
+.footer-logo img{height:28px;filter:brightness(0) invert(1);opacity:.4;}
+.footer-back{font-family:'Barlow Condensed',sans-serif;font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:var(--c);opacity:.35;text-decoration:none;display:flex;align-items:center;gap:10px;transition:opacity .2s;}
+.footer-back:hover{opacity:.7;}
+.footer-copy{font-family:'Barlow Condensed',sans-serif;font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--c);opacity:.25;}
+
+@media(max-width:1024px){
+  nav{padding:20px 32px;}nav.scrolled{padding:14px 32px;}
+  .hero-merch{grid-template-columns:1fr;padding:120px 32px 60px;gap:32px;}
+  .filtros{padding:0 32px;overflow-x:auto;}
+  .productos-section{padding:48px 32px;}
+  .productos-grid{grid-template-columns:1fr 1fr;}
+  .info-pedido{grid-template-columns:1fr;padding:40px 32px;}
+  .cta-merch{padding:60px 32px;}
+  footer{padding:32px 28px;}
+}
+@media(max-width:640px){
+  .nav-links{display:none;}
+  .productos-grid{grid-template-columns:1fr;}
+  .hm-foto{grid-template-columns:1fr 1fr;}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="navbar">
+  <div class="nav-logo"><a href="index.html"><img src="WakuCollective_Logo1.png" alt="WAKU Collective"></a></div>
+  <ul class="nav-links">
+    <li><a href="index.html">Inicio</a></li>
+    <li><a href="index.html#mision">Misión</a></li>
+    <li><a href="galeria.html">Galería</a></li>
+    <li><a href="voluntariado.html">Voluntariado</a></li>
+    <li><a href="merch.html" class="active">Merch</a></li>
+  </ul>
+  <a href="donaciones.html" class="nav-cta">Donar</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero-merch">
+  <div>
+    <p class="hm-eyebrow">Viste la causa</p>
+    <h1 class="hm-title">Cada prenda<br>lleva una<br><em>historia real.</em></h1>
+    <p class="hm-sub">Diseñada en colaboración con NITRAM, nuestra merch nace de la selva amazónica. Parte de cada venta apoya directamente las brigadas de WÁKU.</p>
+    <p class="hm-nota">Pedidos por WhatsApp · Envío a todo Ecuador</p>
+  </div>
+  <div class="hm-foto">
+    <div class="hm-foto-item"><img src="WAKU-T-Shirt1-Mockup.png" alt="WAKU Merch"></div>
+    <div class="hm-foto-item"><img src="WAKU-T-Shirt2-Mockup.png" alt="WAKU Merch"></div>
+    <div class="hm-foto-item"><img src="WAKU-T-Shirt3-Mockup.png" alt="WAKU Merch"></div>
+    <div class="hm-foto-item"><img src="WAKU-T-Shirt5-Mockup.png" alt="WAKU Merch"></div>
+  </div>
+</section>
+
+<!-- FILTROS -->
+<div class="filtros">
+  <button class="filtro-btn active" data-filter="todos">Todo</button>
+  <button class="filtro-btn" data-filter="camiseta">Camisetas</button>
+  <button class="filtro-btn" data-filter="buzo">Buzos</button>
+</div>
+
+<!-- PRODUCTOS -->
+<div class="productos-section">
+  <p class="sec-eyebrow reveal">Colección 2025</p>
+  <h2 class="sec-titulo reveal">Elige tu <em>pieza WÁKU</em></h2>
+
+  <div class="productos-grid" id="productosGrid">
+
+    <!-- 1 - Rooted in Community Camiseta -->
+    <div class="producto-card reveal" data-tipo="camiseta">
+      <div class="producto-img">
+        <span class="producto-tipo">Camiseta</span>
+        <img src="WAKU-T-Shirt1-Mockup.png" alt="Rooted in Community">
+      </div>
+      <div class="producto-info">
+        <h3 class="producto-nombre">Rooted in Community</h3>
+        <p class="producto-frase">Protect · Connect · Act — Amazonia Ecuador</p>
+        <div class="producto-bottom">
+          <div>
+            <p class="producto-precio"><span>$</span> 25</p>
+          </div>
+          <div class="tallas" data-nombre="Rooted in Community" data-tipo="Camiseta" data-precio="25">
+            <div class="talla" onclick="selectTalla(this)">S</div>
+            <div class="talla" onclick="selectTalla(this)">M</div>
+            <div class="talla" onclick="selectTalla(this)">L</div>
+            <div class="talla" onclick="selectTalla(this)">XL</div>
+          </div>
+        </div>
+        <a href="#" class="btn-wsp" style="margin-top:14px;width:100%;justify-content:center;" onclick="pedirWhatsApp('Rooted in Community','Camiseta','25',this.closest('.producto-card').querySelector('.talla.selected'));return false;">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+          Pedir ahora
+        </a>
+      </div>
+    </div>
+
+    <!-- 2 - Selva Negra Camiseta -->
+    <div class="producto-card reveal rd1" data-tipo="camiseta">
+      <div class="producto-img">
+        <span class="producto-tipo">Camiseta</span>
+        <img src="WAKU-T-Shirt2-Mockup.png" alt="Selva Negra">
+      </div>
+      <div class="producto-info">
+        <h3 class="producto-nombre">Selva Negra</h3>
+        <p class="producto-frase">Fauna amazónica · Ilustración a tinta</p>
+        <div class="producto-bottom">
+          <div>
+            <p class="producto-precio"><span>$</span> 25</p>
+          </div>
+          <div class="tallas" data-nombre="Selva Negra" data-tipo="Camiseta" data-precio="25">
+            <div class="talla" onclick="selectTalla(this)">S</div>
+            <div class="talla" onclick="selectTalla(this)">M</div>
+            <div class="talla" onclick="selectTalla(this)">L</div>
+            <div class="talla" onclick="selectTalla(this)">XL</div>
+          </div>
+        </div>
+        <a href="#" class="btn-wsp" style="margin-top:14px;width:100%;justify-content:center;" onclick="pedirWhatsApp('Selva Negra','Camiseta','25',this.closest('.producto-card').querySelector('.talla.selected'));return false;">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+          Pedir ahora
+        </a>
+      </div>
+    </div>
+
+    <!-- 3 - United for the Amazon Camiseta -->
+    <div class="producto-card reveal rd2" data-tipo="camiseta">
+      <div class="producto-img">
+        <span class="producto-tipo">Camiseta</span>
+        <img src="WAKU-T-Shirt3-Mockup.png" alt="United for the Amazon">
+      </div>
+      <div class="producto-info">
+        <h3 class="producto-nombre">United for the Amazon</h3>
+        <p class="producto-frase">Verde selva · Ilustración panorámica</p>
+        <div class="producto-bottom">
+          <div>
+            <p class="producto-precio"><span>$</span> 25</p>
+          </div>
+          <div class="tallas" data-nombre="United for the Amazon" data-tipo="Camiseta" data-precio="25">
+            <div class="talla" onclick="selectTalla(this)">S</div>
+            <div class="talla" onclick="selectTalla(this)">M</div>
+            <div class="talla" onclick="selectTalla(this)">L</div>
+            <div class="talla" onclick="selectTalla(this)">XL</div>
+          </div>
+        </div>
+        <a href="#" class="btn-wsp" style="margin-top:14px;width:100%;justify-content:center;" onclick="pedirWhatsApp('United for the Amazon','Camiseta','25',this.closest('.producto-card').querySelector('.talla.selected'));return false;">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+          Pedir ahora
+        </a>
+      </div>
+    </div>
+
+    <!-- 4 - Amigo que Ayuda Camiseta -->
+    <div class="producto-card reveal rd3" data-tipo="camiseta">
+      <div class="producto-img">
+        <span class="producto-tipo">Camiseta</span>
+        <img src="WAKU-T-Shirt5-Mockup.png" alt="Amigo que Ayuda">
+      </div>
+      <div class="producto-info">
+        <h3 class="producto-nombre">Amigo que Ayuda</h3>
+        <p class="producto-frase">Acompañar, cuidar & servir · WAKU Collective</p>
+        <div class="producto-bottom">
+          <div>
+            <p class="producto-precio"><span>$</span> 25</p>
+          </div>
+          <div class="tallas" data-nombre="Amigo que Ayuda" data-tipo="Camiseta" data-precio="25">
+            <div class="talla" onclick="selectTalla(this)">S</div>
+            <div class="talla" onclick="selectTalla(this)">M</div>
+            <div class="talla" onclick="selectTalla(this)">L</div>
+            <div class="talla" onclick="selectTalla(this)">XL</div>
+          </div>
+        </div>
+        <a href="#" class="btn-wsp" style="margin-top:14px;width:100%;justify-content:center;" onclick="pedirWhatsApp('Amigo que Ayuda','Camiseta','25',this.closest('.producto-card').querySelector('.talla.selected'));return false;">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+          Pedir ahora
+        </a>
+      </div>
+    </div>
+
+    <!-- BUZOS (mismos diseños, precio $28) -->
+
+    <!-- 5 - Rooted in Community Buzo -->
+    <div class="producto-card reveal" data-tipo="buzo">
+      <div class="producto-img">
+        <span class="producto-tipo">Buzo</span>
+        <img src="WAKU-T-Shirt1-Mockup.png" alt="Rooted in Community Buzo">
+      </div>
+      <div class="producto-info">
+        <h3 class="producto-nombre">Rooted in Community</h3>
+        <p class="producto-frase">Manga larga · Protect · Connect · Act</p>
+        <div class="producto-bottom">
+          <div>
+            <p class="producto-precio"><span>$</span> 28</p>
+          </div>
+          <div class="tallas" data-nombre="Rooted in Community" data-tipo="Buzo" data-precio="28">
+            <div class="talla" onclick="selectTalla(this)">S</div>
+            <div class="talla" onclick="selectTalla(this)">M</div>
+            <div class="talla" onclick="selectTalla(this)">L</div>
+            <div class="talla" onclick="selectTalla(this)">XL</div>
+          </div>
+        </div>
+        <a href="#" class="btn-wsp" style="margin-top:14px;width:100%;justify-content:center;" onclick="pedirWhatsApp('Rooted in Community','Buzo','28',this.closest('.producto-card').querySelector('.talla.selected'));return false;">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+          Pedir ahora
+        </a>
+      </div>
+    </div>
+
+    <!-- 6 - Selva Negra Buzo -->
+    <div class="producto-card reveal rd1" data-tipo="buzo">
+      <div class="producto-img">
+        <span class="producto-tipo">Buzo</span>
+        <img src="WAKU-T-Shirt2-Mockup.png" alt="Selva Negra Buzo">
+      </div>
+      <div class="producto-info">
+        <h3 class="producto-nombre">Selva Negra</h3>
+        <p class="producto-frase">Manga larga · Fauna amazónica</p>
+        <div class="producto-bottom">
+          <div>
+            <p class="producto-precio"><span>$</span> 28</p>
+          </div>
+          <div class="tallas" data-nombre="Selva Negra" data-tipo="Buzo" data-precio="28">
+            <div class="talla" onclick="selectTalla(this)">S</div>
+            <div class="talla" onclick="selectTalla(this)">M</div>
+            <div class="talla" onclick="selectTalla(this)">L</div>
+            <div class="talla" onclick="selectTalla(this)">XL</div>
+          </div>
+        </div>
+        <a href="#" class="btn-wsp" style="margin-top:14px;width:100%;justify-content:center;" onclick="pedirWhatsApp('Selva Negra','Buzo','28',this.closest('.producto-card').querySelector('.talla.selected'));return false;">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+          Pedir ahora
+        </a>
+      </div>
+    </div>
+
+    <!-- 7 - United for the Amazon Buzo -->
+    <div class="producto-card reveal rd2" data-tipo="buzo">
+      <div class="producto-img">
+        <span class="producto-tipo">Buzo</span>
+        <img src="WAKU-T-Shirt3-Mockup.png" alt="United for the Amazon Buzo">
+      </div>
+      <div class="producto-info">
+        <h3 class="producto-nombre">United for the Amazon</h3>
+        <p class="producto-frase">Manga larga · Verde selva</p>
+        <div class="producto-bottom">
+          <div>
+            <p class="producto-precio"><span>$</span> 28</p>
+          </div>
+          <div class="tallas" data-nombre="United for the Amazon" data-tipo="Buzo" data-precio="28">
+            <div class="talla" onclick="selectTalla(this)">S</div>
+            <div class="talla" onclick="selectTalla(this)">M</div>
+            <div class="talla" onclick="selectTalla(this)">L</div>
+            <div class="talla" onclick="selectTalla(this)">XL</div>
+          </div>
+        </div>
+        <a href="#" class="btn-wsp" style="margin-top:14px;width:100%;justify-content:center;" onclick="pedirWhatsApp('United for the Amazon','Buzo','28',this.closest('.producto-card').querySelector('.talla.selected'));return false;">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+          Pedir ahora
+        </a>
+      </div>
+    </div>
+
+    <!-- 8 - Amigo que Ayuda Buzo -->
+    <div class="producto-card reveal rd3" data-tipo="buzo">
+      <div class="producto-img">
+        <span class="producto-tipo">Buzo</span>
+        <img src="WAKU-T-Shirt5-Mockup.png" alt="Amigo que Ayuda Buzo">
+      </div>
+      <div class="producto-info">
+        <h3 class="producto-nombre">Amigo que Ayuda</h3>
+        <p class="producto-frase">Manga larga · WAKU Collective 2025</p>
+        <div class="producto-bottom">
+          <div>
+            <p class="producto-precio"><span>$</span> 28</p>
+          </div>
+          <div class="tallas" data-nombre="Amigo que Ayuda" data-tipo="Buzo" data-precio="28">
+            <div class="talla" onclick="selectTalla(this)">S</div>
+            <div class="talla" onclick="selectTalla(this)">M</div>
+            <div class="talla" onclick="selectTalla(this)">L</div>
+            <div class="talla" onclick="selectTalla(this)">XL</div>
+          </div>
+        </div>
+        <a href="#" class="btn-wsp" style="margin-top:14px;width:100%;justify-content:center;" onclick="pedirWhatsApp('Amigo que Ayuda','Buzo','28',this.closest('.producto-card').querySelector('.talla.selected'));return false;">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+          Pedir ahora
+        </a>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- INFO PEDIDO -->
+<div class="info-pedido">
+  <div class="info-card reveal">
+    <p class="info-num">01</p>
+    <h3 class="info-titulo">Elige tu prenda y talla</h3>
+    <p class="info-desc">Selecciona el diseño, el tipo de prenda y tu talla. Camisetas desde S hasta XL disponibles.</p>
+  </div>
+  <div class="info-card reveal rd1">
+    <p class="info-num">02</p>
+    <h3 class="info-titulo">Escríbenos por WhatsApp</h3>
+    <p class="info-desc">Al hacer clic en "Pedir ahora" se abre WhatsApp con tu pedido listo. Solo confirma y coordinamos la entrega.</p>
+  </div>
+  <div class="info-card reveal rd2">
+    <p class="info-num">03</p>
+    <h3 class="info-titulo">Envío a todo Ecuador</h3>
+    <p class="info-desc">Coordinamos la entrega por servicio de encomienda. El costo de envío se acuerda con el pedido.</p>
+  </div>
+</div>
+
+<!-- CTA FINAL -->
+<div class="cta-merch reveal">
+  <h2>¿Tienes alguna <em>pregunta?</em></h2>
+  <p>Escríbenos directamente por WhatsApp. Respondemos rápido y te ayudamos a elegir tu prenda ideal.</p>
+  <div class="cta-merch-btns">
+    <a href="https://wa.me/593983774454?text=Hola%20WÁKU%2C%20tengo%20una%20consulta%20sobre%20la%20merch" target="_blank" class="btn-primary-merch">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+      Consultar por WhatsApp
+    </a>
+    <a href="voluntariado.html" class="btn-outline-merch">Ser voluntario</a>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo"><a href="index.html"><img src="WakuCollective_Logo4.png" alt="WAKU Collective"></a></div>
+  <a href="index.html" class="footer-back">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 12H5m7-7l-7 7 7 7"/></svg>
+    Volver al inicio
+  </a>
+  <p class="footer-copy">© 2025 WÁKU Project · Todos los derechos reservados</p>
+</footer>
+
+<script>
+// NAV
+const nb=document.getElementById('navbar');
+window.addEventListener('scroll',()=>nb.classList.toggle('scrolled',scrollY>60));
+
+// REVEAL
+const obs=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');obs.unobserve(e.target);}}),{threshold:.1});
+document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+
+// FILTROS
+document.querySelectorAll('.filtro-btn').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    document.querySelectorAll('.filtro-btn').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    const f=btn.dataset.filter;
+    document.querySelectorAll('.producto-card').forEach(card=>{
+      if(f==='todos'||card.dataset.tipo===f) card.classList.remove('hidden');
+      else card.classList.add('hidden');
+    });
+  });
+});
+
+// TALLAS
+function selectTalla(el){
+  const grupo=el.closest('.tallas');
+  grupo.querySelectorAll('.talla').forEach(t=>t.classList.remove('selected'));
+  el.classList.add('selected');
+}
+
+// PEDIR POR WHATSAPP
+function pedirWhatsApp(nombre, tipo, precio, tallaEl){
+  const talla = tallaEl ? tallaEl.textContent.trim() : '';
+  let msg = 'Hola WÁKU! Quiero pedir:\n\n';
+  msg += '👕 *' + nombre + '*\n';
+  msg += '📦 Tipo: ' + tipo + '\n';
+  msg += '💵 Precio: $' + precio + '\n';
+  if(talla) msg += '📐 Talla: ' + talla + '\n';
+  else msg += '📐 Talla: (por confirmar)\n';
+  msg += '\n¿Tienen disponibilidad?';
+  const url = 'https://wa.me/593983774454?text=' + encodeURIComponent(msg);
+  window.open(url, '_blank');
+}
+</script>
+</body>
+</html>
