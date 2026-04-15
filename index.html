@@ -810,6 +810,43 @@ nav.scrolled {
 }
 
 /* ============================================
+/* ============================================
+   MERCH PREVIEW
+   ============================================ */
+.merch-preview {
+  padding: 80px 0 0;
+  background: #f5f0e8;
+  overflow: hidden;
+}
+.merch-header {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+  align-items: end;
+  padding: 0 60px 48px;
+}
+.merch-header-right {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+.merch-carrusel-wrap { overflow: hidden; width: 100%; }
+.merch-carrusel {
+  display: flex;
+  gap: 3px;
+  width: max-content;
+  animation: merch-scroll 18s linear infinite;
+}
+.merch-carrusel:hover { animation-play-state: paused; }
+.merch-slide { width:320px; height:320px; flex-shrink:0; background:#e8e4de; overflow:hidden; }
+.merch-slide img { width:100%; height:100%; object-fit:contain; object-position:center; display:block; transition:transform .6s cubic-bezier(.16,1,.3,1); }
+.merch-slide:hover img { transform:scale(1.04); }
+@keyframes merch-scroll {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(calc(-50% - 1.5px)); }
+}
+
+   /* ============================================
    SECCIÓN: ALIADOS
    ============================================ */
 .aliados {
@@ -1192,6 +1229,38 @@ footer {
     <div class="g-item g6">
       <img src="galeria-06.png" alt="Selva Amazónica" style="width:100%;height:100%;object-fit:cover;display:block;">
       <div class="g-label"><p>Selva Amazónica</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================
+     MERCH
+     ============================================ -->
+<section class="merch-preview" id="merch">
+  <div class="merch-header reveal">
+    <div>
+      <p class="section-label">Viste la causa</p>
+      <h2 class="mision-title reveal-delay-1"><em>Merch</em> WÁKU</h2>
+    </div>
+    <div class="merch-header-right">
+      <p class="mision-body" style="max-width:320px;">Prendas diseñadas con NITRAM. Cada compra apoya nuestras brigadas directamente.</p>
+      <a href="merch.html" class="btn-primary" style="margin-top:20px;display:inline-flex;">
+        Ver colección
+        <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+      </a>
+    </div>
+  </div>
+
+  <div class="merch-carrusel-wrap">
+    <div class="merch-carrusel" id="merchCarrusel">
+      <div class="merch-slide"><img src="Waku_CamisetaBeige1.png" alt="WAKU Merch"></div>
+      <div class="merch-slide"><img src="Waku_CamisetaNegra.png" alt="WAKU Merch"></div>
+      <div class="merch-slide"><img src="Waku_CamisetaVerde.png" alt="WAKU Merch"></div>
+      <div class="merch-slide"><img src="Waku_CamisetaBeige2.png" alt="WAKU Merch"></div>
+      <div class="merch-slide"><img src="Waku_CamisetaBeige1.png" alt="WAKU Merch"></div>
+      <div class="merch-slide"><img src="Waku_CamisetaNegra.png" alt="WAKU Merch"></div>
+      <div class="merch-slide"><img src="Waku_CamisetaVerde.png" alt="WAKU Merch"></div>
+      <div class="merch-slide"><img src="Waku_CamisetaBeige2.png" alt="WAKU Merch"></div>
     </div>
   </div>
 </section>
