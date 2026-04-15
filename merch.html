@@ -95,8 +95,11 @@ nav.scrolled{padding:16px 60px;}
   aspect-ratio:1/1;
   background:#e8e4de;
 }
-.producto-img img{width:100%;height:100%;object-fit:contain;object-position:center;background:#e8e4de;display:block;transition:transform .6s cubic-bezier(.16,1,.3,1);}
-.producto-card:hover .producto-img img{transform:scale(1.05);}
+.producto-img img{width:100%;height:100%;object-fit:contain;object-position:center;display:block;position:absolute;top:0;left:0;transition:opacity .4s ease;}
+.producto-img .img-back{opacity:1;}
+.producto-img .img-front{opacity:0;}
+.producto-card:hover .producto-img .img-back{opacity:0;}
+.producto-card:hover .producto-img .img-front{opacity:1;}
 
 .producto-tipo{
   position:absolute;top:12px;left:12px;z-index:2;
@@ -248,7 +251,8 @@ footer{background:var(--n);padding:40px 60px;display:flex;justify-content:space-
     <div class="producto-card reveal" data-tipo="camiseta">
       <div class="producto-img">
         <span class="producto-tipo">Camiseta</span>
-        <img src="WAKU-T-Shirt1-Mockup.png" alt="Rooted in Community">
+        <img class="img-back" src="Waku-T-Shirt-B1F.png" alt="Rooted in Community trasera">
+        <img class="img-front" src="Waku-T-Shirt-B1A.png" alt="Rooted in Community delantera">
       </div>
       <div class="producto-info">
         <h3 class="producto-nombre">Rooted in Community</h3>
@@ -275,7 +279,8 @@ footer{background:var(--n);padding:40px 60px;display:flex;justify-content:space-
     <div class="producto-card reveal rd1" data-tipo="camiseta">
       <div class="producto-img">
         <span class="producto-tipo">Camiseta</span>
-        <img src="WAKU-T-Shirt2-Mockup.png" alt="Selva Negra">
+        <img class="img-back" src="Waku-T-Shirt-NF.png" alt="Selva Negra trasera">
+        <img class="img-front" src="Waku-T-Shirt-NA.png" alt="Selva Negra delantera">
       </div>
       <div class="producto-info">
         <h3 class="producto-nombre">Selva Negra</h3>
@@ -302,7 +307,8 @@ footer{background:var(--n);padding:40px 60px;display:flex;justify-content:space-
     <div class="producto-card reveal rd2" data-tipo="camiseta">
       <div class="producto-img">
         <span class="producto-tipo">Camiseta</span>
-        <img src="WAKU-T-Shirt3-Mockup.png" alt="United for the Amazon">
+        <img class="img-back" src="Waku-T-Shirt-VF.png" alt="United for the Amazon trasera">
+        <img class="img-front" src="Waku-T-Shirt-VA.png" alt="United for the Amazon delantera">
       </div>
       <div class="producto-info">
         <h3 class="producto-nombre">United for the Amazon</h3>
@@ -329,7 +335,8 @@ footer{background:var(--n);padding:40px 60px;display:flex;justify-content:space-
     <div class="producto-card reveal rd3" data-tipo="camiseta">
       <div class="producto-img">
         <span class="producto-tipo">Camiseta</span>
-        <img src="WAKU-T-Shirt5-Mockup.png" alt="Amigo que Ayuda">
+        <img class="img-back" src="Waku-T-Shirt-B2F.png" alt="Amigo que Ayuda trasera">
+        <img class="img-front" src="Waku-T-Shirt-B1A.png" alt="Amigo que Ayuda delantera">
       </div>
       <div class="producto-info">
         <h3 class="producto-nombre">Amigo que Ayuda</h3>
@@ -358,7 +365,8 @@ footer{background:var(--n);padding:40px 60px;display:flex;justify-content:space-
     <div class="producto-card reveal" data-tipo="buzo">
       <div class="producto-img">
         <span class="producto-tipo">Buzo</span>
-        <img src="WAKU-T-Shirt1-Mockup.png" alt="Rooted in Community Buzo">
+        <img class="img-back" src="Waku-T-Shirt-B1F.png" alt="Rooted in Community Buzo trasera">
+        <img class="img-front" src="Waku-T-Shirt-B1A.png" alt="Rooted in Community Buzo delantera">
       </div>
       <div class="producto-info">
         <h3 class="producto-nombre">Rooted in Community</h3>
@@ -385,7 +393,8 @@ footer{background:var(--n);padding:40px 60px;display:flex;justify-content:space-
     <div class="producto-card reveal rd1" data-tipo="buzo">
       <div class="producto-img">
         <span class="producto-tipo">Buzo</span>
-        <img src="WAKU-T-Shirt2-Mockup.png" alt="Selva Negra Buzo">
+        <img class="img-back" src="Waku-T-Shirt-NF.png" alt="Selva Negra Buzo trasera">
+        <img class="img-front" src="Waku-T-Shirt-NA.png" alt="Selva Negra Buzo delantera">
       </div>
       <div class="producto-info">
         <h3 class="producto-nombre">Selva Negra</h3>
@@ -412,7 +421,8 @@ footer{background:var(--n);padding:40px 60px;display:flex;justify-content:space-
     <div class="producto-card reveal rd2" data-tipo="buzo">
       <div class="producto-img">
         <span class="producto-tipo">Buzo</span>
-        <img src="WAKU-T-Shirt3-Mockup.png" alt="United for the Amazon Buzo">
+        <img class="img-back" src="Waku-T-Shirt-VF.png" alt="United for the Amazon Buzo trasera">
+        <img class="img-front" src="Waku-T-Shirt-VA.png" alt="United for the Amazon Buzo delantera">
       </div>
       <div class="producto-info">
         <h3 class="producto-nombre">United for the Amazon</h3>
@@ -439,7 +449,8 @@ footer{background:var(--n);padding:40px 60px;display:flex;justify-content:space-
     <div class="producto-card reveal rd3" data-tipo="buzo">
       <div class="producto-img">
         <span class="producto-tipo">Buzo</span>
-        <img src="WAKU-T-Shirt5-Mockup.png" alt="Amigo que Ayuda Buzo">
+        <img class="img-back" src="Waku-T-Shirt-B2F.png" alt="Amigo que Ayuda Buzo trasera">
+        <img class="img-front" src="Waku-T-Shirt-B1A.png" alt="Amigo que Ayuda Buzo delantera">
       </div>
       <div class="producto-info">
         <h3 class="producto-nombre">Amigo que Ayuda</h3>
