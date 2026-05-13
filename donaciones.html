@@ -225,25 +225,56 @@ nav.scrolled{background:rgba(233,224,214,.95);backdrop-filter:blur(12px);padding
 .paypal-divider{display:flex;align-items:center;gap:16px;margin-bottom:3px;}
 .paypal-divider::before,.paypal-divider::after{content:'';flex:1;height:1px;background:var(--v);opacity:.12;}
 .paypal-divider-label{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:.24em;text-transform:uppercase;color:var(--v);opacity:.4;white-space:nowrap;}
-.paypal-opciones{display:grid;grid-template-columns:1fr 1fr;gap:3px;}
-.paypal-opcion{background:white;border:1px solid rgba(50,64,1,.1);padding:24px 28px;cursor:pointer;transition:border-color .25s,background .25s;}
-.paypal-opcion--activa{border-color:var(--v);background:#fafaf7;}
-.paypal-opcion-header{display:flex;align-items:flex-start;gap:14px;}
-.paypal-radio{font-size:18px;color:var(--v);opacity:.3;flex-shrink:0;margin-top:2px;transition:opacity .2s;}
-.paypal-opcion--activa .paypal-radio{opacity:1;}
-.paypal-opcion-titulo{font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:600;color:var(--v);margin-bottom:4px;}
-.paypal-opcion-sub{font-size:11px;color:var(--v);opacity:.45;font-family:'Barlow Condensed',sans-serif;letter-spacing:.1em;}
-.paypal-btn-wrap{margin-top:20px;padding-top:20px;border-top:1px solid rgba(50,64,1,.08);}
-.paypal-instruccion{font-size:12px;color:var(--v);opacity:.55;margin-bottom:14px;line-height:1.6;}
-.btn-paypal{
-  font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;
-  background:#003087;color:white;border:none;
-  padding:14px 32px;cursor:pointer;
-  display:flex;align-items:center;gap:10px;
-  transition:background .2s,gap .2s;width:100%;justify-content:center;
+
+.paypal-hero{
+  background:var(--v);
+  display:grid;grid-template-columns:1fr 1fr;
+  gap:0;
 }
-.btn-paypal:hover{background:#001f5c;gap:16px;}
-.paypal-nota{font-size:10px;color:var(--v);opacity:.35;margin-top:10px;line-height:1.6;text-align:center;}
+.paypal-hero-left{
+  padding:52px 48px;
+  position:relative;overflow:hidden;
+}
+.paypal-hero-left::after{
+  content:'DONA';
+  position:absolute;right:-20px;bottom:-20px;
+  font-family:'Cormorant Garamond',serif;
+  font-size:120px;font-weight:600;
+  color:rgba(233,224,214,.05);
+  line-height:1;pointer-events:none;
+}
+.paypal-eyebrow{font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;letter-spacing:.24em;text-transform:uppercase;color:var(--c);opacity:.45;margin-bottom:16px;}
+.paypal-titulo{font-family:'Cormorant Garamond',serif;font-size:clamp(28px,3vw,44px);font-weight:300;line-height:1.05;color:var(--c);margin-bottom:18px;}
+.paypal-titulo em{font-style:italic;}
+.paypal-desc{font-size:13px;line-height:1.85;color:var(--c);opacity:.55;margin-bottom:24px;max-width:360px;}
+.paypal-metodos{display:flex;gap:6px;flex-wrap:wrap;}
+.paypal-badge{
+  font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--c);border:1px solid rgba(233,224,214,.2);
+  padding:5px 10px;opacity:.6;
+}
+
+.paypal-hero-right{
+  background:rgba(233,224,214,.06);
+  border-left:1px solid rgba(233,224,214,.1);
+  padding:52px 48px;
+  display:flex;flex-direction:column;justify-content:center;
+}
+.paypal-instruccion{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--c);opacity:.4;margin-bottom:20px;}
+.paypal-seguro{font-size:11px;color:var(--c);opacity:.35;margin-top:16px;text-align:center;font-family:'Barlow Condensed',sans-serif;letter-spacing:.08em;}
+
+.paypal-banco-toggle{
+  background:rgba(50,64,1,.04);
+  border:1px solid rgba(50,64,1,.08);
+  padding:16px 28px;
+  display:flex;align-items:center;justify-content:center;gap:10px;
+  cursor:pointer;
+  font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;
+  color:var(--v);opacity:.5;
+  transition:opacity .2s,background .2s;
+  margin-top:3px;
+}
+.paypal-banco-toggle:hover{opacity:.9;background:rgba(50,64,1,.08);}
 
 
 footer{background:var(--n);padding:40px 60px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:20px;}
@@ -255,6 +286,9 @@ footer{background:var(--n);padding:40px 60px;display:flex;justify-content:space-
 @media(max-width:1024px){
   nav{padding:20px 32px;}nav.scrolled{padding:14px 32px;}
   .hero-don{grid-template-columns:1fr;padding:120px 32px 60px;gap:40px;}
+  .paypal-hero{grid-template-columns:1fr;}
+  .paypal-hero-right{border-left:none;border-top:1px solid rgba(233,224,214,.1);padding:36px 32px;}
+  .paypal-hero-left{padding:36px 32px;}
   .montos-section,.banco-section,.pasos-section{padding:60px 32px;}
   .montos-grid,.pasos-grid{grid-template-columns:1fr 1fr;}
   .banco-grid{grid-template-columns:1fr;}
@@ -347,40 +381,37 @@ footer{background:var(--n);padding:40px 60px;display:flex;justify-content:space-
     <span class="monto-libre-label">Monto libre · USD</span>
   </div>
 
-  <!-- BOTÓN PAYPAL -->
+  <!-- PAYPAL SECTION -->
   <div class="paypal-wrap reveal">
     <div class="paypal-divider">
       <span class="paypal-divider-label">Elige cómo donar</span>
     </div>
-    <div class="paypal-opciones">
-      <div class="paypal-opcion paypal-opcion--activa" id="opcionPaypal">
-        <div class="paypal-opcion-header">
-          <div class="paypal-radio" id="radioPaypal">●</div>
-          <div>
-            <p class="paypal-opcion-titulo">💳 Tarjeta de crédito / débito o PayPal</p>
-            <p class="paypal-opcion-sub">Internacional · Seguro · Instantáneo</p>
-          </div>
-        </div>
-        <div class="paypal-btn-wrap" id="paypalBtnWrap">
-          <p class="paypal-instruccion">Selecciona un monto arriba, luego completa tu donación aquí:</p>
-          <div id="paypal-container-JVJZCJS646P3L"></div>
-          <script>
-            paypal.HostedButtons({
-              hostedButtonId: "JVJZCJS646P3L",
-            }).render("#paypal-container-JVJZCJS646P3L")
-          </script>
-          <p class="paypal-nota">Puedes pagar con tarjeta de crédito sin necesidad de tener cuenta PayPal.</p>
+    <div class="paypal-hero">
+      <div class="paypal-hero-left">
+        <p class="paypal-eyebrow">💳 Internacional · Seguro · Instantáneo</p>
+        <h3 class="paypal-titulo">Dona ahora con<br><em>tarjeta o PayPal</em></h3>
+        <p class="paypal-desc">Desde cualquier parte del mundo. No necesitas cuenta PayPal — puedes pagar directo con tu tarjeta de crédito o débito.</p>
+        <div class="paypal-metodos">
+          <span class="paypal-badge">VISA</span>
+          <span class="paypal-badge">Mastercard</span>
+          <span class="paypal-badge">PayPal</span>
+          <span class="paypal-badge">American Express</span>
         </div>
       </div>
-      <div class="paypal-opcion" id="opcionBanco" onclick="toggleMetodo()">
-        <div class="paypal-opcion-header">
-          <div class="paypal-radio" id="radioBanco">○</div>
-          <div>
-            <p class="paypal-opcion-titulo">🏦 Transferencia bancaria</p>
-            <p class="paypal-opcion-sub">Solo Ecuador · Ver datos más abajo</p>
-          </div>
-        </div>
+      <div class="paypal-hero-right">
+        <p class="paypal-instruccion">Completa tu donación aquí:</p>
+        <div id="paypal-container-JVJZCJS646P3L"></div>
+        <script>
+          paypal.HostedButtons({
+            hostedButtonId: "JVJZCJS646P3L",
+          }).render("#paypal-container-JVJZCJS646P3L")
+        </script>
+        <p class="paypal-seguro">🔒 Pago 100% seguro · Encriptado por PayPal</p>
       </div>
+    </div>
+    <div class="paypal-banco-toggle" onclick="document.getElementById('datos-bancarios').scrollIntoView({behavior:'smooth'})">
+      <span>¿Prefieres transferencia bancaria?</span>
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
     </div>
   </div>
 </section>
