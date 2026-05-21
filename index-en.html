@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>WÁKU Collective — Amigo que ayuda</title>
+<title>WÁKU Collective — A Friend Who Helps</title>
 <link rel="icon" type="image/png" href="Waku_Logo_1.png">
 <script src="https://www.paypal.com/sdk/js?client-id=BAAwgnTy_XP5lDZBe8Hg329_IAj8VVuz5Y4BQqjVuEdyq6--DI-_xGkq87NWeGyVVccoSK3yPPUZ_X4xVA&components=hosted-buttons&disable-funding=venmo&currency=USD"></script>
 <style>
@@ -58,6 +58,46 @@
 @media(max-width:640px){
   .hero-dona-montos{grid-template-columns:1fr 1fr;}
 }
+
+/* LANGUAGE SWITCHER */
+.lang-switcher{position:relative;display:inline-block;}
+.lang-btn-new{
+  font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;
+  letter-spacing:.18em;text-transform:uppercase;
+  color:var(--v);background:none;
+  border:1.5px solid rgba(50,64,1,.2);
+  padding:7px 12px;cursor:pointer;
+  display:flex;align-items:center;gap:6px;
+  transition:all .2s;white-space:nowrap;
+}
+.lang-btn-new:hover{border-color:var(--v);background:rgba(50,64,1,.06);}
+.lang-btn-new .lang-arrow{transition:transform .2s;font-size:8px;opacity:.6;}
+.lang-switcher.open .lang-arrow{transform:rotate(180deg);}
+.lang-dropdown{
+  position:absolute;top:calc(100% + 4px);right:0;
+  background:white;
+  border:1px solid rgba(50,64,1,.15);
+  box-shadow:0 8px 24px rgba(0,0,0,.1);
+  min-width:140px;
+  z-index:600;
+  display:none;
+}
+.lang-switcher.open .lang-dropdown{display:block;}
+.lang-option{
+  display:flex;align-items:center;gap:10px;
+  padding:10px 14px;
+  font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:600;
+  letter-spacing:.14em;text-transform:uppercase;
+  color:var(--v);opacity:.6;
+  text-decoration:none;
+  transition:background .15s,opacity .15s;
+  border-bottom:1px solid rgba(50,64,1,.06);
+}
+.lang-option:last-child{border:none;}
+.lang-option:hover{background:rgba(50,64,1,.04);opacity:1;}
+.lang-option.active{opacity:1;font-weight:700;}
+.lang-flag{font-size:14px;}
+
 </style>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400;1,600&family=Barlow+Condensed:wght@300;400;500;600;700;800&family=Barlow:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
@@ -1105,16 +1145,23 @@ footer {
     <a href="index.html"><img src="WakuCollective_Logo1.png" alt="WAKU Collective"></a>
   </div>
   <ul class="nav-links">
-    <li><a href="#mision">Misión</a></li>
-    <li><a href="nosotros.html">Nosotros</a></li>
-    <li><a href="#brigadas">Brigadas</a></li>
-    <li><a href="#impacto">Impacto</a></li>
-    <li><a href="#historia">Historia</a></li>
-    <li><a href="#equipo">Equipo</a></li>
-    <li><a href="merch.html">Merch</a></li>
+    <li><a href="#mision">Mission</a></li>
+    <li><a href="about.html">About</a></li>
+    <li><a href="#brigadas">Field Work</a></li>
+    <li><a href="#impacto">Impact</a></li>
+    <li><a href="#historia">Story</a></li>
+    <li><a href="#equipo">Team</a></li>
+    <li><a href="merch-en.html">Merch</a></li>
   </ul>
-  <a href="index-en.html" class="lang-btn">🇺🇸 EN</a>
-  <a href="voluntariado.html" class="nav-cta">Únete</a>
+  <div class="lang-switcher" id="langSwitcher">
+  <button class="lang-btn-new" onclick="toggleLang()">🌐 EN <span class="lang-arrow">▾</span></button>
+  <div class="lang-dropdown">
+      <a href="index.html" class="lang-option"><span class="lang-flag">🇪🇸</span>Español</a>
+      <a href="index-en.html" class="lang-option active"><span class="lang-flag">🇺🇸</span>English</a>
+      <a href="index-it.html" class="lang-option"><span class="lang-flag">🇮🇹</span>Italiano</a>
+      </div>
+</div>
+  <a href="volunteer.html" class="nav-cta">Join Us</a>
 </nav>
 
 <!-- ============================================
@@ -1128,24 +1175,24 @@ footer {
   </div>
   <div class="hero-dona-content">
     <div class="hero-dona-left">
-      <p class="hero-dona-eyebrow">Wachirpas · Amazonía Ecuatoriana</p>
-      <h2 class="hero-dona-title">Tu donación llega<br><em>directo a ellos.</em></h2>
-      <p class="hero-dona-sub">El 100% de lo que donas va directo al campo. Sin intermediarios. Sin excusas.</p>
+      <p class="hero-dona-eyebrow">Wachirpas · Ecuadorian Amazon</p>
+      <h2 class="hero-dona-title">Your donation reaches<br><em>them directly.</em></h2>
+      <p class="hero-dona-sub">100% of what you donate goes directly to the field. No middlemen. No excuses.</p>
       <div class="hero-dona-stats">
         <div class="hero-dona-stat">
           <span class="hero-dona-num">500+</span>
-          <span class="hero-dona-label">Personas atendidas</span>
+          <span class="hero-dona-label">People served</span>
         </div>
         <div class="hero-dona-stat">
           <span class="hero-dona-num">100%</span>
-          <span class="hero-dona-label">Va al campo</span>
+          <span class="hero-dona-label">Goes to the field</span>
         </div>
       </div>
     </div>
     <div class="hero-dona-right">
       <div class="hero-dona-card">
-        <p class="hero-dona-card-eyebrow">Dona ahora · Seguro · Internacional</p>
-        <p class="hero-dona-card-titulo">Elige un monto</p>
+        <p class="hero-dona-card-eyebrow">Donate now · Secure · International</p>
+        <p class="hero-dona-card-titulo">Choose an amount</p>
         <div class="hero-dona-montos">
           <button class="hd-monto" onclick="selectHDMonto(this,'5')">$5</button>
           <button class="hd-monto" onclick="selectHDMonto(this,'15')">$15</button>
@@ -1154,12 +1201,12 @@ footer {
         </div>
         <div class="hd-libre-wrap">
           <span class="hd-libre-sym">$</span>
-          <input type="number" id="hdMontoLibre" class="hd-libre-input" placeholder="Otro monto" oninput="clearHDMonto()">
+          <input type="number" id="hdMontoLibre" class="hd-libre-input" placeholder="Other amount" oninput="clearHDMonto()">
           <span class="hd-libre-usd">USD</span>
         </div>
         <div id="hd-paypal-container"></div>
-        <p class="hero-dona-card-nota">💳 Tarjeta o PayPal · No necesitas cuenta PayPal</p>
-        <a href="donaciones.html" class="hd-banco-link">¿Prefieres transferencia bancaria? →</a>
+        <p class="hero-dona-card-nota">💳 Card or PayPal · No PayPal account needed</p>
+        <a href="donate.html" class="hd-banco-link">Prefer bank transfer? →</a>
       </div>
     </div>
   </div>
@@ -1172,13 +1219,13 @@ footer {
   <div class="hero-overlay"></div>
   <div class="hero-content">
     <div>
-      <p class="hero-eyebrow">Amigo que ayuda · Lengua Achuar</p>
+      <p class="hero-eyebrow">A Friend Who Helps · Achuar Language</p>
       <h1 class="hero-title">
-        Donde la ayuda<br>
-        <em>más se necesita,</em><br>
-        <strong>WÁKU llega.</strong>
+        Where help is needed<br>
+        <em>most,</em><br>
+        <strong>WÁKU arrives.</strong>
       </h1>
-      <p class="hero-sub">Salud, educación y acompañamiento social para quienes más lo necesitan. Desde la selva hasta la ciudad.</p>
+      <p class="hero-sub">Health, education and social support for those who need it most. From the jungle to the city.</p>
     </div>
     <div class="hero-right">
       <div class="hero-logo">
@@ -1186,7 +1233,7 @@ footer {
       </div>
       <div class="hero-scroll">
         <div class="hero-scroll-line"></div>
-        Explorar
+        Explore
       </div>
     </div>
   </div>
@@ -1195,21 +1242,21 @@ footer {
 <!-- MARQUEE -->
 <div class="marquee-bar">
   <div class="marquee-track">
-    <span class="marquee-item">Salud</span><span class="marquee-dot">·</span>
-    <span class="marquee-item">Educación</span><span class="marquee-dot">·</span>
-    <span class="marquee-item">Solidaridad</span><span class="marquee-dot">·</span>
-    <span class="marquee-item">Comunidad</span><span class="marquee-dot">·</span>
-    <span class="marquee-item">Amazonía</span><span class="marquee-dot">·</span>
-    <span class="marquee-item">Brigadas</span><span class="marquee-dot">·</span>
-    <span class="marquee-item">Esperanza</span><span class="marquee-dot">·</span>
+    <span class="marquee-item">Health</span><span class="marquee-dot">·</span>
+    <span class="marquee-item">Education</span><span class="marquee-dot">·</span>
+    <span class="marquee-item">Solidarity</span><span class="marquee-dot">·</span>
+    <span class="marquee-item">Community</span><span class="marquee-dot">·</span>
+    <span class="marquee-item">Amazonia</span><span class="marquee-dot">·</span>
+    <span class="marquee-item">Field Work</span><span class="marquee-dot">·</span>
+    <span class="marquee-item">Hope</span><span class="marquee-dot">·</span>
     <span class="marquee-item">Est. 2025</span><span class="marquee-dot">·</span>
-    <span class="marquee-item">Salud</span><span class="marquee-dot">·</span>
-    <span class="marquee-item">Educación</span><span class="marquee-dot">·</span>
-    <span class="marquee-item">Solidaridad</span><span class="marquee-dot">·</span>
-    <span class="marquee-item">Comunidad</span><span class="marquee-dot">·</span>
-    <span class="marquee-item">Amazonía</span><span class="marquee-dot">·</span>
-    <span class="marquee-item">Brigadas</span><span class="marquee-dot">·</span>
-    <span class="marquee-item">Esperanza</span><span class="marquee-dot">·</span>
+    <span class="marquee-item">Health</span><span class="marquee-dot">·</span>
+    <span class="marquee-item">Education</span><span class="marquee-dot">·</span>
+    <span class="marquee-item">Solidarity</span><span class="marquee-dot">·</span>
+    <span class="marquee-item">Community</span><span class="marquee-dot">·</span>
+    <span class="marquee-item">Amazonia</span><span class="marquee-dot">·</span>
+    <span class="marquee-item">Field Work</span><span class="marquee-dot">·</span>
+    <span class="marquee-item">Hope</span><span class="marquee-dot">·</span>
     <span class="marquee-item">Est. 2025</span><span class="marquee-dot">·</span>
   </div>
 </div>
@@ -1219,18 +1266,18 @@ footer {
      ============================================ -->
 <section class="mision" id="mision">
   <div class="mision-text">
-    <p class="section-label reveal">Nuestra misión</p>
+    <p class="section-label reveal">Our mission</p>
     <h2 class="mision-title reveal reveal-delay-1">
-      Construir puentes<br>
-      <em>entre personas</em><br>
-      y comunidades.
+      Building bridges<br>
+      <em>between people</em><br>
+      and communities.
     </h2>
     <p class="mision-body reveal reveal-delay-2">
-      Llevamos salud, educación y acompañamiento social a quienes más lo necesitan, transformando la solidaridad en un movimiento sostenible y humano que une corazones bajo un mismo propósito.
+      We bring health, education and social support to those who need it most, turning solidarity into a sustainable and human movement that unites hearts under one shared purpose.
     </p>
     <div class="reveal reveal-delay-3">
       <a href="#brigadas" class="btn-primary">
-        Conoce nuestras brigadas
+        Learn about our brigades
         <svg fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
       </a>
     </div>
@@ -1238,7 +1285,7 @@ footer {
   <div class="mision-photo">
     <img src="Brigada1.png" alt="Brigada WÁKU" style="width:100%;height:100%;object-fit:cover;object-position:center;display:block;">
     <div class="mision-photo-tag">
-      <p>Brigada Amazónica · 2025</p>
+      <p>Amazon Brigade · 2025</p>
     </div>
   </div>
 </section>
@@ -1249,42 +1296,42 @@ footer {
 <section class="valores">
   <div class="valores-header">
     <div>
-      <p class="section-label reveal" style="color:var(--c); opacity:0.35;">Lo que nos mueve</p>
+      <p class="section-label reveal" style="color:var(--c); opacity:0.35;">What drives us</p>
       <h2 class="valores-title reveal reveal-delay-1">
-        Los valores que<br>
-        <em>guían cada acción.</em>
+        The values that<br>
+        <em>guide every action.</em>
       </h2>
     </div>
     <p class="valores-intro reveal reveal-delay-2">
-      WÁKU no es solo una organización. Es una forma de entender el mundo: con empatía, con respeto, con la certeza de que juntos podemos transformar realidades.
+      WÁKU is more than an organization. It is a way of understanding the world: with empathy, with respect, with the certainty that together we can transform realities.
     </p>
   </div>
 
   <div class="valores-grid">
     <div class="valor-card reveal">
       <span class="valor-emoji">🌱</span>
-      <h3 class="valor-name">Empatía</h3>
-      <p class="valor-desc">Sentir lo que otros viven. Cada acción nace de la comprensión profunda de quien la necesita.</p>
+      <h3 class="valor-name">Empathy</h3>
+      <p class="valor-desc">Feeling what others live. Every action is born from a deep understanding of those in need.</p>
     </div>
     <div class="valor-card reveal reveal-delay-1">
       <span class="valor-emoji">🤝</span>
-      <h3 class="valor-name">Solidaridad</h3>
-      <p class="valor-desc">Caminar juntos. La ayuda más poderosa es la que se construye en comunidad.</p>
+      <h3 class="valor-name">Solidarity</h3>
+      <p class="valor-desc">Walking together. The most powerful help is the one built in community.</p>
     </div>
     <div class="valor-card reveal reveal-delay-2">
       <span class="valor-emoji">💚</span>
-      <h3 class="valor-name">Transparencia</h3>
-      <p class="valor-desc">Cada ayuda tiene un destino claro. La confianza se gana con hechos, no con palabras.</p>
+      <h3 class="valor-name">Transparency</h3>
+      <p class="valor-desc">Every contribution has a clear destination. Trust is earned through actions, not words.</p>
     </div>
     <div class="valor-card reveal reveal-delay-3">
       <span class="valor-emoji">🪶</span>
-      <h3 class="valor-name">Respeto</h3>
-      <p class="valor-desc">Honrar las raíces, las culturas y la naturaleza. La diversidad es nuestra fortaleza.</p>
+      <h3 class="valor-name">Respect</h3>
+      <p class="valor-desc">Honoring roots, cultures and nature. Diversity is our strength.</p>
     </div>
     <div class="valor-card reveal reveal-delay-4">
       <span class="valor-emoji">✨</span>
-      <h3 class="valor-name">Esperanza</h3>
-      <p class="valor-desc">Recordar que ayudar también sana. Cada gesto de solidaridad transforma a quien da y a quien recibe.</p>
+      <h3 class="valor-name">Hope</h3>
+      <p class="valor-desc">Remembering that helping also heals. Every act of solidarity transforms both the giver and the receiver.</p>
     </div>
     <div class="valor-card reveal reveal-delay-5" style="background:rgba(233,224,214,0.08); display:flex; align-items:center; justify-content:center; padding:40px;">
       <img src="Waku_Logo_1.png" alt="WAKU" style="height:80px; opacity:0.2;">
@@ -1298,39 +1345,39 @@ footer {
 <section class="galeria" id="brigadas">
   <div class="galeria-header">
     <div>
-      <p class="section-label reveal">Nuestro trabajo en campo</p>
+      <p class="section-label reveal">Our field work</p>
       <h2 class="galeria-title reveal reveal-delay-1">
-        Momentos que<br>
-        <em>cuentan historias.</em>
+        Moments that<br>
+        <em>tell stories.</em>
       </h2>
     </div>
-    <a href="galeria.html" class="btn-outline reveal">Ver todas las fotos</a>
+    <a href="gallery.html" class="btn-outline reveal">See all photos</a>
   </div>
 
   <div class="galeria-grid">
     <div class="g-item g1">
-      <img src="galeria-01.png" alt="Brigada médica · Amazonía" style="width:100%;height:100%;object-fit:cover;display:block;">
-      <div class="g-label"><p>Brigada médica · Amazonía</p></div>
+      <img src="galeria-01.png" alt="Medical brigade · Amazonia" style="width:100%;height:100%;object-fit:cover;display:block;">
+      <div class="g-label"><p>Medical brigade · Amazonia</p></div>
     </div>
     <div class="g-item g2">
-      <img src="galeria-02.png" alt="Comunidad Shuar" style="width:100%;height:100%;object-fit:cover;display:block;">
-      <div class="g-label"><p>Comunidad Shuar</p></div>
+      <img src="galeria-02.png" alt="Shuar Community" style="width:100%;height:100%;object-fit:cover;display:block;">
+      <div class="g-label"><p>Shuar Community</p></div>
     </div>
     <div class="g-item g3">
-      <img src="galeria-03.png" alt="Voluntarios en acción" style="width:100%;height:100%;object-fit:cover;display:block;">
-      <div class="g-label"><p>Voluntarios en acción</p></div>
+      <img src="galeria-03.png" alt="Volunteers in action" style="width:100%;height:100%;object-fit:cover;display:block;">
+      <div class="g-label"><p>Volunteers in action</p></div>
     </div>
     <div class="g-item g4">
-      <img src="galeria-04.png" alt="Educación comunitaria" style="width:100%;height:100%;object-fit:cover;display:block;">
-      <div class="g-label"><p>Educación comunitaria</p></div>
+      <img src="galeria-04.png" alt="Community education" style="width:100%;height:100%;object-fit:cover;display:block;">
+      <div class="g-label"><p>Community education</p></div>
     </div>
     <div class="g-item g5">
-      <img src="galeria-05.png" alt="Atención médica" style="width:100%;height:100%;object-fit:cover;display:block;">
-      <div class="g-label"><p>Atención médica</p></div>
+      <img src="galeria-05.png" alt="Medical care" style="width:100%;height:100%;object-fit:cover;display:block;">
+      <div class="g-label"><p>Medical care</p></div>
     </div>
     <div class="g-item g6">
-      <img src="galeria-06.png" alt="Selva Amazónica" style="width:100%;height:100%;object-fit:cover;display:block;">
-      <div class="g-label"><p>Selva Amazónica</p></div>
+      <img src="galeria-06.png" alt="Amazon Rainforest" style="width:100%;height:100%;object-fit:cover;display:block;">
+      <div class="g-label"><p>Amazon Rainforest</p></div>
     </div>
   </div>
 </section>
@@ -1341,13 +1388,13 @@ footer {
 <section class="merch-preview" id="merch">
   <div class="merch-header reveal">
     <div>
-      <p class="section-label">Viste la causa</p>
+      <p class="section-label">Wear the cause</p>
       <h2 class="mision-title reveal-delay-1"><em>Merch</em> WÁKU</h2>
     </div>
     <div class="merch-header-right">
-      <p class="mision-body" style="max-width:320px;">Prendas diseñadas con NITRAM. Cada compra apoya nuestras brigadas directamente.</p>
-      <a href="merch.html" class="btn-primary" style="margin-top:20px;display:inline-flex;">
-        Ver colección
+      <p class="mision-body" style="max-width:320px;">Designed in collaboration with NITRAM. Every purchase directly supports our brigades.</p>
+      <a href="merch-en.html" class="btn-primary" style="margin-top:20px;display:inline-flex;">
+        See collection
         <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
       </a>
     </div>
@@ -1377,39 +1424,39 @@ footer {
   </div>
 
   <div class="impacto-content">
-    <p class="section-label reveal" style="color:var(--c); opacity:0.35;">Nuestro impacto</p>
+    <p class="section-label reveal" style="color:var(--c); opacity:0.35;">Our impact</p>
     <h2 class="impacto-title reveal reveal-delay-1">
-      Números que<br>
-      <em>representan vidas.</em>
+      Numbers that<br>
+      <em>represent lives.</em>
     </h2>
 
     <div class="stats-list">
       <div class="stat-item reveal reveal-delay-1">
         <span class="stat-num">+500</span>
         <div class="stat-info">
-          <p class="stat-name">Personas atendidas</p>
-          <p class="stat-desc">En brigadas de salud comunitaria</p>
+          <p class="stat-name">People served</p>
+          <p class="stat-desc">In community health brigades</p>
         </div>
       </div>
       <div class="stat-item reveal reveal-delay-2">
         <span class="stat-num">12</span>
         <div class="stat-info">
-          <p class="stat-name">Comunidades visitadas</p>
-          <p class="stat-desc">Shuar, Achuar y comunidades rurales</p>
+          <p class="stat-name">Communities visited</p>
+          <p class="stat-desc">Shuar, Achuar and rural communities</p>
         </div>
       </div>
       <div class="stat-item reveal reveal-delay-3">
         <span class="stat-num">80+</span>
         <div class="stat-info">
-          <p class="stat-name">Voluntarios activos</p>
-          <p class="stat-desc">Médicos, abogados y profesionales</p>
+          <p class="stat-name">Active volunteers</p>
+          <p class="stat-desc">Doctors, lawyers and professionals</p>
         </div>
       </div>
       <div class="stat-item reveal reveal-delay-4">
         <span class="stat-num">2025</span>
         <div class="stat-info">
-          <p class="stat-name">Fundación</p>
-          <p class="stat-desc">Un movimiento que crece cada día</p>
+          <p class="stat-name">Founded</p>
+          <p class="stat-desc">A movement that grows every day</p>
         </div>
       </div>
     </div>
@@ -1423,14 +1470,14 @@ footer {
 <section class="equipo" id="equipo">
   <div class="equipo-header">
     <div>
-      <p class="section-label reveal">Quiénes somos</p>
+      <p class="section-label reveal">Who we are</p>
       <h2 class="mision-title reveal reveal-delay-1">
-        El equipo detrás<br>
-        <em>de cada brigada.</em>
+        The team behind<br>
+        <em>every brigade.</em>
       </h2>
     </div>
     <p class="mision-body reveal reveal-delay-2" style="max-width:380px;">
-      Jóvenes médicos, abogados, educadores y voluntarios que decidieron que la distancia no era una excusa suficiente para no ayudar.
+      Doctors, lawyers, educators and volunteers who decided that distance was not a good enough excuse to not help.
     </p>
   </div>
 
@@ -1439,42 +1486,42 @@ footer {
       <img src="equipo-01.png" alt="Mateo Andrade" style="width:100%;height:100%;object-fit:cover;object-position:center;display:block;">
       <div class="equipo-card-info">
         <p class="equipo-card-name">Mateo Andrade</p>
-        <p class="equipo-card-role">Presidente</p>
+        <p class="equipo-card-role">President</p>
       </div>
     </div>
     <div class="equipo-card reveal reveal-delay-1">
       <img src="equipo-04.png" alt="Dayanara Alemán" style="width:100%;height:100%;object-fit:cover;object-position:center;display:block;">
       <div class="equipo-card-info">
         <p class="equipo-card-name">Dayanara Alemán</p>
-        <p class="equipo-card-role">Vicepresidenta</p>
+        <p class="equipo-card-role">Vice President</p>
       </div>
     </div>
     <div class="equipo-card reveal reveal-delay-2">
       <img src="equipo-03.png" alt="Daniela Delgado" style="width:100%;height:100%;object-fit:cover;object-position:center;display:block;">
       <div class="equipo-card-info">
         <p class="equipo-card-name">Daniela Delgado</p>
-        <p class="equipo-card-role">Tesorera</p>
+        <p class="equipo-card-role">Treasurer</p>
       </div>
     </div>
     <div class="equipo-card reveal reveal-delay-3">
       <img src="equipo-05.png" alt="Javier Castillo" style="width:100%;height:100%;object-fit:cover;object-position:center;display:block;">
       <div class="equipo-card-info">
         <p class="equipo-card-name">Javier Castillo</p>
-        <p class="equipo-card-role">Secretario</p>
+        <p class="equipo-card-role">Secretary</p>
       </div>
     </div>
     <div class="equipo-card reveal reveal-delay-1">
       <img src="equipo-02.png" alt="David Sarango" style="width:100%;height:100%;object-fit:cover;object-position:center;display:block;">
       <div class="equipo-card-info">
         <p class="equipo-card-name">David Sarango</p>
-        <p class="equipo-card-role">Socio Fundador</p>
+        <p class="equipo-card-role">Co-Founder</p>
       </div>
     </div>
     <div class="equipo-card reveal reveal-delay-2">
       <img src="equipo-06.png" alt="Martin Vintimilla" style="width:100%;height:100%;object-fit:cover;object-position:center;display:block;">
       <div class="equipo-card-info">
         <p class="equipo-card-name">Martin Vintimilla</p>
-        <p class="equipo-card-role">Socio Fundador</p>
+        <p class="equipo-card-role">Co-Founder</p>
       </div>
     </div>
   </div>
@@ -1488,21 +1535,21 @@ footer {
     <img src="Historia.png" alt="Historia WÁKU" style="width:100%;height:100%;min-height:600px;object-fit:cover;object-position:center;display:block;">
   </div>
   <div class="story-text">
-    <p class="section-label reveal" style="color:var(--c); opacity:0.35;">Nuestra historia</p>
+    <p class="section-label reveal" style="color:var(--c); opacity:0.35;">Our story</p>
     <blockquote class="story-quote reveal reveal-delay-1">
-      "Todo comenzó en la selva, donde la distancia no se mide en kilómetros, sino en horas de camino."
+      "It all began in the jungle, where distance is not measured in kilometers but in hours of travel."
     </blockquote>
     <p class="story-body reveal reveal-delay-2">
-      En comunidades shuar y achuar, un grupo de jóvenes médicos, abogados y voluntarios se organizó para llevar salud, atención y esperanza donde nadie más llegaba. La gente los llamaba <strong style="color:var(--c); opacity:0.9;">WÁKU</strong> — amigo que extiende la mano sin pedir nada a cambio.
+      In Shuar and Achuar communities, a group of young doctors, lawyers and volunteers came together to bring health, care and hope where no one else was reaching. People called them <strong style="color:var(--c); opacity:0.9;">WÁKU</strong> — a friend who extends a hand and asks for nothing in return.
     </p>
     <p class="story-body reveal reveal-delay-3" style="margin-bottom:0;">
-      Hoy, WÁKU Project mantiene viva esa raíz amazónica pero mira hacia el futuro. Porque el espíritu de la selva también puede transformar las ciudades, las empresas y los corazones.
+      Today, WÁKU Project keeps that Amazonian root alive while looking toward the future. Because the spirit of the jungle can also transform cities, companies and hearts.
     </p>
     <div class="story-origin reveal reveal-delay-4">
       <div class="story-origin-logo">
         <img src="WakuCollective_Logo1.png" alt="WAKU Collective">
       </div>
-      <p class="story-origin-text">WAKU Collective<br>Est. 2025 · Latinoamérica</p>
+      <p class="story-origin-text">WAKU Collective<br>Est. 2025 · Latin America</p>
     </div>
   </div>
 </section>
@@ -1511,21 +1558,21 @@ footer {
      CTA
      ============================================ -->
 <section class="cta-section" id="unete">
-  <p class="cta-label reveal">Sé parte del cambio</p>
+  <p class="cta-label reveal">Be part of the change</p>
   <h2 class="cta-title reveal reveal-delay-1">
-    WÁKU no promete<br>
-    <em>cambiar el mundo.</em><br>
-    Promete algo más grande.
+    WÁKU doesn't promise to<br>
+    <em>change the world.</em><br>
+    It promises something greater.
   </h2>
   <p class="cta-sub reveal reveal-delay-2">
-    Hacer que el mundo cambie <em>contigo</em>. Únete como voluntario, aliado o donante y sé parte de la red solidaria más humana de Latinoamérica.
+    Making the world change <em>with you</em>. Join as a volunteer, partner or donor and be part of the most human solidarity network in Latin America.
   </p>
   <div class="cta-buttons reveal reveal-delay-3">
-    <a href="voluntariado.html" class="btn-primary">
-      Quiero ser voluntario
+    <a href="volunteer.html" class="btn-primary">
+      I want to volunteer
       <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
     </a>
-    <a href="donaciones.html" class="btn-outline">Hacer una donación</a>
+    <a href="donate.html" class="btn-outline">Make a donation</a>
   </div>
 </section>
 
@@ -1533,7 +1580,7 @@ footer {
      ALIADOS
      ============================================ -->
 <section class="aliados">
-  <p class="aliados-label">Nuestros aliados y patrocinadores</p>
+  <p class="aliados-label">Our partners and sponsors</p>
   <div class="aliados-logos">
     <div class="aliado-slot"><img src="Aliado1.png" alt="Aliado WÁKU" style="max-height:48px;max-width:140px;object-fit:contain;opacity:.6;filter:grayscale(1);transition:opacity .3s,filter .3s;" onmouseover="this.style.opacity='1';this.style.filter='grayscale(0)'" onmouseout="this.style.opacity='.6';this.style.filter='grayscale(1)'"></div>
     <div class="aliado-slot"><img src="Aliado2.png" alt="Aliado WÁKU" style="max-height:48px;max-width:140px;object-fit:contain;opacity:.6;filter:grayscale(1);transition:opacity .3s,filter .3s;" onmouseover="this.style.opacity='1';this.style.filter='grayscale(0)'" onmouseout="this.style.opacity='.6';this.style.filter='grayscale(1)'"></div>
@@ -1553,7 +1600,7 @@ footer {
       <div class="footer-logo">
         <img src="WakuCollective_Logo4.png" alt="WAKU Collective">
       </div>
-      <p class="footer-tagline">"Amigo que ayuda" — Lengua Achuar</p>
+      <p class="footer-tagline">"A Friend Who Helps" — Achuar Language</p>
       <div class="footer-social">
         <a href="https://www.instagram.com/waku_ec/" target="_blank" class="social-btn">
           <img src="instagram.png" alt="Instagram" style="width:18px;height:18px;object-fit:contain;filter:brightness(0) invert(1);opacity:.7;">
@@ -1562,40 +1609,40 @@ footer {
           <img src="tik-tok.png" alt="TikTok" style="width:18px;height:18px;object-fit:contain;filter:brightness(0) invert(1);opacity:.7;">
         </a>
         <a href="#" class="social-btn" id="btnEmailSocial">
-          <img src="mail.png" alt="Correo" style="width:18px;height:18px;object-fit:contain;filter:brightness(0) invert(1);opacity:.7;">
+          <img src="mail.png" alt="Email" style="width:18px;height:18px;object-fit:contain;filter:brightness(0) invert(1);opacity:.7;">
         </a>
       </div>
     </div>
     <div>
-      <p class="footer-col-title">Organización</p>
+      <p class="footer-col-title">Organization</p>
       <ul class="footer-links">
-        <li><a href="#mision">Misión y visión</a></li>
-        <li><a href="#equipo">Nuestro equipo</a></li>
-        <li><a href="#brigadas">Brigadas</a></li>
-        <li><a href="#impacto">Impacto</a></li>
-        <li><a href="#historia">Historia</a></li>
+        <li><a href="#">Mission and vision</a></li>
+        <li><a href="#">Our team</a></li>
+        <li><a href="#">Field Work</a></li>
+        <li><a href="#">Impacto</a></li>
+        <li><a href="#">Historia</a></li>
       </ul>
     </div>
     <div>
-      <p class="footer-col-title">Participar</p>
+      <p class="footer-col-title">Get involved</p>
       <ul class="footer-links">
-        <li><a href="voluntariado.html">Ser voluntario</a></li>
-        <li><a href="merch.html">Merch</a></li>
-        <li><a href="donaciones.html">Donaciones</a></li>
-        <li><a href="#brigadas">Brigadas abiertas</a></li>
+        <li><a href="volunteer.html">Volunteer</a></li>
+        <li><a href="merch-en.html">Merch</a></li>
+        <li><a href="donate.html">Donations</a></li>
+        <li><a href="#">Open brigades</a></li>
       </ul>
     </div>
     <div>
         <li><a href="#" id="footer-email-1"><span class="__cf_email__" data-cfemail="0770666c72586264476872736b68686c2964686a">[email&#160;protected]</span></a></li>
         <li><a href="https://www.instagram.com/waku_ec/" target="_blank">Instagram</a></li>
         <li><a href="https://www.tiktok.com/@waku.collective" target="_blank">TikTok</a></li>
-        <li><a href="nosotros.html">Ecuador · Latinoamérica</a></li>
-        <li><a href="#" id="footer-email-2" style="margin-top:8px; display:block;">Prensa y medios</a></li>
+        <li><a href="#">Ecuador · Latin America</a></li>
+        <li><a href="#" id="footer-email-2" style="margin-top:8px; display:block;">Press and media</a></li>
       </ul>
     </div>
   </div>
   <div class="footer-bottom">
-    <p class="footer-copy">© 2025 WÁKU Project · Todos los derechos reservados</p>
+    <p class="footer-copy">© 2025 WÁKU Project · All rights reserved</p>
     <div class="footer-collective">
       <img src="WakuCollective_Logo4.png" alt="WAKU Collective">
     </div>
@@ -1644,6 +1691,15 @@ footer {
     });
   }, { threshold: 0.12 });
   reveals.forEach(el => observer.observe(el));
+
+function toggleLang(){
+  document.getElementById('langSwitcher').classList.toggle('open');
+}
+document.addEventListener('click', function(e){
+  var sw = document.getElementById('langSwitcher');
+  if(sw && !sw.contains(e.target)) sw.classList.remove('open');
+});
+
 </script>
 
 </body>
