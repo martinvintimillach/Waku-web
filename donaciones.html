@@ -301,6 +301,46 @@ footer{background:var(--n);padding:40px 60px;display:flex;justify-content:space-
   footer{padding:32px 28px;}
 }
 .lang-btn{font-family:"Barlow Condensed",sans-serif;font-size:11px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--v);background:none;border:1.5px solid rgba(50,64,1,.2);padding:7px 14px;cursor:pointer;text-decoration:none;transition:all .2s;display:flex;align-items:center;gap:6px;white-space:nowrap;}.lang-btn:hover{border-color:var(--v);background:rgba(50,64,1,.06);}
+
+/* LANGUAGE SWITCHER */
+.lang-switcher{position:relative;display:inline-block;}
+.lang-btn-new{
+  font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;
+  letter-spacing:.18em;text-transform:uppercase;
+  color:var(--v);background:none;
+  border:1.5px solid rgba(50,64,1,.2);
+  padding:7px 12px;cursor:pointer;
+  display:flex;align-items:center;gap:6px;
+  transition:all .2s;white-space:nowrap;
+}
+.lang-btn-new:hover{border-color:var(--v);background:rgba(50,64,1,.06);}
+.lang-btn-new .lang-arrow{transition:transform .2s;font-size:8px;opacity:.6;}
+.lang-switcher.open .lang-arrow{transform:rotate(180deg);}
+.lang-dropdown{
+  position:absolute;top:calc(100% + 4px);right:0;
+  background:white;
+  border:1px solid rgba(50,64,1,.15);
+  box-shadow:0 8px 24px rgba(0,0,0,.1);
+  min-width:140px;
+  z-index:600;
+  display:none;
+}
+.lang-switcher.open .lang-dropdown{display:block;}
+.lang-option{
+  display:flex;align-items:center;gap:10px;
+  padding:10px 14px;
+  font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:600;
+  letter-spacing:.14em;text-transform:uppercase;
+  color:var(--v);opacity:.6;
+  text-decoration:none;
+  transition:background .15s,opacity .15s;
+  border-bottom:1px solid rgba(50,64,1,.06);
+}
+.lang-option:last-child{border:none;}
+.lang-option:hover{background:rgba(50,64,1,.04);opacity:1;}
+.lang-option.active{opacity:1;font-weight:700;}
+.lang-flag{font-size:14px;}
+
 </style>
 <script src="https://www.paypal.com/sdk/js?client-id=BAAwgnTy_XP5lDZBe8Hg329_IAj8VVuz5Y4BQqjVuEdyq6--DI-_xGkq87NWeGyVVccoSK3yPPUZ_X4xVA&components=hosted-buttons&disable-funding=venmo&currency=USD"></script>
 </head>
@@ -317,7 +357,14 @@ footer{background:var(--n);padding:40px 60px;display:flex;justify-content:space-
     <li><a href="voluntariado.html">Voluntariado</a></li>
     <li><a href="donaciones.html" class="active">Donar</a></li>
   </ul>
-  <a href="donate.html" class="lang-btn">🇺🇸 EN</a>
+  <div class="lang-switcher" id="langSwitcher">
+  <button class="lang-btn-new" onclick="toggleLang()">🌐 ES <span class="lang-arrow">▾</span></button>
+  <div class="lang-dropdown">
+      <a href="donaciones.html" class="lang-option active"><span class="lang-flag">🇪🇸</span>Español</a>
+      <a href="donate.html" class="lang-option"><span class="lang-flag">🇺🇸</span>English</a>
+      <a href="donazioni.html" class="lang-option"><span class="lang-flag">🇮🇹</span>Italiano</a>
+      </div>
+</div>
   <a href="#datos-bancarios" class="nav-cta" onclick="document.getElementById('datos-bancarios').scrollIntoView({behavior:'smooth'});return false;">Donar ahora</a>
 </nav>
 
@@ -612,6 +659,15 @@ footer{background:var(--n);padding:40px 60px;display:flex;justify-content:space-
       },3000);
     });
   }
+
+function toggleLang(){
+  document.getElementById('langSwitcher').classList.toggle('open');
+}
+document.addEventListener('click', function(e){
+  var sw = document.getElementById('langSwitcher');
+  if(sw && !sw.contains(e.target)) sw.classList.remove('open');
+});
+
 </script>
 
 </body>
