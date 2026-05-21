@@ -200,6 +200,46 @@ footer{background:var(--n);padding:40px 60px;display:flex;justify-content:space-
   .cta-nos::before{font-size:80px;}
 }
 .lang-btn{font-family:"Barlow Condensed",sans-serif;font-size:11px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--v);background:none;border:1.5px solid rgba(50,64,1,.2);padding:7px 14px;cursor:pointer;text-decoration:none;transition:all .2s;display:flex;align-items:center;gap:6px;white-space:nowrap;}.lang-btn:hover{border-color:var(--v);background:rgba(50,64,1,.06);}
+
+/* LANGUAGE SWITCHER */
+.lang-switcher{position:relative;display:inline-block;}
+.lang-btn-new{
+  font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;
+  letter-spacing:.18em;text-transform:uppercase;
+  color:var(--v);background:none;
+  border:1.5px solid rgba(50,64,1,.2);
+  padding:7px 12px;cursor:pointer;
+  display:flex;align-items:center;gap:6px;
+  transition:all .2s;white-space:nowrap;
+}
+.lang-btn-new:hover{border-color:var(--v);background:rgba(50,64,1,.06);}
+.lang-btn-new .lang-arrow{transition:transform .2s;font-size:8px;opacity:.6;}
+.lang-switcher.open .lang-arrow{transform:rotate(180deg);}
+.lang-dropdown{
+  position:absolute;top:calc(100% + 4px);right:0;
+  background:white;
+  border:1px solid rgba(50,64,1,.15);
+  box-shadow:0 8px 24px rgba(0,0,0,.1);
+  min-width:140px;
+  z-index:600;
+  display:none;
+}
+.lang-switcher.open .lang-dropdown{display:block;}
+.lang-option{
+  display:flex;align-items:center;gap:10px;
+  padding:10px 14px;
+  font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:600;
+  letter-spacing:.14em;text-transform:uppercase;
+  color:var(--v);opacity:.6;
+  text-decoration:none;
+  transition:background .15s,opacity .15s;
+  border-bottom:1px solid rgba(50,64,1,.06);
+}
+.lang-option:last-child{border:none;}
+.lang-option:hover{background:rgba(50,64,1,.04);opacity:1;}
+.lang-option.active{opacity:1;font-weight:700;}
+.lang-flag{font-size:14px;}
+
 </style>
 </head>
 <body>
@@ -214,7 +254,14 @@ footer{background:var(--n);padding:40px 60px;display:flex;justify-content:space-
     <li><a href="voluntariado.html">Voluntariado</a></li>
     <li><a href="merch.html">Merch</a></li>
   </ul>
-  <a href="about.html" class="lang-btn">🇺🇸 EN</a>
+  <div class="lang-switcher" id="langSwitcher">
+  <button class="lang-btn-new" onclick="toggleLang()">🌐 ES <span class="lang-arrow">▾</span></button>
+  <div class="lang-dropdown">
+      <a href="nosotros.html" class="lang-option active"><span class="lang-flag">🇪🇸</span>Español</a>
+      <a href="about.html" class="lang-option"><span class="lang-flag">🇺🇸</span>English</a>
+      <a href="chi-siamo.html" class="lang-option"><span class="lang-flag">🇮🇹</span>Italiano</a>
+      </div>
+</div>
   <a href="donaciones.html" class="nav-cta">Donar</a>
 </nav>
 
@@ -255,10 +302,7 @@ footer{background:var(--n);padding:40px 60px;display:flex;justify-content:space-
     <p class="sec-body reveal">Hoy, WÁKU es un colectivo de voluntarios comprometidos — médicos, abogados, educadores y personas de distintas profesiones — que invierten su tiempo libre en llevar brigadas a comunidades Shuar y Achuar en la Amazonia ecuatoriana.</p>
   </div>
   <div class="historia-foto reveal">
-    <div class="historia-foto-ph">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
-      <p>Foto historia · 600×520px</p>
-    </div>
+    <img src="Historia.png" alt="Historia WÁKU" style="width:100%;height:100%;min-height:520px;object-fit:cover;object-position:center;display:block;">
   </div>
 </section>
 
