@@ -5,6 +5,60 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>WÁKU Collective — Amigo que ayuda</title>
 <link rel="icon" type="image/png" href="Waku_Logo_1.png">
+<script src="https://www.paypal.com/sdk/js?client-id=BAAwgnTy_XP5lDZBe8Hg329_IAj8VVuz5Y4BQqjVuEdyq6--DI-_xGkq87NWeGyVVccoSK3yPPUZ_X4xVA&components=hosted-buttons&disable-funding=venmo&currency=USD"></script>
+<style>
+/* HERO DONACIONES */
+.hero-dona{position:relative;min-height:100vh;display:flex;align-items:center;overflow:hidden;}
+.hero-dona-bg{position:absolute;inset:0;z-index:0;}
+.hero-dona-bg img{width:100%;height:100%;object-fit:cover;object-position:center;display:block;}
+.hero-dona-overlay{position:absolute;inset:0;background:linear-gradient(to right,rgba(10,18,0,.82) 0%,rgba(10,18,0,.55) 55%,rgba(10,18,0,.75) 100%);}
+.hero-dona-content{position:relative;z-index:2;width:100%;max-width:1200px;margin:0 auto;padding:120px 60px 80px;display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center;}
+
+/* LEFT */
+.hero-dona-eyebrow{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:.32em;text-transform:uppercase;color:var(--c);opacity:.5;margin-bottom:20px;display:flex;align-items:center;gap:12px;}
+.hero-dona-eyebrow::before{content:'';display:block;width:24px;height:1px;background:var(--c);opacity:.5;}
+.hero-dona-title{font-family:'Cormorant Garamond',serif;font-size:clamp(44px,5.5vw,76px);font-weight:300;line-height:.95;color:var(--c);margin-bottom:24px;}
+.hero-dona-title em{font-style:italic;}
+.hero-dona-sub{font-size:15px;line-height:1.85;color:var(--c);opacity:.65;max-width:380px;margin-bottom:36px;}
+.hero-dona-stats{display:flex;gap:32px;}
+.hero-dona-stat{border-left:2px solid rgba(233,224,214,.25);padding-left:16px;}
+.hero-dona-num{display:block;font-family:'Cormorant Garamond',serif;font-size:40px;font-weight:600;color:var(--c);line-height:1;}
+.hero-dona-label{font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--c);opacity:.4;margin-top:4px;display:block;}
+
+/* RIGHT — CARD */
+.hero-dona-right{}
+.hero-dona-card{background:white;padding:36px;box-shadow:0 24px 64px rgba(0,0,0,.3);}
+.hero-dona-card-eyebrow{font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:var(--v);opacity:.4;margin-bottom:16px;}
+.hero-dona-card-titulo{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:600;color:var(--v);margin-bottom:16px;}
+.hero-dona-montos{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:12px;}
+.hd-monto{
+  font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:600;color:var(--v);
+  background:none;border:1.5px solid rgba(50,64,1,.15);
+  padding:12px 6px;cursor:pointer;
+  transition:all .2s;position:relative;
+}
+.hd-monto:hover{border-color:var(--v);background:rgba(50,64,1,.04);}
+.hd-monto.selected{background:var(--v);color:var(--c);border-color:var(--v);}
+.hd-monto.selected .hd-popular-tag{background:var(--c);color:var(--v);}
+.hd-monto-popular{border-color:var(--v);}
+.hd-popular-tag{font-family:'Barlow Condensed',sans-serif;font-size:7px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;background:var(--v);color:var(--c);padding:2px 5px;display:block;margin-top:2px;}
+.hd-libre-wrap{display:flex;align-items:center;gap:8px;border:1.5px solid rgba(50,64,1,.12);padding:10px 14px;margin-bottom:16px;transition:border-color .2s;}
+.hd-libre-wrap:focus-within{border-color:var(--v);}
+.hd-libre-sym{font-family:'Cormorant Garamond',serif;font-size:20px;color:var(--v);opacity:.4;}
+.hd-libre-input{flex:1;border:none;outline:none;font-family:'Cormorant Garamond',serif;font-size:20px;color:var(--v);background:none;}
+.hd-libre-input::placeholder{color:rgba(50,64,1,.2);}
+.hd-libre-usd{font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;letter-spacing:.18em;color:var(--v);opacity:.3;}
+.hero-dona-card-nota{font-size:10px;color:var(--v);opacity:.4;text-align:center;margin-top:10px;font-family:'Barlow Condensed',sans-serif;letter-spacing:.08em;}
+.hd-banco-link{display:block;text-align:center;margin-top:10px;font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--v);opacity:.35;text-decoration:none;transition:opacity .2s;}
+.hd-banco-link:hover{opacity:.7;}
+
+@media(max-width:1024px){
+  .hero-dona-content{grid-template-columns:1fr;padding:100px 32px 60px;gap:40px;}
+}
+@media(max-width:640px){
+  .hero-dona-montos{grid-template-columns:1fr 1fr;}
+}
+</style>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400;1,600&family=Barlow+Condensed:wght@300;400;500;600;700;800&family=Barlow:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
 /* ============================================
@@ -1066,6 +1120,51 @@ footer {
 <!-- ============================================
      HERO
      ============================================ -->
+<!-- HERO DONACIONES -->
+<section class="hero-dona" id="dona">
+  <div class="hero-dona-bg">
+    <img src="wachirpas-hero.png" alt="Comunidad Wachirpas · WÁKU">
+    <div class="hero-dona-overlay"></div>
+  </div>
+  <div class="hero-dona-content">
+    <div class="hero-dona-left">
+      <p class="hero-dona-eyebrow">Wachirpas · Amazonía Ecuatoriana</p>
+      <h2 class="hero-dona-title">Tu donación llega<br><em>directo a ellos.</em></h2>
+      <p class="hero-dona-sub">El 100% de lo que donas va directo al campo. Sin intermediarios. Sin excusas.</p>
+      <div class="hero-dona-stats">
+        <div class="hero-dona-stat">
+          <span class="hero-dona-num">500+</span>
+          <span class="hero-dona-label">Personas atendidas</span>
+        </div>
+        <div class="hero-dona-stat">
+          <span class="hero-dona-num">100%</span>
+          <span class="hero-dona-label">Va al campo</span>
+        </div>
+      </div>
+    </div>
+    <div class="hero-dona-right">
+      <div class="hero-dona-card">
+        <p class="hero-dona-card-eyebrow">Dona ahora · Seguro · Internacional</p>
+        <p class="hero-dona-card-titulo">Elige un monto</p>
+        <div class="hero-dona-montos">
+          <button class="hd-monto" onclick="selectHDMonto(this,'5')">$5</button>
+          <button class="hd-monto" onclick="selectHDMonto(this,'15')">$15</button>
+          <button class="hd-monto hd-monto-popular" onclick="selectHDMonto(this,'30')">$30 <span class="hd-popular-tag">popular</span></button>
+          <button class="hd-monto" onclick="selectHDMonto(this,'50')">$50</button>
+        </div>
+        <div class="hd-libre-wrap">
+          <span class="hd-libre-sym">$</span>
+          <input type="number" id="hdMontoLibre" class="hd-libre-input" placeholder="Otro monto" oninput="clearHDMonto()">
+          <span class="hd-libre-usd">USD</span>
+        </div>
+        <div id="hd-paypal-container"></div>
+        <p class="hero-dona-card-nota">💳 Tarjeta o PayPal · No necesitas cuenta PayPal</p>
+        <a href="donaciones.html" class="hd-banco-link">¿Prefieres transferencia bancaria? →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
 <section class="hero" id="hero">
   <div class="hero-photo">
     <img src="FotoPrincipal.png" alt="WÁKU — Amigo que ayuda" style="width:100%;height:100%;object-fit:cover;object-position:center;display:block;">
@@ -1514,6 +1613,20 @@ footer {
   });
 
   // Cursor personalizado
+  // HERO DONACIONES — PayPal
+  paypal.HostedButtons({
+    hostedButtonId: "JVJZCJS646P3L",
+  }).render("#hd-paypal-container");
+
+  function selectHDMonto(btn, monto){
+    document.querySelectorAll('.hd-monto').forEach(b => b.classList.remove('selected'));
+    btn.classList.add('selected');
+    document.getElementById('hdMontoLibre').value = '';
+  }
+  function clearHDMonto(){
+    document.querySelectorAll('.hd-monto').forEach(b => b.classList.remove('selected'));
+  }
+
   // Navbar scroll
   const navbar = document.getElementById('navbar');
   window.addEventListener('scroll', () => {
