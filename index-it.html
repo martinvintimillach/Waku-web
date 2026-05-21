@@ -1,0 +1,1706 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WÁKU Collective — Un amico che aiuta</title>
+<link rel="icon" type="image/png" href="Waku_Logo_1.png">
+<script src="https://www.paypal.com/sdk/js?client-id=BAAwgnTy_XP5lDZBe8Hg329_IAj8VVuz5Y4BQqjVuEdyq6--DI-_xGkq87NWeGyVVccoSK3yPPUZ_X4xVA&components=hosted-buttons&disable-funding=venmo&currency=USD"></script>
+<style>
+/* HERO DONACIONES */
+.hero-dona{position:relative;min-height:100vh;display:flex;align-items:center;overflow:hidden;}
+.hero-dona-bg{position:absolute;inset:0;z-index:0;}
+.hero-dona-bg img{width:100%;height:100%;object-fit:cover;object-position:center;display:block;}
+.hero-dona-overlay{position:absolute;inset:0;background:linear-gradient(to right,rgba(10,18,0,.82) 0%,rgba(10,18,0,.55) 55%,rgba(10,18,0,.75) 100%);}
+.hero-dona-content{position:relative;z-index:2;width:100%;max-width:1200px;margin:0 auto;padding:120px 60px 80px;display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center;}
+
+/* LEFT */
+.hero-dona-eyebrow{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:.32em;text-transform:uppercase;color:var(--c);opacity:.5;margin-bottom:20px;display:flex;align-items:center;gap:12px;}
+.hero-dona-eyebrow::before{content:'';display:block;width:24px;height:1px;background:var(--c);opacity:.5;}
+.hero-dona-title{font-family:'Cormorant Garamond',serif;font-size:clamp(44px,5.5vw,76px);font-weight:300;line-height:.95;color:var(--c);margin-bottom:24px;}
+.hero-dona-title em{font-style:italic;}
+.hero-dona-sub{font-size:15px;line-height:1.85;color:var(--c);opacity:.65;max-width:380px;margin-bottom:36px;}
+.hero-dona-stats{display:flex;gap:32px;}
+.hero-dona-stat{border-left:2px solid rgba(233,224,214,.25);padding-left:16px;}
+.hero-dona-num{display:block;font-family:'Cormorant Garamond',serif;font-size:40px;font-weight:600;color:var(--c);line-height:1;}
+.hero-dona-label{font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--c);opacity:.4;margin-top:4px;display:block;}
+
+/* RIGHT — CARD */
+.hero-dona-right{}
+.hero-dona-card{background:white;padding:36px;box-shadow:0 24px 64px rgba(0,0,0,.3);}
+.hero-dona-card-eyebrow{font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:var(--v);opacity:.4;margin-bottom:16px;}
+.hero-dona-card-titulo{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:600;color:var(--v);margin-bottom:16px;}
+.hero-dona-montos{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:12px;}
+.hd-monto{
+  font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:600;color:var(--v);
+  background:none;border:1.5px solid rgba(50,64,1,.15);
+  padding:12px 6px;cursor:pointer;
+  transition:all .2s;position:relative;
+}
+.hd-monto:hover{border-color:var(--v);background:rgba(50,64,1,.04);}
+.hd-monto.selected{background:var(--v);color:var(--c);border-color:var(--v);}
+.hd-monto.selected .hd-popular-tag{background:var(--c);color:var(--v);}
+.hd-monto-popular{border-color:var(--v);}
+.hd-popular-tag{font-family:'Barlow Condensed',sans-serif;font-size:7px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;background:var(--v);color:var(--c);padding:2px 5px;display:block;margin-top:2px;}
+.hd-libre-wrap{display:flex;align-items:center;gap:8px;border:1.5px solid rgba(50,64,1,.12);padding:10px 14px;margin-bottom:16px;transition:border-color .2s;}
+.hd-libre-wrap:focus-within{border-color:var(--v);}
+.hd-libre-sym{font-family:'Cormorant Garamond',serif;font-size:20px;color:var(--v);opacity:.4;}
+.hd-libre-input{flex:1;border:none;outline:none;font-family:'Cormorant Garamond',serif;font-size:20px;color:var(--v);background:none;}
+.hd-libre-input::placeholder{color:rgba(50,64,1,.2);}
+.hd-libre-usd{font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;letter-spacing:.18em;color:var(--v);opacity:.3;}
+.hero-dona-card-nota{font-size:10px;color:var(--v);opacity:.4;text-align:center;margin-top:10px;font-family:'Barlow Condensed',sans-serif;letter-spacing:.08em;}
+.hd-banco-link{display:block;text-align:center;margin-top:10px;font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--v);opacity:.35;text-decoration:none;transition:opacity .2s;}
+.hd-banco-link:hover{opacity:.7;}
+
+@media(max-width:1024px){
+  .hero-dona-content{grid-template-columns:1fr;padding:100px 32px 60px;gap:40px;}
+}
+@media(max-width:640px){
+  .hero-dona-montos{grid-template-columns:1fr 1fr;}
+}
+
+/* LANGUAGE SWITCHER */
+.lang-switcher{position:relative;display:inline-block;}
+.lang-btn-new{
+  font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;
+  letter-spacing:.18em;text-transform:uppercase;
+  color:var(--v);background:none;
+  border:1.5px solid rgba(50,64,1,.2);
+  padding:7px 12px;cursor:pointer;
+  display:flex;align-items:center;gap:6px;
+  transition:all .2s;white-space:nowrap;
+}
+.lang-btn-new:hover{border-color:var(--v);background:rgba(50,64,1,.06);}
+.lang-btn-new .lang-arrow{transition:transform .2s;font-size:8px;opacity:.6;}
+.lang-switcher.open .lang-arrow{transform:rotate(180deg);}
+.lang-dropdown{
+  position:absolute;top:calc(100% + 4px);right:0;
+  background:white;
+  border:1px solid rgba(50,64,1,.15);
+  box-shadow:0 8px 24px rgba(0,0,0,.1);
+  min-width:140px;
+  z-index:600;
+  display:none;
+}
+.lang-switcher.open .lang-dropdown{display:block;}
+.lang-option{
+  display:flex;align-items:center;gap:10px;
+  padding:10px 14px;
+  font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:600;
+  letter-spacing:.14em;text-transform:uppercase;
+  color:var(--v);opacity:.6;
+  text-decoration:none;
+  transition:background .15s,opacity .15s;
+  border-bottom:1px solid rgba(50,64,1,.06);
+}
+.lang-option:last-child{border:none;}
+.lang-option:hover{background:rgba(50,64,1,.04);opacity:1;}
+.lang-option.active{opacity:1;font-weight:700;}
+.lang-flag{font-size:14px;}
+
+</style>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400;1,600&family=Barlow+Condensed:wght@300;400;500;600;700;800&family=Barlow:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+/* ============================================
+   VARIABLES & RESET
+   ============================================ */
+:root {
+  --v: #324001;
+  --c: #e9e0d6;
+  --n: #0d0d0d;
+  --b: #ffffff;
+  --v2: #3f5201;
+  --c2: #d9cfc4;
+  --overlay: rgba(50,64,1,0.72);
+}
+
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--c);
+  color: var(--v);
+  font-family: 'Barlow', sans-serif;
+  font-weight: 300;
+  overflow-x: hidden;
+  cursor: default;
+}
+
+
+/* ============================================
+   NOISE TEXTURE OVERLAY
+   ============================================ */
+body::before {
+  content: '';
+  position: fixed; inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 100;
+  opacity: 0.5;
+}
+
+/* ============================================
+   NAV
+   ============================================ */
+nav {
+  position: fixed; top: 0; left: 0; right: 0;
+  z-index: 500;
+  padding: 24px 60px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  mix-blend-mode: normal;
+  background: rgba(233,224,214,0.95); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(50,64,1,0.1); transition: padding 0.4s ease;
+}
+nav.scrolled {
+  background: rgba(233,224,214,0.92);
+  backdrop-filter: blur(12px);
+  padding: 16px 60px;
+  border-bottom: 1px solid rgba(50,64,1,0.1);
+}
+.nav-logo img {
+  height: 32px;
+  display: block;
+}
+.nav-links {
+  display: flex;
+  gap: 40px;
+  list-style: none;
+}
+.nav-links a {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--v);
+  text-decoration: none;
+  opacity: 0.7;
+  transition: opacity 0.2s;
+}
+.nav-links a:hover { opacity: 1; }
+.nav-cta {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--c);
+  background: var(--v);
+  padding: 10px 22px;
+  text-decoration: none;
+  transition: background 0.2s;
+}
+.nav-cta:hover { background: var(--v2); }
+
+/* ============================================
+   HERO
+   ============================================ */
+.hero {
+  height: 100vh;
+  min-height: 700px;
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  overflow: hidden;
+}
+
+/* PHOTO PLACEHOLDER — HERO */
+.hero-photo {
+  position: absolute; inset: 0;
+  background: var(--v);
+  overflow: hidden;
+}
+.photo-placeholder {
+  width: 100%; height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  background: linear-gradient(160deg, #2a3500 0%, #1a2200 60%, #0d1500 100%);
+  position: relative;
+}
+.photo-placeholder::after {
+  content: '';
+  position: absolute; inset: 0;
+  background: radial-gradient(ellipse at 60% 40%, rgba(50,64,1,0.3) 0%, transparent 70%);
+}
+.photo-placeholder-icon {
+  width: 64px; height: 64px;
+  border: 2px solid rgba(233,224,214,0.25);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  position: relative; z-index: 1;
+}
+.photo-placeholder-icon svg {
+  width: 28px; height: 28px;
+  opacity: 0.4;
+}
+.photo-placeholder-text {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 10px;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: rgba(233,224,214,0.3);
+  position: relative; z-index: 1;
+}
+/* Variantes de color para placeholders */
+.ph-dark { background: linear-gradient(160deg, #1a2000 0%, #0d1300 100%); }
+.ph-mid  { background: linear-gradient(160deg, #2e3a02 0%, #1e2800 100%); }
+.ph-warm { background: linear-gradient(160deg, #3a2e10 0%, #241c08 100%); }
+.ph-soft { background: linear-gradient(135deg, #d9cfc4 0%, #c5b9ac 100%); }
+.ph-soft .photo-placeholder-icon { border-color: rgba(50,64,1,0.2); }
+.ph-soft .photo-placeholder-icon svg { color: var(--v); }
+.ph-soft .photo-placeholder-text { color: rgba(50,64,1,0.35); }
+
+.hero-overlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(to top, rgba(50,64,1,0.85) 0%, rgba(50,64,1,0.2) 50%, transparent 100%);
+  z-index: 2;
+}
+
+.hero-content {
+  position: relative; z-index: 3;
+  padding: 0 60px 72px;
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: flex-end;
+  gap: 40px;
+}
+
+.hero-eyebrow {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 10px;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  color: var(--c);
+  opacity: 0.6;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.hero-eyebrow::before {
+  content: '';
+  display: block;
+  width: 32px; height: 1px;
+  background: var(--c);
+  opacity: 0.5;
+}
+
+.hero-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(52px, 7vw, 96px);
+  font-weight: 300;
+  line-height: 0.95;
+  color: var(--c);
+  margin-bottom: 28px;
+}
+.hero-title em {
+  font-style: italic;
+  font-weight: 300;
+}
+.hero-title strong {
+  font-weight: 600;
+}
+
+.hero-sub {
+  font-size: 15px;
+  font-weight: 300;
+  line-height: 1.7;
+  color: var(--c);
+  opacity: 0.75;
+  max-width: 480px;
+}
+
+.hero-right {
+  text-align: right;
+  flex-shrink: 0;
+}
+.hero-logo img {
+  height: 52px;
+  margin-bottom: 20px;
+  display: block;
+  margin-left: auto;
+  filter: brightness(0) invert(1);
+  opacity: 0.9;
+}
+.hero-scroll {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 9px;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--c);
+  opacity: 0.4;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  justify-content: flex-end;
+}
+.hero-scroll-line {
+  width: 40px; height: 1px;
+  background: var(--c);
+  opacity: 0.4;
+  animation: scrollline 2s ease-in-out infinite;
+}
+@keyframes scrollline {
+  0%,100% { transform: scaleX(1); opacity:0.4; }
+  50% { transform: scaleX(0.5); opacity:0.8; }
+}
+
+/* Hero animation */
+.hero-content > * {
+  animation: fadein 1.2s cubic-bezier(0.16,1,0.3,1) both;
+}
+.hero-content > *:nth-child(2) { animation-delay: 0.15s; }
+@keyframes fadein {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ============================================
+   MARQUEE
+   ============================================ */
+.marquee-bar {
+  background: var(--v);
+  padding: 14px 0;
+  overflow: hidden;
+  white-space: nowrap;
+}
+.marquee-track {
+  display: inline-flex;
+  animation: marquee 22s linear infinite;
+}
+.marquee-item {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--c);
+  opacity: 0.55;
+  padding: 0 36px;
+}
+.marquee-dot {
+  color: var(--c);
+  opacity: 0.25;
+}
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+/* ============================================
+   SECCIÓN: MISIÓN
+   ============================================ */
+.mision {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  min-height: 600px;
+}
+
+.mision-text {
+  background: var(--c);
+  padding: 100px 72px 100px 60px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.section-label {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  color: var(--v);
+  opacity: 0.4;
+  margin-bottom: 28px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.section-label::before {
+  content: '';
+  display: block;
+  width: 24px; height: 1px;
+  background: var(--v);
+  opacity: 0.5;
+}
+
+.mision-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(36px, 3.5vw, 52px);
+  font-weight: 300;
+  line-height: 1.1;
+  color: var(--v);
+  margin-bottom: 28px;
+}
+.mision-title em { font-style: italic; }
+
+.mision-body {
+  font-size: 15px;
+  line-height: 1.85;
+  color: var(--v);
+  opacity: 0.72;
+  margin-bottom: 40px;
+  max-width: 420px;
+}
+
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--c);
+  background: var(--v);
+  padding: 14px 28px;
+  text-decoration: none;
+  transition: background 0.25s, gap 0.25s;
+  width: fit-content;
+}
+.btn-primary:hover { background: var(--v2); gap: 20px; }
+.btn-primary svg { width: 14px; height: 14px; }
+
+.btn-outline {
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--v);
+  border: 1.5px solid var(--v);
+  padding: 13px 28px;
+  text-decoration: none;
+  transition: background 0.25s, color 0.25s, gap 0.25s;
+  width: fit-content;
+}
+.btn-outline:hover { background: var(--v); color: var(--c); gap: 20px; }
+
+.mision-photo {
+  position: relative;
+  overflow: hidden;
+}
+.mision-photo .photo-placeholder {
+  height: 100%;
+  min-height: 500px;
+}
+.mision-photo-tag {
+  position: absolute;
+  bottom: 28px; right: 28px;
+  background: var(--c);
+  padding: 10px 16px;
+  z-index: 2;
+}
+.mision-photo-tag p {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--v);
+}
+
+/* ============================================
+   SECCIÓN: VALORES
+   ============================================ */
+.valores {
+  background: var(--v);
+  padding: 100px 60px;
+}
+
+.valores-header {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 60px;
+  margin-bottom: 72px;
+  align-items: end;
+}
+
+.valores-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(40px, 4vw, 60px);
+  font-weight: 300;
+  line-height: 1.05;
+  color: var(--c);
+}
+.valores-title em { font-style: italic; }
+
+.valores-intro {
+  font-size: 15px;
+  line-height: 1.8;
+  color: var(--c);
+  opacity: 0.65;
+  padding-top: 8px;
+}
+
+.valores-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2px;
+}
+
+.valor-card {
+  background: rgba(233,224,214,0.05);
+  border: 1px solid rgba(233,224,214,0.1);
+  padding: 40px 36px;
+  transition: background 0.3s;
+}
+.valor-card:hover { background: rgba(233,224,214,0.1); }
+
+.valor-emoji {
+  font-size: 22px;
+  margin-bottom: 20px;
+  display: block;
+}
+.valor-name {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 22px;
+  font-weight: 600;
+  color: var(--c);
+  margin-bottom: 12px;
+}
+.valor-desc {
+  font-size: 13px;
+  line-height: 1.75;
+  color: var(--c);
+  opacity: 0.55;
+}
+
+/* ============================================
+   SECCIÓN: GALERÍA / FOTOS
+   ============================================ */
+.galeria {
+  padding: 100px 60px;
+  background: var(--c);
+}
+
+.galeria-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 48px;
+}
+
+.galeria-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(36px, 3.5vw, 52px);
+  font-weight: 300;
+  line-height: 1.1;
+  color: var(--v);
+}
+.galeria-title em { font-style: italic; }
+
+.galeria-grid {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  grid-template-rows: 280px 280px;
+  gap: 3px;
+}
+
+/* Layout asimétrico editorial */
+.g1 { grid-column: 1 / 6; grid-row: 1; }
+.g2 { grid-column: 6 / 9; grid-row: 1; }
+.g3 { grid-column: 9 / 13; grid-row: 1 / 3; }
+.g4 { grid-column: 1 / 4; grid-row: 2; }
+.g5 { grid-column: 4 / 7; grid-row: 2; }
+.g6 { grid-column: 7 / 9; grid-row: 2; }
+
+.g-item {
+  position: relative;
+  overflow: hidden;
+}
+.g-item .photo-placeholder {
+  height: 100%;
+  transition: transform 0.6s cubic-bezier(0.16,1,0.3,1);
+}
+.g-item:hover .photo-placeholder { transform: scale(1.04); }
+
+.g-label {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  background: linear-gradient(to top, rgba(50,64,1,0.7) 0%, transparent 100%);
+  padding: 32px 20px 16px;
+  z-index: 2;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+.g-item:hover .g-label { opacity: 1; }
+.g-label p {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--c);
+}
+
+/* ============================================
+   SECCIÓN: IMPACTO / NÚMEROS
+   ============================================ */
+.impacto {
+  background: var(--n);
+  padding: 100px 60px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  align-items: center;
+}
+
+.impacto-photo {
+  position: relative;
+}
+.impacto-photo .photo-placeholder {
+  min-height: 480px;
+}
+.impacto-photo-accent {
+  position: absolute;
+  bottom: -20px; right: -20px;
+  width: 160px; height: 160px;
+  background: var(--v);
+  z-index: -1;
+}
+
+.impacto-content {}
+
+.impacto-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(36px, 3.5vw, 52px);
+  font-weight: 300;
+  line-height: 1.1;
+  color: var(--c);
+  margin-bottom: 40px;
+}
+.impacto-title em { font-style: italic; }
+
+.stats-list {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin-bottom: 44px;
+}
+.stat-item {
+  background: rgba(233,224,214,0.05);
+  border-left: 2px solid var(--v2);
+  padding: 24px 28px;
+  display: flex;
+  align-items: baseline;
+  gap: 20px;
+}
+.stat-num {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 48px;
+  font-weight: 600;
+  color: var(--c);
+  line-height: 1;
+}
+.stat-info {}
+.stat-name {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--c);
+  opacity: 0.8;
+  margin-bottom: 3px;
+}
+.stat-desc {
+  font-size: 12px;
+  color: var(--c);
+  opacity: 0.4;
+}
+
+/* ============================================
+   SECCIÓN: EQUIPO / BRIGADAS
+   ============================================ */
+.equipo {
+  padding: 100px 60px;
+  background: var(--c);
+}
+
+.equipo-header {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 60px;
+  margin-bottom: 60px;
+  align-items: end;
+}
+
+.equipo-grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 3px;
+}
+
+.equipo-card {
+  position: relative;
+  overflow: hidden;
+}
+.equipo-card .photo-placeholder {
+  min-height: 320px;
+  transition: transform 0.5s cubic-bezier(0.16,1,0.3,1);
+}
+.equipo-card:hover .photo-placeholder { transform: scale(1.04); }
+
+.equipo-card-info {
+  background: var(--b);
+  padding: 18px 20px;
+  border-top: 2px solid var(--v);
+}
+.equipo-card-name {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--v);
+  margin-bottom: 3px;
+}
+.equipo-card-role {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--v);
+  opacity: 0.45;
+}
+
+/* ============================================
+   SECCIÓN: STORYTELLING
+   ============================================ */
+.story {
+  background: var(--v);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  min-height: 700px;
+}
+
+.story-photo {
+  position: relative;
+  overflow: hidden;
+}
+.story-photo .photo-placeholder {
+  height: 100%;
+  min-height: 600px;
+}
+
+.story-text {
+  padding: 100px 72px 100px 72px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.story-quote {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(28px, 3vw, 44px);
+  font-weight: 300;
+  font-style: italic;
+  line-height: 1.3;
+  color: var(--c);
+  margin-bottom: 36px;
+  position: relative;
+  padding-left: 28px;
+  border-left: 2px solid rgba(233,224,214,0.3);
+}
+
+.story-body {
+  font-size: 15px;
+  line-height: 1.9;
+  color: var(--c);
+  opacity: 0.65;
+  margin-bottom: 40px;
+}
+
+.story-origin {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding-top: 32px;
+  border-top: 1px solid rgba(233,224,214,0.15);
+}
+.story-origin-logo img {
+  height: 28px;
+  filter: brightness(0) invert(1);
+  opacity: 0.7;
+}
+.story-origin-text {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--c);
+  opacity: 0.4;
+  line-height: 1.8;
+}
+
+/* ============================================
+   SECCIÓN: CTA / ÚNETE
+   ============================================ */
+.cta-section {
+  background: var(--c);
+  padding: 120px 60px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.cta-section::before {
+  content: 'WÁKU';
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 28vw;
+  font-weight: 800;
+  color: var(--v);
+  opacity: 0.04;
+  pointer-events: none;
+  white-space: nowrap;
+  line-height: 1;
+}
+
+.cta-label {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  color: var(--v);
+  opacity: 0.4;
+  margin-bottom: 24px;
+}
+.cta-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(44px, 5.5vw, 80px);
+  font-weight: 300;
+  line-height: 1.05;
+  color: var(--v);
+  margin-bottom: 24px;
+}
+.cta-title em { font-style: italic; }
+.cta-sub {
+  font-size: 16px;
+  line-height: 1.75;
+  color: var(--v);
+  opacity: 0.6;
+  max-width: 480px;
+  margin: 0 auto 48px;
+}
+.cta-buttons {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+}
+
+/* ============================================
+/* ============================================
+   MERCH PREVIEW
+   ============================================ */
+.merch-preview {
+  padding: 80px 0 0;
+  background: #f5f0e8;
+  overflow: hidden;
+}
+.merch-header {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+  align-items: end;
+  padding: 0 60px 48px;
+}
+.merch-header-right {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+.merch-carrusel-wrap { overflow: hidden; width: 100%; }
+.merch-carrusel {
+  display: flex;
+  gap: 3px;
+  width: max-content;
+  animation: merch-scroll 18s linear infinite;
+}
+.merch-carrusel:hover { animation-play-state: paused; }
+.merch-slide { width:320px; height:320px; flex-shrink:0; background:#e8e4de; overflow:hidden; }
+.merch-slide img { width:100%; height:100%; object-fit:contain; object-position:center; display:block; transition:transform .6s cubic-bezier(.16,1,.3,1); }
+.merch-slide:hover img { transform:scale(1.04); }
+@keyframes merch-scroll {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(calc(-50% - 1.5px)); }
+}
+
+   /* ============================================
+   SECCIÓN: ALIADOS
+   ============================================ */
+.aliados {
+  background: var(--v);
+  padding: 72px 60px;
+}
+.aliados-label {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  color: var(--c);
+  opacity: 0.35;
+  text-align: center;
+  margin-bottom: 44px;
+}
+.aliados-logos {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 64px;
+  flex-wrap: wrap;
+}
+.aliado-slot {
+  width: 120px; height: 48px;
+  display: flex; align-items: center; justify-content: center;
+}
+.aliado-slot span {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 8px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(233,224,214,0.2);
+}
+
+/* ============================================
+   FOOTER
+   ============================================ */
+footer {
+  background: var(--n);
+  padding: 72px 60px 36px;
+}
+
+.footer-top {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr;
+  gap: 60px;
+  padding-bottom: 60px;
+  border-bottom: 1px solid rgba(233,224,214,0.08);
+  margin-bottom: 36px;
+}
+
+.footer-brand {}
+.footer-logo img {
+  height: 36px;
+  margin-bottom: 20px;
+  display: block;
+  filter: brightness(0) invert(1);
+  opacity: 0.8;
+}
+.footer-tagline {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 18px;
+  font-style: italic;
+  font-weight: 300;
+  color: var(--c);
+  opacity: 0.5;
+  margin-bottom: 24px;
+  max-width: 260px;
+  line-height: 1.5;
+}
+.footer-social {
+  display: flex;
+  gap: 12px;
+}
+.social-btn {
+  width: 36px; height: 36px;
+  border: 1px solid rgba(233,224,214,0.15);
+  display: flex; align-items: center; justify-content: center;
+  color: var(--c);
+  opacity: 0.4;
+  text-decoration: none;
+  transition: opacity 0.2s, border-color 0.2s;
+  font-size: 12px;
+}
+.social-btn:hover { opacity: 0.9; border-color: rgba(233,224,214,0.5); }
+
+.footer-col-title {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--c);
+  opacity: 0.35;
+  margin-bottom: 20px;
+}
+.footer-links {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.footer-links a {
+  font-size: 13px;
+  color: var(--c);
+  opacity: 0.55;
+  text-decoration: none;
+  transition: opacity 0.2s;
+}
+.footer-links a:hover { opacity: 0.9; }
+
+.footer-bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.footer-copy {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 9px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--c);
+  opacity: 0.25;
+}
+.footer-collective img {
+  height: 20px;
+  filter: brightness(0) invert(1);
+  opacity: 0.2;
+}
+
+/* ============================================
+   SCROLL ANIMATIONS
+   ============================================ */
+.reveal {
+  opacity: 0;
+  transform: translateY(32px);
+  transition: opacity 0.9s cubic-bezier(0.16,1,0.3,1), transform 0.9s cubic-bezier(0.16,1,0.3,1);
+}
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+.reveal-delay-1 { transition-delay: 0.1s; }
+.reveal-delay-2 { transition-delay: 0.2s; }
+.reveal-delay-3 { transition-delay: 0.3s; }
+.reveal-delay-4 { transition-delay: 0.4s; }
+.reveal-delay-5 { transition-delay: 0.5s; }
+
+/* ============================================
+   RESPONSIVE
+   ============================================ */
+@media (max-width: 1024px) {
+  nav { padding: 20px 32px; }
+  nav.scrolled { padding: 14px 32px; }
+  .nav-links { gap: 24px; }
+  .hero-content { padding: 0 32px 56px; }
+  .mision { grid-template-columns: 1fr; }
+  .mision-photo { min-height: 400px; }
+  .mision-text { padding: 72px 32px; }
+  .valores { padding: 72px 32px; }
+  .valores-header { grid-template-columns: 1fr; }
+  .valores-grid { grid-template-columns: repeat(2, 1fr); }
+  .galeria { padding: 72px 32px; }
+  .galeria-grid { grid-template-columns: repeat(6, 1fr); grid-template-rows: 220px 220px; }
+  .g1 { grid-column: 1/4; } .g2 { grid-column: 4/7; }
+  .g3 { grid-column: 1/3; grid-row: 2; } .g4 { grid-column: 3/5; grid-row: 2; }
+  .g5 { grid-column: 5/7; grid-row: 2; } .g6 { display: none; }
+  .impacto { grid-template-columns: 1fr; padding: 72px 32px; }
+  .equipo { padding: 72px 32px; }
+  .equipo-header { grid-template-columns: 1fr; }
+  .equipo-grid { grid-template-columns: repeat(3, 1fr); }
+  .story { grid-template-columns: 1fr; }
+  .story-text { padding: 72px 32px; }
+  .cta-section { padding: 80px 32px; }
+  .aliados { padding: 56px 32px; }
+  footer { padding: 56px 32px 28px; }
+  .footer-top { grid-template-columns: 1fr 1fr; }
+}
+
+@media (max-width: 640px) {
+  .nav-links { display: none; }
+  .hero-content { grid-template-columns: 1fr; }
+  .hero-right { display: none; }
+  .valores-grid { grid-template-columns: 1fr; }
+  .equipo-grid { grid-template-columns: repeat(2, 1fr); }
+  .cta-buttons { flex-direction: column; align-items: center; }
+  .footer-top { grid-template-columns: 1fr; }
+  .aliados-logos { gap: 32px; }
+}
+.lang-btn{font-family:"Barlow Condensed",sans-serif;font-size:11px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--v);background:none;border:1.5px solid rgba(50,64,1,.2);padding:7px 14px;cursor:pointer;text-decoration:none;transition:all .2s;display:flex;align-items:center;gap:6px;white-space:nowrap;}.lang-btn:hover{border-color:var(--v);background:rgba(50,64,1,.06);}
+</style>
+</head>
+<body>
+
+<!-- ============================================
+     NAV
+     ============================================ -->
+<nav id="navbar">
+  <div class="nav-logo">
+    <a href="index-it.html"><img src="WakuCollective_Logo1.png" alt="WAKU Collective"></a>
+  </div>
+  <ul class="nav-links">
+    <li><a href="#mision">Missione</a></li>
+    <li><a href="chi-siamo.html">Chi siamo</a></li>
+    <li><a href="#brigadas">Brigate</a></li>
+    <li><a href="#impacto">Impatto</a></li>
+    <li><a href="#historia">Storia</a></li>
+    <li><a href="#equipo">Team</a></li>
+    <li><a href="merch-it.html">Merch</a></li>
+  </ul>
+  <div class="lang-switcher" id="langSwitcher">
+  <button class="lang-btn-new" onclick="toggleLang()">🌐 ES <span class="lang-arrow">▾</span></button>
+  <div class="lang-dropdown">
+      <a href="index-it.html" class="lang-option active"><span class="lang-flag">🇪🇸</span>Español</a>
+      <a href="index-en.html" class="lang-option"><span class="lang-flag">🇺🇸</span>English</a>
+      <a href="index-it.html" class="lang-option"><span class="lang-flag">🇮🇹</span>Italiano</a>
+      </div>
+</div>
+  <a href="volontariato.html" class="nav-cta">Unisciti</a>
+</nav>
+
+<!-- ============================================
+     HERO
+     ============================================ -->
+<!-- HERO DONACIONES -->
+<section class="hero-dona" id="dona">
+  <div class="hero-dona-bg">
+    <img src="wachirpas-hero.png" alt="Comunidad Wachirpas · WÁKU">
+    <div class="hero-dona-overlay"></div>
+  </div>
+  <div class="hero-dona-content">
+    <div class="hero-dona-left">
+      <p class="hero-dona-eyebrow">Wachirpas · Amazzonia Ecuadoriana</p>
+      <h2 class="hero-dona-title">La tua donazione arriva<br><em>direttamente a loro.</em></h2>
+      <p class="hero-dona-sub">Il 100% di ciò che donai va direttamente sul campo. Senza intermediari. Senza scuse.</p>
+      <div class="hero-dona-stats">
+        <div class="hero-dona-stat">
+          <span class="hero-dona-num">500+</span>
+          <span class="hero-dona-label">Persone assistite</span>
+        </div>
+        <div class="hero-dona-stat">
+          <span class="hero-dona-num">100%</span>
+          <span class="hero-dona-label">Va sul campo</span>
+        </div>
+      </div>
+    </div>
+    <div class="hero-dona-right">
+      <div class="hero-dona-card">
+        <p class="hero-dona-card-eyebrow">Dona ora · Sicuro · Internazionale</p>
+        <p class="hero-dona-card-titulo">Scegli un importo</p>
+        <div class="hero-dona-montos">
+          <button class="hd-monto" onclick="selectHDMonto(this,'5')">$5</button>
+          <button class="hd-monto" onclick="selectHDMonto(this,'15')">$15</button>
+          <button class="hd-monto hd-monto-popular" onclick="selectHDMonto(this,'30')">$30 <span class="hd-popular-tag">popular</span></button>
+          <button class="hd-monto" onclick="selectHDMonto(this,'50')">$50</button>
+        </div>
+        <div class="hd-libre-wrap">
+          <span class="hd-libre-sym">$</span>
+          <input type="number" id="hdMontoLibre" class="hd-libre-input" placeholder="Altro importo" oninput="clearHDMonto()">
+          <span class="hd-libre-usd">USD</span>
+        </div>
+        <div id="hd-paypal-container"></div>
+        <p class="hero-dona-card-nota">💳 Carta o PayPal · Non serve un account PayPal</p>
+        <a href="donazioni.html" class="hd-banco-link">Preferisci bonifico bancario? →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="hero" id="hero">
+  <div class="hero-photo">
+    <img src="FotoPrincipal.png" alt="WÁKU — Amigo que ayuda" style="width:100%;height:100%;object-fit:cover;object-position:center;display:block;">
+  </div>
+  <div class="hero-overlay"></div>
+  <div class="hero-content">
+    <div>
+      <p class="hero-eyebrow">Amico che aiuta · Lingua Achuar</p>
+      <h1 class="hero-title">
+        Dove l'aiuto<br>
+        <em>è più necessario,</em><br>
+        <strong>WÁKU arriva.</strong>
+      </h1>
+      <p class="hero-sub">Salute, istruzione e supporto sociale per chi ne ha più bisogno. Dalla giungla alla città.</p>
+    </div>
+    <div class="hero-right">
+      <div class="hero-logo">
+        <img src="Waku_Logo_1.png" alt="WAKU">
+      </div>
+      <div class="hero-scroll">
+        <div class="hero-scroll-line"></div>
+        Esplora
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MARQUEE -->
+<div class="marquee-bar">
+  <div class="marquee-track">
+    <span class="marquee-item">Salute</span><span class="marquee-dot">·</span>
+    <span class="marquee-item">Istruzione</span><span class="marquee-dot">·</span>
+    <span class="marquee-item">Solidarietà</span><span class="marquee-dot">·</span>
+    <span class="marquee-item">Comunità</span><span class="marquee-dot">·</span>
+    <span class="marquee-item">Amazzonia</span><span class="marquee-dot">·</span>
+    <span class="marquee-item">Brigate</span><span class="marquee-dot">·</span>
+    <span class="marquee-item">Speranza</span><span class="marquee-dot">·</span>
+    <span class="marquee-item">Est. 2025</span><span class="marquee-dot">·</span>
+    <span class="marquee-item">Salute</span><span class="marquee-dot">·</span>
+    <span class="marquee-item">Istruzione</span><span class="marquee-dot">·</span>
+    <span class="marquee-item">Solidarietà</span><span class="marquee-dot">·</span>
+    <span class="marquee-item">Comunità</span><span class="marquee-dot">·</span>
+    <span class="marquee-item">Amazzonia</span><span class="marquee-dot">·</span>
+    <span class="marquee-item">Brigate</span><span class="marquee-dot">·</span>
+    <span class="marquee-item">Speranza</span><span class="marquee-dot">·</span>
+    <span class="marquee-item">Est. 2025</span><span class="marquee-dot">·</span>
+  </div>
+</div>
+
+<!-- ============================================
+     MISIÓN
+     ============================================ -->
+<section class="mision" id="mision">
+  <div class="mision-text">
+    <p class="section-label reveal">La nostra missione</p>
+    <h2 class="mision-title reveal reveal-delay-1">
+      Costruire ponti<br>
+      <em>tra persone</em><br>
+      e comunità.
+    </h2>
+    <p class="mision-body reveal reveal-delay-2">
+      Portiamo salute, istruzione e supporto sociale a chi ne ha più bisogno, trasformando la solidarietà in un movimento sostenibile e umano che unisce cuori sotto uno stesso scopo.
+    </p>
+    <div class="reveal reveal-delay-3">
+      <a href="#brigadas" class="btn-primary">
+        Scopri le nostre brigate
+        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+      </a>
+    </div>
+  </div>
+  <div class="mision-photo">
+    <img src="Brigada1.png" alt="Brigada WÁKU" style="width:100%;height:100%;object-fit:cover;object-position:center;display:block;">
+    <div class="mision-photo-tag">
+      <p>Brigata Amazzonica · 2025</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================
+     VALORES
+     ============================================ -->
+<section class="valores">
+  <div class="valores-header">
+    <div>
+      <p class="section-label reveal" style="color:var(--c); opacity:0.35;">Ciò che ci muove</p>
+      <h2 class="valores-title reveal reveal-delay-1">
+        I valori che<br>
+        <em>guidano ogni azione.</em>
+      </h2>
+    </div>
+    <p class="valores-intro reveal reveal-delay-2">
+      WÁKU non è solo un'organizzazione. È un modo di capire il mondo: con empatia, con rispetto, con la certezza che insieme possiamo trasformare la realtà.
+    </p>
+  </div>
+
+  <div class="valores-grid">
+    <div class="valor-card reveal">
+      <span class="valor-emoji">🌱</span>
+      <h3 class="valor-name">Empatia</h3>
+      <p class="valor-desc">Sentire ciò che vivono gli altri. Ogni azione nasce dalla comprensione profonda di chi ne ha bisogno.</p>
+    </div>
+    <div class="valor-card reveal reveal-delay-1">
+      <span class="valor-emoji">🤝</span>
+      <h3 class="valor-name">Solidarietà</h3>
+      <p class="valor-desc">Camminare insieme. L'aiuto più potente è quello costruito in comunità.</p>
+    </div>
+    <div class="valor-card reveal reveal-delay-2">
+      <span class="valor-emoji">💚</span>
+      <h3 class="valor-name">Trasparenza</h3>
+      <p class="valor-desc">Ogni contributo ha una destinazione chiara. La fiducia si guadagna con i fatti, non con le parole.</p>
+    </div>
+    <div class="valor-card reveal reveal-delay-3">
+      <span class="valor-emoji">🪶</span>
+      <h3 class="valor-name">Rispetto</h3>
+      <p class="valor-desc">Onorare le radici, le culture e la natura. La diversità è la nostra forza.</p>
+    </div>
+    <div class="valor-card reveal reveal-delay-4">
+      <span class="valor-emoji">✨</span>
+      <h3 class="valor-name">Speranza</h3>
+      <p class="valor-desc">Ricordare che aiutare guarisce anche chi aiuta. Ogni gesto di solidarietà trasforma chi dà e chi riceve.</p>
+    </div>
+    <div class="valor-card reveal reveal-delay-5" style="background:rgba(233,224,214,0.08); display:flex; align-items:center; justify-content:center; padding:40px;">
+      <img src="Waku_Logo_1.png" alt="WAKU" style="height:80px; opacity:0.2;">
+    </div>
+  </div>
+</section>
+
+<!-- ============================================
+     GALERÍA
+     ============================================ -->
+<section class="galeria" id="brigadas">
+  <div class="galeria-header">
+    <div>
+      <p class="section-label reveal">Il nostro lavoro sul campo</p>
+      <h2 class="galeria-title reveal reveal-delay-1">
+        Momenti che<br>
+        <em>raccontano storie.</em>
+      </h2>
+    </div>
+    <a href="galleria.html" class="btn-outline reveal">Vedi tutte le foto</a>
+  </div>
+
+  <div class="galeria-grid">
+    <div class="g-item g1">
+      <img src="galeria-01.png" alt="Brigata medica · Amazzonia" style="width:100%;height:100%;object-fit:cover;display:block;">
+      <div class="g-label"><p>Brigata medica · Amazzonia</p></div>
+    </div>
+    <div class="g-item g2">
+      <img src="galeria-02.png" alt="Comunità Shuar" style="width:100%;height:100%;object-fit:cover;display:block;">
+      <div class="g-label"><p>Comunità Shuar</p></div>
+    </div>
+    <div class="g-item g3">
+      <img src="galeria-03.png" alt="Volontari in azione" style="width:100%;height:100%;object-fit:cover;display:block;">
+      <div class="g-label"><p>Volontari in azione</p></div>
+    </div>
+    <div class="g-item g4">
+      <img src="galeria-04.png" alt="Istruzione comunitaria" style="width:100%;height:100%;object-fit:cover;display:block;">
+      <div class="g-label"><p>Istruzione comunitaria</p></div>
+    </div>
+    <div class="g-item g5">
+      <img src="galeria-05.png" alt="Assistenza medica" style="width:100%;height:100%;object-fit:cover;display:block;">
+      <div class="g-label"><p>Assistenza medica</p></div>
+    </div>
+    <div class="g-item g6">
+      <img src="galeria-06.png" alt="Foresta Amazzonica" style="width:100%;height:100%;object-fit:cover;display:block;">
+      <div class="g-label"><p>Foresta Amazzonica</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================
+     MERCH
+     ============================================ -->
+<section class="merch-preview" id="merch">
+  <div class="merch-header reveal">
+    <div>
+      <p class="section-label">Indossa la causa</p>
+      <h2 class="mision-title reveal-delay-1"><em>Merch</em> WÁKU</h2>
+    </div>
+    <div class="merch-header-right">
+      <p class="mision-body" style="max-width:320px;">Capi progettati con NITRAM. Ogni acquisto supporta direttamente le nostre brigate.</p>
+      <a href="merch-it.html" class="btn-primary" style="margin-top:20px;display:inline-flex;">
+        Vedi la collezione
+        <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+      </a>
+    </div>
+  </div>
+
+  <div class="merch-carrusel-wrap">
+    <div class="merch-carrusel" id="merchCarrusel">
+      <div class="merch-slide"><img src="Waku_CamisetaBeige1.png" alt="WAKU Merch"></div>
+      <div class="merch-slide"><img src="Waku_CamisetaNegra.png" alt="WAKU Merch"></div>
+      <div class="merch-slide"><img src="Waku_CamisetaVerde.png" alt="WAKU Merch"></div>
+      <div class="merch-slide"><img src="Waku_CamisetaBeige2.png" alt="WAKU Merch"></div>
+      <div class="merch-slide"><img src="Waku_CamisetaBeige1.png" alt="WAKU Merch"></div>
+      <div class="merch-slide"><img src="Waku_CamisetaNegra.png" alt="WAKU Merch"></div>
+      <div class="merch-slide"><img src="Waku_CamisetaVerde.png" alt="WAKU Merch"></div>
+      <div class="merch-slide"><img src="Waku_CamisetaBeige2.png" alt="WAKU Merch"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================
+     IMPACTO
+     ============================================ -->
+<section class="impacto" id="impacto">
+  <div class="impacto-photo reveal">
+    <img src="Impatto.png" alt="Impatto WÁKU" style="width:100%;height:100%;min-height:480px;object-fit:cover;object-position:center;display:block;">
+    <div class="impacto-photo-accent"></div>
+  </div>
+
+  <div class="impacto-content">
+    <p class="section-label reveal" style="color:var(--c); opacity:0.35;">Il nostro impatto</p>
+    <h2 class="impacto-title reveal reveal-delay-1">
+      Numeri che<br>
+      <em>rappresentano vite.</em>
+    </h2>
+
+    <div class="stats-list">
+      <div class="stat-item reveal reveal-delay-1">
+        <span class="stat-num">+500</span>
+        <div class="stat-info">
+          <p class="stat-name">Persone assistite</p>
+          <p class="stat-desc">In brigate di salute comunitaria</p>
+        </div>
+      </div>
+      <div class="stat-item reveal reveal-delay-2">
+        <span class="stat-num">12</span>
+        <div class="stat-info">
+          <p class="stat-name">Comunità visitate</p>
+          <p class="stat-desc">Shuar, Achuar e comunità rurali</p>
+        </div>
+      </div>
+      <div class="stat-item reveal reveal-delay-3">
+        <span class="stat-num">80+</span>
+        <div class="stat-info">
+          <p class="stat-name">Volontari attivi</p>
+          <p class="stat-desc">Medici, avvocati e professionisti</p>
+        </div>
+      </div>
+      <div class="stat-item reveal reveal-delay-4">
+        <span class="stat-num">2025</span>
+        <div class="stat-info">
+          <p class="stat-name">Fondazione</p>
+          <p class="stat-desc">Un movimento che cresce ogni giorno</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ============================================
+     EQUIPO
+     ============================================ -->
+<section class="equipo" id="equipo">
+  <div class="equipo-header">
+    <div>
+      <p class="section-label reveal">Chi siamo</p>
+      <h2 class="mision-title reveal reveal-delay-1">
+        Il team dietro<br>
+        <em>ogni brigata.</em>
+      </h2>
+    </div>
+    <p class="mision-body reveal reveal-delay-2" style="max-width:380px;">
+      Medici, avvocati, educatori e volontari che hanno deciso che la distanza non era una scusa sufficiente per non aiutare.
+    </p>
+  </div>
+
+  <div class="equipo-grid">
+    <div class="equipo-card reveal">
+      <img src="equipo-01.png" alt="Mateo Andrade" style="width:100%;height:100%;object-fit:cover;object-position:center;display:block;">
+      <div class="equipo-card-info">
+        <p class="equipo-card-name">Mateo Andrade</p>
+        <p class="equipo-card-role">Presidente</p>
+      </div>
+    </div>
+    <div class="equipo-card reveal reveal-delay-1">
+      <img src="equipo-04.png" alt="Dayanara Alemán" style="width:100%;height:100%;object-fit:cover;object-position:center;display:block;">
+      <div class="equipo-card-info">
+        <p class="equipo-card-name">Dayanara Alemán</p>
+        <p class="equipo-card-role">Vicepresidente</p>
+      </div>
+    </div>
+    <div class="equipo-card reveal reveal-delay-2">
+      <img src="equipo-03.png" alt="Daniela Delgado" style="width:100%;height:100%;object-fit:cover;object-position:center;display:block;">
+      <div class="equipo-card-info">
+        <p class="equipo-card-name">Daniela Delgado</p>
+        <p class="equipo-card-role">Tesoriera</p>
+      </div>
+    </div>
+    <div class="equipo-card reveal reveal-delay-3">
+      <img src="equipo-05.png" alt="Javier Castillo" style="width:100%;height:100%;object-fit:cover;object-position:center;display:block;">
+      <div class="equipo-card-info">
+        <p class="equipo-card-name">Javier Castillo</p>
+        <p class="equipo-card-role">Segretario</p>
+      </div>
+    </div>
+    <div class="equipo-card reveal reveal-delay-1">
+      <img src="equipo-02.png" alt="David Sarango" style="width:100%;height:100%;object-fit:cover;object-position:center;display:block;">
+      <div class="equipo-card-info">
+        <p class="equipo-card-name">David Sarango</p>
+        <p class="equipo-card-role">Socio Fondatore</p>
+      </div>
+    </div>
+    <div class="equipo-card reveal reveal-delay-2">
+      <img src="equipo-06.png" alt="Martin Vintimilla" style="width:100%;height:100%;object-fit:cover;object-position:center;display:block;">
+      <div class="equipo-card-info">
+        <p class="equipo-card-name">Martin Vintimilla</p>
+        <p class="equipo-card-role">Socio Fondatore</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================
+     HISTORIA / STORY
+     ============================================ -->
+<section class="story" id="historia">
+  <div class="story-photo">
+    <img src="Storia.png" alt="Storia WÁKU" style="width:100%;height:100%;min-height:600px;object-fit:cover;object-position:center;display:block;">
+  </div>
+  <div class="story-text">
+    <p class="section-label reveal" style="color:var(--c); opacity:0.35;">La nostra storia</p>
+    <blockquote class="story-quote reveal reveal-delay-1">
+      "Tutto è cominciato nella giungla, dove la distanza non si misura in chilometri, ma in ore di cammino."
+    </blockquote>
+    <p class="story-body reveal reveal-delay-2">
+      Nelle comunità Shuar e Achuar, un gruppo di giovani medici, avvocati e volontari si è organizzato per portare salute, assistenza e speranza dove nessun altro arrivava. La gente li chiamava <strong style="color:var(--c); opacity:0.9;">WÁKU</strong> — amico che tende la mano senza chiedere nulla in cambio.
+    </p>
+    <p class="story-body reveal reveal-delay-3" style="margin-bottom:0;">
+      Oggi, WÁKU Project mantiene viva quella radice amazzonica ma guarda al futuro. Perché lo spirito della giungla può anche trasformare le città, le aziende e i cuori.
+    </p>
+    <div class="story-origin reveal reveal-delay-4">
+      <div class="story-origin-logo">
+        <img src="WakuCollective_Logo1.png" alt="WAKU Collective">
+      </div>
+      <p class="story-origin-text">WAKU Collective<br>Est. 2025 · America Latina</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================
+     CTA
+     ============================================ -->
+<section class="cta-section" id="unete">
+  <p class="cta-label reveal">Fai parte del cambiamento</p>
+  <h2 class="cta-title reveal reveal-delay-1">
+    WÁKU non promette<br>
+    <em>cambiare il mondo.</em><br>
+    Promette qualcosa di più grande.
+  </h2>
+  <p class="cta-sub reveal reveal-delay-2">
+    Hacer que el mundo cambie <em>contigo</em>. Unisciti como voluntario, aliado o donante y sé parte de la red solidaria más humana de Latinoamérica.
+  </p>
+  <div class="cta-buttons reveal reveal-delay-3">
+    <a href="volontariato.html" class="btn-primary">
+      Voglio fare volontariato
+      <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+    </a>
+    <a href="donazioni.html" class="btn-outline">Fai una donazione</a>
+  </div>
+</section>
+
+<!-- ============================================
+     ALIADOS
+     ============================================ -->
+<section class="aliados">
+  <p class="aliados-label">I nostri partner e sponsor</p>
+  <div class="aliados-logos">
+    <div class="aliado-slot"><img src="Aliado1.png" alt="Aliado WÁKU" style="max-height:48px;max-width:140px;object-fit:contain;opacity:.6;filter:grayscale(1);transition:opacity .3s,filter .3s;" onmouseover="this.style.opacity='1';this.style.filter='grayscale(0)'" onmouseout="this.style.opacity='.6';this.style.filter='grayscale(1)'"></div>
+    <div class="aliado-slot"><img src="Aliado2.png" alt="Aliado WÁKU" style="max-height:48px;max-width:140px;object-fit:contain;opacity:.6;filter:grayscale(1);transition:opacity .3s,filter .3s;" onmouseover="this.style.opacity='1';this.style.filter='grayscale(0)'" onmouseout="this.style.opacity='.6';this.style.filter='grayscale(1)'"></div>
+    <div class="aliado-slot"><img src="Aliado3.png" alt="Aliado WÁKU" style="max-height:48px;max-width:140px;object-fit:contain;opacity:.6;filter:grayscale(1);transition:opacity .3s,filter .3s;" onmouseover="this.style.opacity='1';this.style.filter='grayscale(0)'" onmouseout="this.style.opacity='.6';this.style.filter='grayscale(1)'"></div>
+    <div class="aliado-slot"><img src="Aliado4.png" alt="Aliado WÁKU" style="max-height:48px;max-width:140px;object-fit:contain;opacity:.6;filter:grayscale(1);transition:opacity .3s,filter .3s;" onmouseover="this.style.opacity='1';this.style.filter='grayscale(0)'" onmouseout="this.style.opacity='.6';this.style.filter='grayscale(1)'"></div>
+    <div class="aliado-slot"><img src="Aliado5.png" alt="Aliado WÁKU" style="max-height:48px;max-width:140px;object-fit:contain;opacity:.6;filter:grayscale(1);transition:opacity .3s,filter .3s;" onmouseover="this.style.opacity='1';this.style.filter='grayscale(0)'" onmouseout="this.style.opacity='.6';this.style.filter='grayscale(1)'"></div>
+    <div class="aliado-slot"><img src="Aliado6.png" alt="Aliado WÁKU" style="max-height:48px;max-width:140px;object-fit:contain;opacity:.6;filter:grayscale(1);transition:opacity .3s,filter .3s;" onmouseover="this.style.opacity='1';this.style.filter='grayscale(0)'" onmouseout="this.style.opacity='.6';this.style.filter='grayscale(1)'"></div>
+  </div>
+</section>
+
+<!-- ============================================
+     FOOTER
+     ============================================ -->
+<footer>
+  <div class="footer-top">
+    <div class="footer-brand">
+      <div class="footer-logo">
+        <img src="WakuCollective_Logo4.png" alt="WAKU Collective">
+      </div>
+      <p class="footer-tagline">"Amico che aiuta" — Lingua Achuar</p>
+      <div class="footer-social">
+        <a href="https://www.instagram.com/waku_ec/" target="_blank" class="social-btn">
+          <img src="instagram.png" alt="Instagram" style="width:18px;height:18px;object-fit:contain;filter:brightness(0) invert(1);opacity:.7;">
+        </a>
+        <a href="https://www.tiktok.com/@waku.collective" target="_blank" class="social-btn">
+          <img src="tik-tok.png" alt="TikTok" style="width:18px;height:18px;object-fit:contain;filter:brightness(0) invert(1);opacity:.7;">
+        </a>
+        <a href="#" class="social-btn" id="btnEmailSocial">
+          <img src="mail.png" alt="Correo" style="width:18px;height:18px;object-fit:contain;filter:brightness(0) invert(1);opacity:.7;">
+        </a>
+      </div>
+    </div>
+    <div>
+      <p class="footer-col-title">Organizzazione</p>
+      <ul class="footer-links">
+        <li><a href="#mision">Missione y visión</a></li>
+        <li><a href="#equipo">Il nostro team</a></li>
+        <li><a href="#brigadas">Brigate</a></li>
+        <li><a href="#impacto">Impatto</a></li>
+        <li><a href="#historia">Storia</a></li>
+      </ul>
+    </div>
+    <div>
+      <p class="footer-col-title">Partecipa</p>
+      <ul class="footer-links">
+        <li><a href="volontariato.html">Fare volontariato</a></li>
+        <li><a href="merch-it.html">Merch</a></li>
+        <li><a href="donazioni.html">Donazioni</a></li>
+        <li><a href="#brigadas">Brigate abiertas</a></li>
+      </ul>
+    </div>
+    <div>
+        <li><a href="#" id="footer-email-1"><span class="__cf_email__" data-cfemail="0770666c72586264476872736b68686c2964686a">[email&#160;protected]</span></a></li>
+        <li><a href="https://www.instagram.com/waku_ec/" target="_blank">Instagram</a></li>
+        <li><a href="https://www.tiktok.com/@waku.collective" target="_blank">TikTok</a></li>
+        <li><a href="chi-siamo.html">Ecuador · America Latina</a></li>
+        <li><a href="#" id="footer-email-2" style="margin-top:8px; display:block;">Stampa e media</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p class="footer-copy">© 2025 WÁKU Project · Tutti i diritti riservati</p>
+    <div class="footer-collective">
+      <img src="WakuCollective_Logo4.png" alt="WAKU Collective">
+    </div>
+  </div>
+</footer>
+
+<script>
+  // Correo via JS para evitar bloqueos
+  var u = 'waku_ec';
+  var d = 'outlook.com';
+  var em = u + '@' + d;
+  ['footer-email-1','footer-email-2','btnEmailSocial'].forEach(function(id){
+    var el = document.getElementById(id);
+    if(el){ el.href = 'mailto:' + em; }
+  });
+
+  // Cursor personalizado
+  // HERO DONACIONES — PayPal
+  paypal.HostedButtons({
+    hostedButtonId: "JVJZCJS646P3L",
+  }).render("#hd-paypal-container");
+
+  function selectHDMonto(btn, monto){
+    document.querySelectorAll('.hd-monto').forEach(b => b.classList.remove('selected'));
+    btn.classList.add('selected');
+    document.getElementById('hdMontoLibre').value = '';
+  }
+  function clearHDMonto(){
+    document.querySelectorAll('.hd-monto').forEach(b => b.classList.remove('selected'));
+  }
+
+  // Navbar scroll
+  const navbar = document.getElementById('navbar');
+  window.addEventListener('scroll', () => {
+    navbar.classList.toggle('scrolled', window.scrollY > 60);
+  });
+
+  // Scroll reveal
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+        observer.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.12 });
+  reveals.forEach(el => observer.observe(el));
+
+function toggleLang(){
+  document.getElementById('langSwitcher').classList.toggle('open');
+}
+document.addEventListener('click', function(e){
+  var sw = document.getElementById('langSwitcher');
+  if(sw && !sw.contains(e.target)) sw.classList.remove('open');
+});
+
+</script>
+
+</body>
+</html>
