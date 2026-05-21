@@ -58,6 +58,46 @@
 @media(max-width:640px){
   .hero-dona-montos{grid-template-columns:1fr 1fr;}
 }
+
+/* LANGUAGE SWITCHER */
+.lang-switcher{position:relative;display:inline-block;}
+.lang-btn-new{
+  font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;
+  letter-spacing:.18em;text-transform:uppercase;
+  color:var(--v);background:none;
+  border:1.5px solid rgba(50,64,1,.2);
+  padding:7px 12px;cursor:pointer;
+  display:flex;align-items:center;gap:6px;
+  transition:all .2s;white-space:nowrap;
+}
+.lang-btn-new:hover{border-color:var(--v);background:rgba(50,64,1,.06);}
+.lang-btn-new .lang-arrow{transition:transform .2s;font-size:8px;opacity:.6;}
+.lang-switcher.open .lang-arrow{transform:rotate(180deg);}
+.lang-dropdown{
+  position:absolute;top:calc(100% + 4px);right:0;
+  background:white;
+  border:1px solid rgba(50,64,1,.15);
+  box-shadow:0 8px 24px rgba(0,0,0,.1);
+  min-width:140px;
+  z-index:600;
+  display:none;
+}
+.lang-switcher.open .lang-dropdown{display:block;}
+.lang-option{
+  display:flex;align-items:center;gap:10px;
+  padding:10px 14px;
+  font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:600;
+  letter-spacing:.14em;text-transform:uppercase;
+  color:var(--v);opacity:.6;
+  text-decoration:none;
+  transition:background .15s,opacity .15s;
+  border-bottom:1px solid rgba(50,64,1,.06);
+}
+.lang-option:last-child{border:none;}
+.lang-option:hover{background:rgba(50,64,1,.04);opacity:1;}
+.lang-option.active{opacity:1;font-weight:700;}
+.lang-flag{font-size:14px;}
+
 </style>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400;1,600&family=Barlow+Condensed:wght@300;400;500;600;700;800&family=Barlow:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
@@ -1113,7 +1153,14 @@ footer {
     <li><a href="#equipo">Equipo</a></li>
     <li><a href="merch.html">Merch</a></li>
   </ul>
-  <a href="index-en.html" class="lang-btn">🇺🇸 EN</a>
+  <div class="lang-switcher" id="langSwitcher">
+  <button class="lang-btn-new" onclick="toggleLang()">🌐 ES <span class="lang-arrow">▾</span></button>
+  <div class="lang-dropdown">
+      <a href="index.html" class="lang-option active"><span class="lang-flag">🇪🇸</span>Español</a>
+      <a href="index-en.html" class="lang-option"><span class="lang-flag">🇺🇸</span>English</a>
+      <a href="index-it.html" class="lang-option"><span class="lang-flag">🇮🇹</span>Italiano</a>
+      </div>
+</div>
   <a href="voluntariado.html" class="nav-cta">Únete</a>
 </nav>
 
@@ -1569,11 +1616,11 @@ footer {
     <div>
       <p class="footer-col-title">Organización</p>
       <ul class="footer-links">
-        <li><a href="#">Misión y visión</a></li>
-        <li><a href="#">Nuestro equipo</a></li>
-        <li><a href="#">Brigadas</a></li>
-        <li><a href="#">Impacto</a></li>
-        <li><a href="#">Historia</a></li>
+        <li><a href="#mision">Misión y visión</a></li>
+        <li><a href="#equipo">Nuestro equipo</a></li>
+        <li><a href="#brigadas">Brigadas</a></li>
+        <li><a href="#impacto">Impacto</a></li>
+        <li><a href="#historia">Historia</a></li>
       </ul>
     </div>
     <div>
@@ -1582,14 +1629,14 @@ footer {
         <li><a href="voluntariado.html">Ser voluntario</a></li>
         <li><a href="merch.html">Merch</a></li>
         <li><a href="donaciones.html">Donaciones</a></li>
-        <li><a href="#">Brigadas abiertas</a></li>
+        <li><a href="#brigadas">Brigadas abiertas</a></li>
       </ul>
     </div>
     <div>
         <li><a href="#" id="footer-email-1"><span class="__cf_email__" data-cfemail="0770666c72586264476872736b68686c2964686a">[email&#160;protected]</span></a></li>
         <li><a href="https://www.instagram.com/waku_ec/" target="_blank">Instagram</a></li>
         <li><a href="https://www.tiktok.com/@waku.collective" target="_blank">TikTok</a></li>
-        <li><a href="#">Ecuador · Latinoamérica</a></li>
+        <li><a href="nosotros.html">Ecuador · Latinoamérica</a></li>
         <li><a href="#" id="footer-email-2" style="margin-top:8px; display:block;">Prensa y medios</a></li>
       </ul>
     </div>
@@ -1644,6 +1691,15 @@ footer {
     });
   }, { threshold: 0.12 });
   reveals.forEach(el => observer.observe(el));
+
+function toggleLang(){
+  document.getElementById('langSwitcher').classList.toggle('open');
+}
+document.addEventListener('click', function(e){
+  var sw = document.getElementById('langSwitcher');
+  if(sw && !sw.contains(e.target)) sw.classList.remove('open');
+});
+
 </script>
 
 </body>
