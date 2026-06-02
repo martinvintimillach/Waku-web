@@ -1648,11 +1648,17 @@ footer {
     if(el){ el.href = 'mailto:' + em; }
   });
 
-  // Cursor personalizado
   // HERO DONACIONES — PayPal
-  paypal.HostedButtons({
-    hostedButtonId: "JVJZCJS646P3L",
-  }).render("#hd-paypal-container");
+  function renderPayPalHero(){
+    if(typeof paypal !== 'undefined' && document.getElementById('hd-paypal-container')){
+      paypal.HostedButtons({
+        hostedButtonId: "JVJZCJS646P3L",
+      }).render("#hd-paypal-container");
+    } else {
+      setTimeout(renderPayPalHero, 300);
+    }
+  }
+  renderPayPalHero();
 
   function selectHDMonto(btn, monto){
     document.querySelectorAll('.hd-monto').forEach(b => b.classList.remove('selected'));
